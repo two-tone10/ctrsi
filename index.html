@@ -239,7 +239,7 @@ body {
 .sidebar-progress-fill {
   height: 100%;
   width: 0;
-  background: var(--yellow);
+  background: var(--red);
   border-radius: inherit;
   transition: width 0.3s ease;
 }
@@ -471,7 +471,7 @@ body {
 .dashboard-fill {
   height: 100%;
   width: 0;
-  background: var(--yellow);
+  background: var(--red);
   border-radius: inherit;
   transition: width 0.3s ease;
 }
@@ -759,7 +759,7 @@ body {
 .session-progress-fill {
   height: 100%;
   width: 0;
-  background: var(--yellow);
+  background: var(--red);
   border-radius: inherit;
   transition: width 0.3s ease;
 }
@@ -1254,7 +1254,163 @@ body {
   border-radius: 3px;
 }
 
-/* ─── PORTFOLIO ──────────────────────────────────────── */
+/* ─── PORTFOLIO WRITING AREA ─────────────────────────── */
+.portfolio-write-wrap {
+  margin-top: 14px;
+}
+
+.portfolio-write-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.portfolio-write-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-lt);
+}
+
+.portfolio-autosave {
+  font-size: 10px;
+  color: var(--text-lt);
+  font-style: italic;
+  transition: color 0.3s;
+}
+.portfolio-autosave.saved { color: var(--gray-green); }
+.portfolio-autosave.saving { color: var(--yellow); }
+
+.portfolio-textarea {
+  width: 100%;
+  min-height: 140px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--white);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.portfolio-textarea:focus {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(196,149,74,0.12);
+}
+.portfolio-textarea::placeholder {
+  color: #C0B4A8;
+  font-style: italic;
+}
+
+.portfolio-write-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.portfolio-wordcount {
+  font-size: 10px;
+  color: var(--text-lt);
+}
+
+.portfolio-written-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--gray-green-lt);
+  color: var(--gray-green);
+}
+
+/* ── Export button ── */
+.export-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #3B1F2B 0%, #5A2C40 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity 0.18s, transform 0.1s;
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+}
+.export-btn:hover { opacity: 0.88; }
+.export-btn:active { transform: scale(0.98); }
+.export-btn-icon { font-size: 16px; }
+
+.artifact-written-indicator {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--gray-green);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* ── Portfolio panel full-width writing cards ── */
+.portfolio-full-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 24px;
+  margin-bottom: 14px;
+}
+.portfolio-full-card.has-content {
+  border-color: #C8DABC;
+  box-shadow: 0 2px 12px rgba(90,122,82,0.08);
+}
+
+.portfolio-full-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.portfolio-full-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.portfolio-full-prompt {
+  font-size: 13.5px;
+  color: var(--text-med);
+  line-height: 1.65;
+  font-style: italic;
+  border-left: 3px solid var(--yellow);
+  padding-left: 14px;
+  margin-bottom: 14px;
+}
+
+.portfolio-full-purpose {
+  font-size: 12.5px;
+  color: var(--text-lt);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
 .portfolio-hero {
   background: linear-gradient(135deg, #3B1F2B 0%, #5A2C40 100%);
   border-radius: 10px;
@@ -1730,7 +1886,7 @@ body {
       <span>Overview</span>
     </button>
     <button class="dashboard-btn" id="portfolioNavBtn" onclick="showPortfolio()">
-      <span class="dashboard-icon" style="background:var(--yellow)"></span>
+      <span class="dashboard-icon" style="background:var(--gray-green)"></span>
       <span>My Portfolio</span>
     </button>
   </div>
@@ -2634,6 +2790,8 @@ function buildModulePanels() {
 
     // ── Portfolio artifact for this module
     const artifact = PORTFOLIO_ARTIFACTS.find(a => a.moduleId === mod.id);
+    const savedText = getArtifactText(mod.id);
+    const wordCount = savedText.trim() ? savedText.trim().split(/\s+/).length : 0;
     const portfolioHTML = artifact ? `
       <div class="module-portfolio-section">
         <div class="module-portfolio-label">Your Portfolio Contribution</div>
@@ -2642,12 +2800,26 @@ function buildModulePanels() {
         <div class="artifact-meta">
           <span class="artifact-chip">${escapeHTML(artifact.component)}</span>
           <span class="artifact-chip">${escapeHTML(topic.label)}</span>
+          ${savedText.trim() ? '<span class="artifact-chip" style="background:var(--gray-green-lt);color:var(--gray-green);">✓ Written</span>' : ''}
         </div>
         <div class="module-portfolio-prompt-label">Your Prompt</div>
         <div class="module-portfolio-prompt">${escapeHTML(artifact.prompt)}</div>
-        <div class="module-portfolio-submit-row">
-          ${artifact.submitLabel ? `<a class="artifact-action pending" href="#">${escapeHTML(artifact.submitLabel)}</a>` : ''}
-          <a class="artifact-action" onclick="showPortfolio()" href="#portfolio" style="cursor:pointer;">View Full Portfolio →</a>
+
+        <div class="portfolio-write-wrap">
+          <div class="portfolio-write-label">
+            <div class="portfolio-write-title">Your Response</div>
+            <div class="portfolio-autosave" id="save-indicator-${mod.id}">autosaved</div>
+          </div>
+          <textarea
+            class="portfolio-textarea"
+            id="artifact-text-${mod.id}"
+            placeholder="Write your response here — it saves automatically as you type…"
+            oninput="handleArtifactInput(this, '${mod.id}')"
+          >${escapeHTML(savedText)}</textarea>
+          <div class="portfolio-write-footer">
+            <div class="portfolio-wordcount" id="wordcount-${mod.id}">${wordCount > 0 ? wordCount + ' words' : ''}</div>
+            <button onclick="showPortfolio()" style="font-size:11px;font-weight:700;color:var(--red);background:none;border:none;cursor:pointer;font-family:'Source Sans 3',sans-serif;">View Full Portfolio →</button>
+          </div>
         </div>
       </div>
     ` : '';
@@ -2906,88 +3078,674 @@ function getArtifactStatus(artifact) {
   if (!mod) return { label: 'Not Started', key: 'not-started' };
   const done = countModuleDone(mod);
   const total = countModuleItems(mod);
-  if (done === total && total > 0) return { label: 'Complete', key: 'complete' };
+  const hasText = !!getArtifactText(artifact.moduleId).trim();
+  if ((done === total && total > 0) || hasText) return { label: hasText ? 'Written' : 'Complete', key: 'complete' };
   if (done > 0) return { label: 'In Progress', key: 'in-progress' };
   return { label: 'Not Started', key: 'not-started' };
 }
 
-function buildPortfolio() {
-  const panel = document.getElementById('portfolioPanel');
-  const complete = PORTFOLIO_ARTIFACTS.filter(a => getArtifactStatus(a).key === 'complete').length;
-  const inProg   = PORTFOLIO_ARTIFACTS.filter(a => getArtifactStatus(a).key === 'in-progress').length;
-  const total    = PORTFOLIO_ARTIFACTS.length;
+// ── Artifact text storage ────────────────────────────
+function getArtifactText(moduleId) {
+  try {
+    const raw = localStorage.getItem(`ctrsi2026:artifact:${moduleId}`);
+    return raw || '';
+  } catch(e) { return ''; }
+}
 
-  const cardsHTML = PORTFOLIO_ARTIFACTS.map(artifact => {
-    const status = getArtifactStatus(artifact);
+function setArtifactText(moduleId, text) {
+  try {
+    localStorage.setItem(`ctrsi2026:artifact:${moduleId}`, text);
+  } catch(e) {}
+}
+
+// ── Autosave with debounce ───────────────────────────
+const _saveTimers = {};
+function handleArtifactInput(textarea, moduleId) {
+  const text = textarea.value;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+
+  // word count — update both module tab and portfolio panel instances
+  document.querySelectorAll(`[id="wordcount-${moduleId}"]`).forEach(el => {
+    el.textContent = words > 0 ? words + ' word' + (words === 1 ? '' : 's') : '';
+  });
+
+  // saving indicator
+  document.querySelectorAll(`[id="save-indicator-${moduleId}"]`).forEach(el => {
+    el.textContent = 'saving…';
+    el.className = 'portfolio-autosave saving';
+  });
+
+  clearTimeout(_saveTimers[moduleId]);
+  _saveTimers[moduleId] = setTimeout(() => {
+    setArtifactText(moduleId, text);
+    document.querySelectorAll(`[id="save-indicator-${moduleId}"]`).forEach(el => {
+      el.textContent = 'saved ✓';
+      el.className = 'portfolio-autosave saved';
+    });
+    // sync any other textarea instances for this module
+    document.querySelectorAll(`[id="artifact-text-${moduleId}"]`).forEach(el => {
+      if (el !== textarea) el.value = text;
+    });
+    updateProgressUI();
+  }, 600);
+}
+
+// ── Export portfolio as beautiful HTML ──────────────
+function exportPortfolio() {
+  const name = attendeeName || 'Attendee';
+  const now = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  const writtenCount = PORTFOLIO_ARTIFACTS.filter(a => getArtifactText(a.moduleId).trim()).length;
+
+  const artifactSections = PORTFOLIO_ARTIFACTS.map((artifact, idx) => {
     const mod = MODULES.find(m => m.id === artifact.moduleId);
     const topic = mod ? TOPICS[mod.topic] : TOPICS.opening;
+    const text = getArtifactText(artifact.moduleId).trim();
+    const colorHex = topic.color;
+
     return `
-      <article class="artifact-card ${status.key === 'in-progress' ? 'active' : ''}">
-        <div class="artifact-topline">
-          <div class="artifact-module-tag">${mod ? escapeHTML(mod.dayShort) : ''}</div>
-          <span class="artifact-status artifact-${status.key}">${escapeHTML(status.label)}</span>
+    <section class="artifact-section">
+      <div class="artifact-header">
+        <div class="artifact-number">${String(idx + 1).padStart(2, '0')}</div>
+        <div class="artifact-header-body">
+          <div class="artifact-session-tag" style="color:${colorHex}">${mod ? mod.day + ' · ' + mod.time : ''}</div>
+          <h2 class="artifact-title">${artifact.label}</h2>
+          <div class="artifact-chips">
+            <span class="chip" style="background:${topic.lt};color:${colorHex}">${topic.label}</span>
+            <span class="chip">${artifact.component}</span>
+          </div>
         </div>
-        <div class="artifact-title">${escapeHTML(artifact.label)}</div>
-        <div class="artifact-purpose">${escapeHTML(artifact.purpose)}</div>
-        <div class="artifact-meta">
-          <span class="artifact-chip">${escapeHTML(artifact.component)}</span>
+      </div>
+
+      <div class="artifact-purpose-block">
+        <div class="purpose-label">Why this matters</div>
+        <div class="purpose-text">${artifact.purpose}</div>
+      </div>
+
+      <div class="prompt-block">
+        <div class="prompt-label">Prompt</div>
+        <div class="prompt-text">${artifact.prompt}</div>
+      </div>
+
+      <div class="response-block ${text ? 'has-response' : 'no-response'}">
+        <div class="response-label">Your Response</div>
+        ${text
+          ? `<div class="response-text">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div>`
+          : `<div class="response-empty">No response written yet.</div>`
+        }
+      </div>
+    </section>`;
+  }).join('\n');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTRSI 2026 Portfolio · ${name}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #FAF8F4;
+    color: #2A1A12;
+    line-height: 1.7;
+  }
+
+  .page-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 40px 100px;
+  }
+
+  /* ── Cover ── */
+  .cover {
+    border-bottom: 3px solid #3B1F2B;
+    padding-bottom: 48px;
+    margin-bottom: 56px;
+  }
+
+  .cover-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #C4954A;
+    margin-bottom: 16px;
+  }
+
+  .cover-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #3B1F2B;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .cover-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 22px;
+    font-weight: 400;
+    font-style: italic;
+    color: #7A5A40;
+    margin-bottom: 24px;
+  }
+
+  .cover-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .cover-meta-item {
+    font-size: 13px;
+    color: #8A7A6A;
+  }
+
+  .cover-meta-item strong {
+    color: #5A4A3A;
+    font-weight: 600;
+  }
+
+  .cover-stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 28px;
+    padding: 20px 24px;
+    background: #F0EBE4;
+    border-radius: 8px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 32px;
+    color: #3B1F2B;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #8A7A6A;
+  }
+
+  /* ── Synthesis section ── */
+  .synthesis {
+    background: #3B1F2B;
+    border-radius: 10px;
+    padding: 32px 36px;
+    margin-bottom: 56px;
+    color: white;
+  }
+
+  .synthesis-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #C4954A;
+    margin-bottom: 12px;
+  }
+
+  .synthesis-heading {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 22px;
+    color: white;
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+
+  .synthesis-questions {
+    display: grid;
+    gap: 12px;
+  }
+
+  .synthesis-q {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    padding-left: 16px;
+    border-left: 2px solid #C4954A;
+    line-height: 1.6;
+  }
+
+  /* ── Artifacts ── */
+  .artifacts-heading {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 28px;
+    color: #3B1F2B;
+    margin-bottom: 8px;
+  }
+
+  .artifacts-subhead {
+    font-size: 14px;
+    color: #8A7A6A;
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+
+  .artifact-section {
+    margin-bottom: 52px;
+    padding-bottom: 52px;
+    border-bottom: 1px solid #E8E2D8;
+  }
+
+  .artifact-section:last-child {
+    border-bottom: none;
+  }
+
+  .artifact-header {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+
+  .artifact-number {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #E8E2D8;
+    line-height: 1;
+    flex-shrink: 0;
+    padding-top: 4px;
+    min-width: 42px;
+  }
+
+  .artifact-session-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .artifact-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #3B1F2B;
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+
+  .artifact-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: #F0EBE4;
+    color: #7A6A5A;
+  }
+
+  .artifact-purpose-block {
+    margin-bottom: 14px;
+  }
+
+  .purpose-label,
+  .prompt-label,
+  .response-label {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #B0A090;
+    margin-bottom: 5px;
+  }
+
+  .purpose-text {
+    font-size: 13.5px;
+    color: #8A7A6A;
+    line-height: 1.65;
+  }
+
+  .prompt-block {
+    background: #FDF3E6;
+    border-left: 3px solid #C4954A;
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 20px;
+  }
+
+  .prompt-label { color: #8C6020; }
+
+  .prompt-text {
+    font-size: 14px;
+    color: #5A4A3A;
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .response-block {
+    border-radius: 8px;
+    padding: 20px 22px;
+  }
+
+  .response-block.has-response {
+    background: white;
+    border: 1px solid #E8E2D8;
+  }
+
+  .response-block.no-response {
+    background: #F5F0EA;
+    border: 1px dashed #D8CEBE;
+  }
+
+  .response-label { margin-bottom: 10px; }
+
+  .response-text {
+    font-size: 15px;
+    color: #2A1A12;
+    line-height: 1.78;
+    white-space: pre-wrap;
+  }
+
+  .response-empty {
+    font-size: 13px;
+    color: #B0A090;
+    font-style: italic;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid #E8E2D8;
+    font-size: 11px;
+    color: #B0A090;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media print {
+    body { background: white; }
+    .page-wrap { padding: 32px 24px; }
+    .artifact-section { page-break-inside: avoid; }
+    .cover { page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="cover">
+    <div class="cover-eyebrow">Cornell Translational Research Summer Institute · June 28–30, 2026</div>
+    <div class="cover-title">My CTRSI Portfolio</div>
+    <div class="cover-name">${name.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><strong>Exported:</strong> ${now}</div>
+      <div class="cover-meta-item"><strong>Theme:</strong> Relationships in Translational Research</div>
+      <div class="cover-meta-item"><strong>Host:</strong> BCTR · Cornell University</div>
+    </div>
+    <div class="cover-stats">
+      <div class="stat-item">
+        <div class="stat-num">${writtenCount}</div>
+        <div class="stat-label">Artifacts Written</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">${PORTFOLIO_ARTIFACTS.length}</div>
+        <div class="stat-label">Total Artifacts</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">${PORTFOLIO_ARTIFACTS.reduce((acc, a) => {
+          const t = getArtifactText(a.moduleId).trim();
+          return acc + (t ? t.split(/\s+/).length : 0);
+        }, 0)}</div>
+        <div class="stat-label">Words Written</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Days</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="synthesis">
+    <div class="synthesis-eyebrow">Before You Read</div>
+    <div class="synthesis-heading">Four questions to hold as you review your portfolio</div>
+    <div class="synthesis-questions">
+      <div class="synthesis-q">What pattern do you see across your artifacts — what idea or commitment shows up again and again?</div>
+      <div class="synthesis-q">Which artifact surprised you the most in what you wrote — and why?</div>
+      <div class="synthesis-q">Which artifact represents the biggest shift from where you started at CTRSI?</div>
+      <div class="synthesis-q">If you shared this portfolio with a community partner, what would you want them to notice?</div>
+    </div>
+  </div>
+
+  <h2 class="artifacts-heading">Your Artifacts</h2>
+  <p class="artifacts-subhead">Each module contributed one artifact — a reflection, positioning statement, plan, or commitment. Together they form a record of your experience and a foundation for your next steps in translational research.</p>
+
+  ${artifactSections}
+
+  <div class="doc-footer">
+    <span>CTRSI 2026 · ${name.replace(/&/g,'&amp;').replace(/</g,'&lt;')} · Personal Portfolio</span>
+    <span>Exported ${now} · bctr.cornell.edu</span>
+  </div>
+
+</div>
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const safeName = name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+  a.download = `ctrsi-2026-portfolio-${safeName}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── Share portfolio with facilitators (opt-in) ──────
+// Replace FACILITATOR_ENDPOINT below with your deployed
+// Google Apps Script Web App URL once you set it up.
+const FACILITATOR_ENDPOINT = '';
+
+async function sharePortfolio() {
+  const btn = document.getElementById('shareBtn');
+  const status = document.getElementById('shareStatus');
+
+  if (!FACILITATOR_ENDPOINT) {
+    status.textContent = 'Sharing is not yet active — check back during the institute.';
+    status.style.color = 'var(--text-lt)';
+    return;
+  }
+
+  const name = attendeeName || 'Anonymous';
+  const writtenCount = PORTFOLIO_ARTIFACTS.filter(a => getArtifactText(a.moduleId).trim()).length;
+
+  if (writtenCount === 0) {
+    status.textContent = 'You haven\'t written any responses yet — nothing to share.';
+    status.style.color = 'var(--text-lt)';
+    return;
+  }
+
+  // Build the payload
+  const artifacts = PORTFOLIO_ARTIFACTS.map(a => {
+    const mod = MODULES.find(m => m.id === a.moduleId);
+    return {
+      moduleId:  a.moduleId,
+      label:     a.label,
+      component: a.component,
+      day:       mod ? mod.day : '',
+      session:   mod ? mod.title : '',
+      response:  getArtifactText(a.moduleId).trim(),
+    };
+  });
+
+  const payload = {
+    attendeeName: name,
+    submittedAt:  new Date().toISOString(),
+    writtenCount,
+    totalArtifacts: PORTFOLIO_ARTIFACTS.length,
+    artifacts,
+  };
+
+  // UI: sending state
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  btn.innerHTML = '<span class="export-btn-icon">⋯</span> Sending…';
+  status.textContent = '';
+
+  try {
+    await fetch(FACILITATOR_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',   // Apps Script requires no-cors
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    // no-cors means we can't read the response — assume success
+    btn.innerHTML = '<span class="export-btn-icon">✓</span> Shared Successfully';
+    btn.style.opacity = '1';
+    btn.style.background = 'var(--gray-green)';
+    status.textContent = 'Your portfolio has been sent to the BCTR team. You can share again any time to update your responses.';
+    status.style.color = 'var(--gray-green)';
+  } catch(err) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.innerHTML = '<span class="export-btn-icon">↑</span> Share with BCTR Team';
+    status.textContent = 'Something went wrong. Please try again or let a facilitator know.';
+    status.style.color = '#B85050';
+  }
+}
+  const panel = document.getElementById('portfolioPanel');
+  const complete = PORTFOLIO_ARTIFACTS.filter(a => getArtifactText(a.moduleId).trim()).length;
+  const total    = PORTFOLIO_ARTIFACTS.length;
+  const totalWords = PORTFOLIO_ARTIFACTS.reduce((acc, a) => {
+    const t = getArtifactText(a.moduleId).trim();
+    return acc + (t ? t.split(/\s+/).length : 0);
+  }, 0);
+
+  const artifactCardsHTML = PORTFOLIO_ARTIFACTS.map(artifact => {
+    const mod = MODULES.find(m => m.id === artifact.moduleId);
+    const topic = mod ? TOPICS[mod.topic] : TOPICS.opening;
+    const savedText = getArtifactText(artifact.moduleId);
+    const wordCount = savedText.trim() ? savedText.trim().split(/\s+/).length : 0;
+    const hasText = !!savedText.trim();
+
+    return `
+      <div class="portfolio-full-card ${hasText ? 'has-content' : ''}">
+        <div class="portfolio-full-header">
+          <div style="flex:1;min-width:0;">
+            <div class="artifact-module-tag" style="color:${topic.color};margin-bottom:4px;">${mod ? mod.dayShort + ' · ' + mod.time : ''}</div>
+            <div class="artifact-title" style="font-size:17px;margin-bottom:0;">${escapeHTML(artifact.label)}</div>
+          </div>
+          ${hasText ? '<span class="portfolio-written-badge">✓ Written</span>' : '<span style="font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-lt);padding:3px 8px;border-radius:999px;background:var(--gray-lt);">Not yet written</span>'}
+        </div>
+
+        <div class="portfolio-full-meta">
           <span class="artifact-chip" style="background:${topic.lt};color:${topic.color}">${escapeHTML(topic.label)}</span>
+          <span class="artifact-chip">${escapeHTML(artifact.component)}</span>
         </div>
-        <div class="artifact-actions">
-          <button class="artifact-action" onclick="setRoute('${artifact.moduleId}-portfolio')" style="background:var(--red);color:var(--white);border-color:var(--red);">View Prompt →</button>
-          <a class="artifact-action pending" href="#">${escapeHTML(artifact.submitLabel || 'Submit')}</a>
+
+        <div class="portfolio-full-purpose">${escapeHTML(artifact.purpose)}</div>
+
+        <div class="portfolio-full-prompt">${escapeHTML(artifact.prompt)}</div>
+
+        <div class="portfolio-write-wrap">
+          <div class="portfolio-write-label">
+            <div class="portfolio-write-title">Your Response</div>
+            <div class="portfolio-autosave ${hasText ? 'saved' : ''}" id="save-indicator-${artifact.moduleId}">${hasText ? 'saved ✓' : 'autosaved'}</div>
+          </div>
+          <textarea
+            class="portfolio-textarea"
+            id="artifact-text-${artifact.moduleId}"
+            placeholder="Write your response here — it saves automatically as you type…"
+            oninput="handleArtifactInput(this, '${artifact.moduleId}')"
+          >${escapeHTML(savedText)}</textarea>
+          <div class="portfolio-write-footer">
+            <div class="portfolio-wordcount" id="wordcount-${artifact.moduleId}">${wordCount > 0 ? wordCount + ' word' + (wordCount === 1 ? '' : 's') : ''}</div>
+          </div>
         </div>
-      </article>
+      </div>
     `;
   }).join('');
 
   panel.innerHTML = `
-    <div class="portfolio-hero" style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;">
+    <div class="portfolio-hero portfolio-hero-grid" style="margin-bottom:18px;">
       <div>
         <div class="portfolio-eyebrow">CTRSI 2026 · My Portfolio</div>
         <div class="portfolio-heading">Your CTRSI Portfolio</div>
-        <div class="portfolio-intro">Each module contributes one artifact — a reflection, plan, map, or commitment — that together form a holistic account of your institute experience. Use these to revisit your thinking, share your perspective, and take your next steps.</div>
+        <div class="portfolio-intro">Write your responses to each artifact prompt below — everything saves automatically to your browser. When you're ready, export a beautifully formatted document that's yours to keep forever.</div>
       </div>
       <div class="portfolio-meter-card">
-        <div class="portfolio-meter-count" id="portCount">${complete}</div>
-        <div class="portfolio-meter-label">of ${total} complete</div>
-        <div class="dashboard-track" style="background:rgba(255,255,255,0.12);">
-          <div class="dashboard-fill" id="portFill" style="width:${Math.round((complete/total)*100)}%;background:var(--gray-green);"></div>
+        <div class="portfolio-meter-count" id="portWrittenCount">${complete}</div>
+        <div class="portfolio-meter-label">of ${total} written</div>
+        <div class="dashboard-track" style="background:rgba(255,255,255,0.12);margin-bottom:8px;">
+          <div class="dashboard-fill" id="portFill" style="width:${Math.round((complete/total)*100)}%;background:var(--yellow);"></div>
         </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:0.04em;">${totalWords.toLocaleString()} words total</div>
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:16px;align-items:start;margin-top:0;">
-      <div>
-        <div class="dashboard-card" style="padding:0;overflow:hidden;">
-          <div style="padding:16px 20px;border-bottom:1px solid var(--gray-lt);display:flex;align-items:baseline;justify-content:space-between;">
-            <div class="dashboard-card-title">All Artifacts</div>
-            <div class="dashboard-card-note">${complete} complete · ${inProg} in progress · ${total - complete - inProg} not started</div>
-          </div>
-          <div class="artifact-grid" style="padding:14px;gap:10px;">${cardsHTML}</div>
-        </div>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:16px;align-items:start;">
+      <div id="portfolioArtifactCards">
+        ${artifactCardsHTML}
       </div>
-      <div>
+
+      <div style="position:sticky;top:72px;">
+        <div class="dashboard-card" style="margin-bottom:14px;">
+          <div class="dashboard-card-header">
+            <div class="dashboard-card-title">Export Your Portfolio</div>
+          </div>
+          <div style="font-size:13px;color:var(--text-med);line-height:1.65;margin-bottom:14px;">
+            Downloads a beautifully formatted HTML file to your computer — all your responses, prompts, and context in one document. Open it in any browser, print it as a PDF, or keep it as a personal record.
+          </div>
+          <div style="font-size:12px;color:var(--text-lt);margin-bottom:14px;line-height:1.5;">
+            <strong style="color:var(--text-med);">Important:</strong> This file is yours alone — it is never sent anywhere. Export as often as you like; each export reflects your latest writing.
+          </div>
+          <button class="export-btn" onclick="exportPortfolio()">
+            <span class="export-btn-icon">↓</span>
+            Download My Portfolio
+          </button>
+        </div>
+
+        <div class="dashboard-card" style="margin-bottom:14px;border:1.5px solid #E8E2D8;">
+          <div class="dashboard-card-header">
+            <div class="dashboard-card-title">Share with Facilitators</div>
+          </div>
+          <div style="font-size:13px;color:var(--text-med);line-height:1.65;margin-bottom:12px;">
+            Optionally send your portfolio to the BCTR facilitation team. This is entirely your choice — your responses are private unless you share them here.
+          </div>
+          <div style="font-size:12px;color:var(--text-lt);line-height:1.55;margin-bottom:14px;padding:10px 12px;background:var(--gray-lt);border-radius:6px;">
+            Sharing sends your name and written responses to a secure BCTR spreadsheet. It does not share your progress checkboxes or any other activity. You can share more than once — each submission overwrites your previous one.
+          </div>
+          <button class="export-btn" onclick="sharePortfolio()" id="shareBtn"
+            style="background:var(--gray-green);margin-top:0;">
+            <span class="export-btn-icon">↑</span>
+            Share with BCTR Team
+          </button>
+          <div id="shareStatus" style="margin-top:10px;font-size:12px;color:var(--text-lt);text-align:center;min-height:16px;line-height:1.5;"></div>
+        </div>
+
         <div class="dashboard-card">
           <div class="dashboard-card-header">
-            <div class="dashboard-card-title">What Is This?</div>
-          </div>
-          <div style="font-size:13px;color:var(--text-med);line-height:1.7;">
-            Your portfolio is a living record of your CTRSI experience. Each artifact captures something specific: a position, a plan, a reflection, a commitment.<br><br>
-            Together they tell the story of where you started, what you learned, and where you're headed in translational research.<br><br>
-            Use the <strong>View Prompt</strong> button to see the writing prompt for each artifact. Submit links will be activated as sessions are confirmed.
-          </div>
-        </div>
-        <div class="dashboard-card" style="margin-top:14px;">
-          <div class="dashboard-card-header">
             <div class="dashboard-card-title">Synthesis Questions</div>
-            <div class="dashboard-card-note">For the full arc</div>
           </div>
           <div style="font-size:13px;color:var(--text-med);line-height:1.65;">
-            <div style="padding:9px 0;border-bottom:1px solid var(--gray-lt);">What pattern do you see across your artifacts — what idea or commitment shows up again and again?</div>
-            <div style="padding:9px 0;border-bottom:1px solid var(--gray-lt);">Which artifact surprised you the most in what you wrote — and why?</div>
-            <div style="padding:9px 0;border-bottom:1px solid var(--gray-lt);">Which artifact represents the biggest shift from where you started?</div>
-            <div style="padding:9px 0;">If you shared this portfolio with a community partner, what would you want them to notice?</div>
+            <div style="padding:8px 0;border-bottom:1px solid var(--gray-lt);">What pattern do you see across your artifacts — what idea or commitment shows up again and again?</div>
+            <div style="padding:8px 0;border-bottom:1px solid var(--gray-lt);">Which artifact surprised you the most in what you wrote — and why?</div>
+            <div style="padding:8px 0;border-bottom:1px solid var(--gray-lt);">Which artifact represents the biggest shift from where you started?</div>
+            <div style="padding:8px 0;">If you shared this portfolio with a community partner, what would you want them to notice?</div>
           </div>
         </div>
       </div>
