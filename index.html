@@ -2815,25 +2815,6 @@ function buildModulePanels() {
       </div>
     `).join('') : '';
 
-    // ── Submit / repository links
-    const submitHTML = (mod.submitLinks || []).length ? `
-      <div class="resource-section" style="background:var(--gray-lt);border-color:var(--border);">
-        <div class="resource-section-header">
-          <div class="resource-section-title">Submit & Share</div>
-          <div class="resource-section-note">Portfolio contribution & shared resources</div>
-        </div>
-        ${(mod.submitLinks || []).map(s => `
-          <div class="resource-item">
-            <div class="resource-dot">↑</div>
-            <div class="resource-info-wrap">
-              <div class="resource-title">${escapeHTML(s.title)}</div>
-            </div>
-            ${s.url ? `<a class="resource-action" href="${escapeHTML(s.url)}" target="_blank" rel="noopener">Open</a>` : '<span class="resource-action pending">Pending</span>'}
-          </div>
-        `).join('')}
-      </div>
-    ` : '';
-
     // ── Portfolio artifact for this module
     const artifact = PORTFOLIO_ARTIFACTS.find(a => a.moduleId === mod.id);
     const savedText = getArtifactText(mod.id);
@@ -2964,10 +2945,8 @@ function buildModulePanels() {
         </div>
         ` : ''}
 
-        ${submitHTML}
-
         ${hasAfterTask ? `
-        <div class="section-hd" style="margin-top:${resourcesHTML || submitHTML ? '4px' : '20px'};">After This Session</div>
+        <div class="section-hd" style="margin-top:${resourcesHTML ? '4px' : '20px'};">After This Session</div>
         <div class="phase-card">
           <div class="phase-card-header">
             <div class="phase-icon" style="background:${topic.color}22;color:${topic.color}">→</div>
