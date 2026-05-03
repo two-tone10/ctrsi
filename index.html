@@ -437,6 +437,18 @@ body {
   max-width: 560px;
 }
 
+.dashboard-welcome {
+  font-size: 13px;
+  color: rgba(255,255,255,0.68);
+  line-height: 1.55;
+  margin: -2px 0 10px;
+}
+
+.dashboard-welcome strong {
+  color: var(--white);
+  font-weight: 700;
+}
+
 .dashboard-meter-card {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.09);
@@ -2489,6 +2501,7 @@ const MODULES = [
 ];
 
 const STORAGE_KEY = 'ctrsi2026Progress:v1';
+const ATTENDEE_NAME_KEY = 'ctrsi2026AttendeeName:v1';
 let progressData = {};
 
 function loadProgress() {
@@ -2500,6 +2513,33 @@ function loadProgress() {
 
 function saveProgress() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData)); } catch(e) {}
+}
+
+function loadAttendeeName() {
+  try {
+    attendeeName = localStorage.getItem(ATTENDEE_NAME_KEY) || '';
+  } catch(e) {
+    attendeeName = '';
+  }
+  updateAttendeeGreeting();
+}
+
+function saveAttendeeName(name) {
+  attendeeName = name;
+  try { localStorage.setItem(ATTENDEE_NAME_KEY, name); } catch(e) {}
+  updateAttendeeGreeting();
+}
+
+function attendeeFirstName() {
+  return (attendeeName || '').trim().split(/\s+/)[0] || '';
+}
+
+function updateAttendeeGreeting() {
+  const greeting = document.getElementById('attendee-greeting');
+  if (greeting) {
+    const first = attendeeFirstName();
+    greeting.textContent = first ? 'Welcome, ' + first : '';
+  }
 }
 
 function getModuleProgress(moduleId) {
@@ -2656,6 +2696,10 @@ function buildNav() {
 function buildDashboard() {
   const panel = document.getElementById('dashboardPanel');
   const { done, total, pct } = overallProgress();
+  const firstName = attendeeFirstName();
+  const welcomeHTML = firstName ? `
+    <div class="dashboard-welcome">Welcome back, <strong>${escapeHTML(firstName)}</strong>. Your CTRSI workspace is ready.</div>
+  ` : '';
 
   // Group modules by day
   const byDay = {};
@@ -2690,6 +2734,7 @@ function buildDashboard() {
       <div>
         <div class="dashboard-eyebrow">BCTR · Cornell University · June 2026</div>
         <div class="dashboard-title">Cornell Translational Research<br>Summer Institute</div>
+        ${welcomeHTML}
         <div class="dashboard-subtitle">Track your progress through the institute modules — engage with learning goals, readings, and reflection prompts as you move through the program.</div>
       </div>
       <div class="dashboard-meter-card">
@@ -3810,7 +3855,12 @@ function gateCheckPass() {
   if (normalized === expected) {
     document.getElementById('gate-step-pass').style.display = 'none';
     document.getElementById('gate-step-name').style.display = 'block';
-    setTimeout(() => document.getElementById('gate-name-input').focus(), 50);
+    const nameInput = document.getElementById('gate-name-input');
+    if (nameInput && attendeeName && !nameInput.value.trim()) nameInput.value = attendeeName;
+    setTimeout(() => {
+      const input = document.getElementById('gate-name-input');
+      if (input) input.focus();
+    }, 50);
   } else {
     document.getElementById('gate-pass-error').textContent = 'Incorrect access code. Please try again.';
     document.getElementById('gate-pass-input').value = '';
@@ -3823,9 +3873,9 @@ function gateCheckName() {
     document.getElementById('gate-name-error').textContent = 'Please enter your full name.';
     return;
   }
-  attendeeName = val;
-  const greeting = document.getElementById('attendee-greeting');
-  if (greeting) greeting.textContent = 'Welcome, ' + attendeeName.split(' ')[0];
+  saveAttendeeName(val);
+  buildDashboard();
+  buildPortfolio();
   const overlay = document.getElementById('gate-overlay');
   overlay.classList.add('fade-out');
   setTimeout(() => {
@@ -3838,6 +3888,7 @@ function gateCheckName() {
 // INIT
 // ═══════════════════════════════════════════════════════
 
+loadAttendeeName();
 loadProgress();
 buildNav();
 buildModulePanels();
