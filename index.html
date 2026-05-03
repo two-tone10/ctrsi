@@ -1751,7 +1751,7 @@ body {
 .gate-input::placeholder { color: rgba(255,255,255,0.18); }
 
 .gate-input-wrap { position: relative; }
-.gate-input-wrap .gate-input { padding-right: 76px; }
+.gate-input-wrap .gate-input { padding-right: 52px; }
 
 .gate-pass-toggle {
   position: absolute;
@@ -1761,12 +1761,24 @@ body {
   background: rgba(255,255,255,0.06);
   color: rgba(255,255,255,0.65);
   border-radius: 6px;
-  padding: 7px 9px;
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 11px; font-weight: 700;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   cursor: pointer;
 }
 .gate-pass-toggle:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+.gate-pass-toggle svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 .gate-btn {
   width: 100%;
@@ -1847,7 +1859,13 @@ body {
                  placeholder="Enter your access code"
                  autocomplete="off"
                  onkeydown="if(event.key==='Enter')gateCheckPass()">
-          <button class="gate-pass-toggle" type="button" onclick="togglePassVisibility()">Show</button>
+          <button class="gate-pass-toggle" type="button" onclick="togglePassVisibility()"
+                  aria-label="Show access code" aria-pressed="false" title="Show access code">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
         </div>
       </div>
       <div id="gate-pass-error" class="gate-error"></div>
@@ -3627,6 +3645,8 @@ async function sharePortfolio() {
     status.style.color = '#B85050';
   }
 }
+
+function buildPortfolio() {
   const panel = document.getElementById('portfolioPanel');
   const complete = PORTFOLIO_ARTIFACTS.filter(a => getArtifactText(a.moduleId).trim()).length;
   const total    = PORTFOLIO_ARTIFACTS.length;
@@ -3765,13 +3785,22 @@ function togglePassVisibility() {
   const toggle = document.querySelector('.gate-pass-toggle');
   const showing = input.type === 'text';
   input.type = showing ? 'password' : 'text';
-  if (toggle) toggle.textContent = showing ? 'Show' : 'Hide';
+  if (toggle) {
+    toggle.setAttribute('aria-label', showing ? 'Show access code' : 'Hide access code');
+    toggle.setAttribute('aria-pressed', String(!showing));
+    toggle.setAttribute('title', showing ? 'Show access code' : 'Hide access code');
+    toggle.innerHTML = showing
+      ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>'
+      : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.9 4.2A10.5 10.5 0 0 1 12 4c6.5 0 10 8 10 8a18.4 18.4 0 0 1-4.1 5.2"></path><path d="M14.1 14.1A3 3 0 0 1 9.9 9.9"></path><path d="M2 2l20 20"></path><path d="M6.6 6.6C3.8 8.5 2 12 2 12s3.5 8 10 8a10.5 10.5 0 0 0 4.3-.9"></path></svg>';
+  }
   input.focus();
 }
 
 function gateCheckPass() {
   const val = document.getElementById('gate-pass-input').value.trim();
-  if (val === PASSCODE) {
+  const normalized = val.toLowerCase().replace(/[\s_-]+/g, '');
+  const expected = PASSCODE.toLowerCase().replace(/[\s_-]+/g, '');
+  if (normalized === expected) {
     document.getElementById('gate-step-pass').style.display = 'none';
     document.getElementById('gate-step-name').style.display = 'block';
     setTimeout(() => document.getElementById('gate-name-input').focus(), 50);
