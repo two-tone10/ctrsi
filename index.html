@@ -4,46 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CTRSI 2026 · Attendee Progress Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --red:        #B81C2E;
-  --red-dk:     #8C1221;
-  --red-lt:     #F9E8EA;
-  --charcoal:   #2B2B2B;
-  --charcoal-dk:#1A1A1A;
-  --gray-dark:  #444444;
-  --gray-mid:   #7A7A7A;
-  --gray-lt:    #F2F2F0;
-  --gray-bd:    #E0DFDC;
-  --gray-green: #5C6B5A;
-  --gray-green-lt: #E8EDE7;
-  --yellow:     #E8B930;
-  --yellow-lt:  #FDF6E0;
+  /* ── Warm Academic palette ── */
+  --red:        #7A2840;   /* deep burgundy — primary action color */
+  --red-dk:     #5A1E30;
+  --red-lt:     #F5ECF0;
+  --charcoal:   #3B1F2B;   /* sidebar background */
+  --charcoal-dk:#2A1520;
+  --gray-dark:  #5A4A3A;
+  --gray-mid:   #8A7A6A;
+  --gray-lt:    #F0EBE4;
+  --gray-bd:    #E8E2D8;
+  --gray-green: #5A7A52;   /* completion / success color */
+  --gray-green-lt: #EAF0E8;
+  --yellow:     #C4954A;   /* amber-gold accent */
+  --yellow-lt:  #FDF3E6;
   --white:      #FFFFFF;
-  --off-white:  #F8F7F5;
-  --text:       #1A1A1A;
-  --text-med:   #444444;
-  --text-lt:    #7A7A7A;
-  --border:     #E0DFDC;
+  --off-white:  #FAF8F4;   /* warm cream background */
+  --text:       #2A1A12;
+  --text-med:   #5A4A3A;
+  --text-lt:    #8A7A6A;
+  --border:     #E8E2D8;
 
-  /* topic colors */
-  --t-foundations: #B81C2E;
-  --t-foundations-lt: #F9E8EA;
-  --t-relationships: #5C6B5A;
-  --t-relationships-lt: #E8EDE7;
-  --t-methods:   #2B5E8A;
+  /* topic colors — warm but distinct */
+  --t-foundations: #7A2840;
+  --t-foundations-lt: #F5ECF0;
+  --t-relationships: #5A7A52;
+  --t-relationships-lt: #EAF0E8;
+  --t-methods:   #2E5A7A;
   --t-methods-lt: #E5EFF6;
-  --t-planning:  #7A5230;
+  --t-planning:  #7A5A2E;
   --t-planning-lt: #F5EDE3;
-  --t-opening:   #2B2B2B;
-  --t-opening-lt: #EDEDEA;
+  --t-opening:   #3B1F2B;
+  --t-opening-lt: #F0ECEe;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   background: var(--off-white);
   color: var(--text);
   min-height: 100vh;
@@ -54,7 +55,7 @@ body {
 .sidebar {
   width: 240px;
   min-width: 240px;
-  background: var(--charcoal-dk);
+  background: linear-gradient(180deg, #3B1F2B 0%, #2A1520 100%);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -81,7 +82,7 @@ body {
 }
 
 .brand-name {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Libre Baskerville', serif;
   font-size: 13.5px;
   color: rgba(255,255,255,0.92);
   line-height: 1.35;
@@ -115,7 +116,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -299,8 +300,8 @@ body {
   top: 0;
   left: 240px;
   right: 0;
-  background: var(--charcoal);
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: #FAF8F4;
+  border-bottom: 1px solid #E8E2D8;
   z-index: 100;
   padding: 0 44px;
   height: 52px;
@@ -312,22 +313,22 @@ body {
 .topbar-left { display: flex; align-items: center; gap: 14px; }
 
 .topbar-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 15px;
-  font-weight: 400;
-  color: rgba(255,255,255,0.88);
+  font-family: 'Libre Baskerville', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #3B1F2B;
   letter-spacing: 0.01em;
 }
 
 .topbar-divider {
   width: 1px;
   height: 16px;
-  background: rgba(255,255,255,0.12);
+  background: #E8E2D8;
 }
 
 .topbar-session {
   font-size: 13px;
-  color: rgba(255,255,255,0.35);
+  color: #8A7A6A;
   font-style: italic;
 }
 
@@ -340,7 +341,7 @@ body {
   border: none;
   border-radius: 6px;
   font-size: 12px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-weight: 600;
   cursor: pointer;
   letter-spacing: 0.03em;
@@ -351,16 +352,16 @@ body {
 .btn-outline {
   padding: 6px 13px;
   background: none;
-  color: rgba(255,255,255,0.55);
-  border: 1.5px solid rgba(255,255,255,0.14);
+  color: #7A6A5A;
+  border: 1.5px solid #E8E2D8;
   border-radius: 6px;
   font-size: 12px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-weight: 600;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
 }
-.btn-outline:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.8); }
+.btn-outline:hover { border-color: #C4954A; color: #5A4A3A; }
 
 /* ─── MAIN ──────────────────────────────────────────── */
 .main {
@@ -390,7 +391,7 @@ body {
 
 /* ─── DASHBOARD ─────────────────────────────────────── */
 .dashboard-hero {
-  background: var(--charcoal);
+  background: linear-gradient(135deg, #3B1F2B 0%, #5A2C40 100%);
   border-radius: 10px;
   padding: 28px 30px;
   margin-bottom: 18px;
@@ -422,7 +423,7 @@ body {
 }
 
 .dashboard-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Libre Baskerville', serif;
   color: var(--white);
   font-size: 30px;
   line-height: 1.18;
@@ -448,7 +449,7 @@ body {
   font-weight: 700;
   color: var(--white);
   margin-bottom: 4px;
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Libre Baskerville', serif;
 }
 
 .dashboard-meter-label {
@@ -513,7 +514,7 @@ body {
 }
 
 .focus-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Libre Baskerville', serif;
   font-size: 23px;
   color: var(--charcoal);
   line-height: 1.25;
@@ -549,7 +550,7 @@ body {
 
 .status-not-started { background: #EDEDED; color: #6C6C6C; }
 .status-in-progress { background: var(--yellow-lt); color: #8C6B10; }
-.status-complete { background: var(--charcoal); color: var(--white); }
+.status-complete { background: var(--red); color: var(--white); }
 
 .module-status-grid {
   display: grid;
@@ -599,8 +600,8 @@ body {
   border: none;
   background: none;
   color: var(--red);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 700;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 600;
   font-size: 13px;
   cursor: pointer;
   padding: 0;
@@ -617,9 +618,9 @@ body {
   border: none;
   border-radius: 6px;
   padding: 9px 13px;
-  background: var(--charcoal);
+  background: var(--red);
   color: var(--white);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -641,7 +642,7 @@ body {
 .session-panel.active { display: block; }
 
 .session-header {
-  background: var(--charcoal);
+  background: linear-gradient(135deg, #3B1F2B 0%, #5A2C40 100%);
   border-radius: 10px;
   padding: 28px 30px 24px;
   margin-bottom: 18px;
@@ -686,7 +687,7 @@ body {
 }
 
 .session-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Libre Baskerville', serif;
   font-size: 30px;
   color: var(--white);
   line-height: 1.18;
@@ -805,13 +806,13 @@ body {
   border: none;
   border-radius: 6px;
   padding: 9px 18px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
 }
-.next-action-btn:hover { opacity: 0.85; }
+.next-action-btn:hover { background: var(--red-dk); }
 
 /* ─── TABS ───────────────────────────────────────────── */
 .tabs-bar {
@@ -831,7 +832,7 @@ body {
   border-radius: 6px;
   border: none;
   background: none;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-lt);
@@ -1230,7 +1231,7 @@ body {
   color: var(--charcoal);
   border-radius: 6px;
   padding: 6px 10px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 12px;
   font-weight: 700;
   text-decoration: none;
@@ -1241,6 +1242,221 @@ body {
 .resource-action:hover { border-color: var(--charcoal); }
 .resource-action.pending { color: var(--text-lt); cursor: default; }
 .resource-action.pending:hover { border-color: var(--border); }
+
+.resource-chip {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-lt);
+  background: var(--gray-lt);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+/* ─── PORTFOLIO ──────────────────────────────────────── */
+.portfolio-hero {
+  background: linear-gradient(135deg, #3B1F2B 0%, #5A2C40 100%);
+  border-radius: 10px;
+  padding: 28px 30px 24px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.portfolio-hero::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(92,107,90,0.3) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.portfolio-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--yellow);
+  margin-bottom: 8px;
+}
+
+.portfolio-heading {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 30px; color: var(--white);
+  line-height: 1.18; margin-bottom: 8px;
+}
+
+.portfolio-intro {
+  font-size: 13.5px; color: rgba(255,255,255,0.5);
+  line-height: 1.65; max-width: 580px;
+}
+
+.portfolio-meter-card {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 8px; padding: 18px;
+  min-width: 160px;
+}
+
+.portfolio-meter-count {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 34px; font-weight: 400;
+  color: var(--white); margin-bottom: 4px;
+}
+
+.portfolio-meter-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35); margin-bottom: 12px;
+}
+
+.portfolio-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  gap: 24px; align-items: center;
+}
+
+.artifact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.artifact-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.artifact-card.active {
+  border-color: var(--gray-green);
+  box-shadow: 0 4px 16px rgba(92,107,90,0.15);
+}
+
+.artifact-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.artifact-module-tag {
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-lt);
+}
+
+.artifact-status {
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.artifact-not-started { background: #EDEDED; color: #6C6C6C; }
+.artifact-in-progress { background: var(--yellow-lt); color: #8C6B10; }
+.artifact-complete { background: var(--gray-green); color: var(--white); }
+
+.artifact-title {
+  font-size: 14px; font-weight: 700;
+  color: var(--charcoal); line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+.artifact-purpose {
+  font-size: 12.5px; color: var(--text-med);
+  line-height: 1.55; margin-bottom: 10px;
+  flex: 1;
+}
+
+.artifact-meta {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-bottom: 10px;
+}
+
+.artifact-chip {
+  border-radius: 999px;
+  background: var(--gray-lt);
+  color: var(--text-med);
+  padding: 3px 8px;
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+.artifact-actions {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-top: auto; padding-top: 10px;
+  border-top: 1px solid var(--gray-lt);
+}
+
+.artifact-action {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--charcoal);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  display: inline-block;
+}
+.artifact-action:hover { border-color: var(--charcoal); }
+.artifact-action.pending { color: var(--text-lt); cursor: default; }
+.artifact-action.pending:hover { border-color: var(--border); }
+
+/* Module-level portfolio section */
+.module-portfolio-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
+}
+
+.module-portfolio-label {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-lt); margin-bottom: 10px;
+}
+
+.module-portfolio-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 20px; color: var(--charcoal);
+  line-height: 1.25; margin-bottom: 6px;
+}
+
+.module-portfolio-purpose {
+  font-size: 13.5px; color: var(--text-med);
+  line-height: 1.65; margin-bottom: 14px;
+}
+
+.module-portfolio-prompt-label {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gray-green); margin-bottom: 6px;
+  margin-top: 16px;
+}
+
+.module-portfolio-prompt {
+  font-size: 13.5px; color: var(--text-med);
+  line-height: 1.65;
+  font-style: italic;
+  border-left: 3px solid var(--gray-green);
+  padding-left: 14px;
+  margin-bottom: 14px;
+}
+
+.module-portfolio-submit-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding-top: 14px; border-top: 1px solid var(--gray-lt);
+  margin-top: 4px;
+}
 
 /* ─── INQUIRY BLOCK ──────────────────────────────────── */
 .inquiry-block {
@@ -1261,7 +1477,7 @@ body {
 }
 
 .inquiry-question {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Libre Baskerville', serif;
   font-style: italic;
   font-size: 18px;
   color: var(--charcoal);
@@ -1311,7 +1527,7 @@ body {
 /* ─── ACCESS GATE OVERLAY ────────────────────────────── */
 #gate-overlay {
   position: fixed; inset: 0; z-index: 9999;
-  background: var(--charcoal-dk);
+  background: linear-gradient(160deg, #2A1520 0%, #3B1F2B 100%);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: 0;
@@ -1331,7 +1547,7 @@ body {
 }
 
 .gate-title {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Libre Baskerville', serif;
   font-size: 26px;
   color: #fff; line-height: 1.3;
   margin-bottom: 6px;
@@ -1370,7 +1586,7 @@ body {
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: 8px;
   padding: 14px 16px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 15px; color: #fff;
   outline: none;
   transition: border-color 0.2s;
@@ -1390,7 +1606,7 @@ body {
   color: rgba(255,255,255,0.65);
   border-radius: 6px;
   padding: 7px 9px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 11px; font-weight: 700;
   cursor: pointer;
 }
@@ -1401,7 +1617,7 @@ body {
   background: var(--red);
   border: none; border-radius: 8px;
   padding: 14px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 14px; font-weight: 700;
   letter-spacing: 0.06em; text-transform: uppercase;
   color: #fff; cursor: pointer;
@@ -1513,6 +1729,10 @@ body {
       <span class="dashboard-icon"></span>
       <span>Overview</span>
     </button>
+    <button class="dashboard-btn" id="portfolioNavBtn" onclick="showPortfolio()">
+      <span class="dashboard-icon" style="background:var(--gray-green)"></span>
+      <span>My Portfolio</span>
+    </button>
   </div>
 
   <div class="sidebar-section-label">Program Modules</div>
@@ -1550,7 +1770,7 @@ body {
     <div class="topbar-session" id="topbarSession">Select a module →</div>
   </div>
   <div class="topbar-actions">
-    <div id="attendee-greeting" style="font-size:12px;font-weight:500;color:rgba(255,255,255,0.4);letter-spacing:0.04em;margin-right:8px;"></div>
+    <div id="attendee-greeting" style="font-size:12px;font-weight:500;color:#8A7A6A;letter-spacing:0.04em;margin-right:8px;"></div>
     <button class="btn-outline" onclick="window.print()">⎙ Print</button>
   </div>
 </header>
@@ -1561,6 +1781,9 @@ body {
 <main class="main">
   <div class="content-wrap" id="contentWrap">
     <section class="dashboard-panel active" id="dashboardPanel" aria-label="Institute overview dashboard">
+      <!-- rendered by JS -->
+    </section>
+    <section class="dashboard-panel" id="portfolioPanel" aria-label="My portfolio">
       <!-- rendered by JS -->
     </section>
     <div id="sessionPanels">
@@ -1574,25 +1797,118 @@ body {
 // DATA
 // ═══════════════════════════════════════════════════════
 
+// ── PORTFOLIO ARTIFACTS ──────────────────────────────
+// Each module contributes one artifact to the portfolio.
+// label: short name shown on the portfolio card
+// component: the category/type of artifact
+// purpose: why this matters for the attendee's overall learning
+// prompt: the specific writing/reflection task
+// submitLabel: label for the submission link (shown as pending until URL added)
+const PORTFOLIO_ARTIFACTS = [
+  {
+    moduleId: 'opening-panel',
+    label: 'Community Partnership Landscape',
+    component: 'Stakeholder mapping',
+    purpose: 'Captures your initial read of who holds knowledge and influence in the community spaces relevant to your research.',
+    prompt: 'Name 3–5 stakeholders or organizations from your own context that belong in a panel like tonight\'s. For each, note: what kind of evidence do they need, and what kind of partnership would they respond to?',
+    submitLabel: 'Submit Stakeholder Map',
+  },
+  {
+    moduleId: 'welcome',
+    label: 'TR Entry Point Self-Assessment',
+    component: 'Positioning statement',
+    purpose: 'Establishes where you\'re starting from and what translational trajectory feels most natural for your current work.',
+    prompt: 'In 2–3 sentences: Where does your current scholarship sit in relation to translational research — and where do you want it to go by the end of this institute?',
+    submitLabel: 'Submit Self-Assessment',
+  },
+  {
+    moduleId: 'pathways',
+    label: 'Translational Continuum Map',
+    component: 'Research positioning',
+    purpose: 'Places your current work on the TR continuum and names the pathway you are most drawn to developing.',
+    prompt: 'Draw or describe where your current research sits on the translational continuum (Research→Practice, Practice→Research, or Co-Production). Identify one step you could take to move further along that pathway.',
+    submitLabel: 'Submit Continuum Map',
+  },
+  {
+    moduleId: 'partnerships',
+    label: 'Partner Sector Notes',
+    component: 'Partnership intelligence',
+    purpose: 'Translates the station session into actionable knowledge about your specific potential partners.',
+    prompt: 'Using your note-taking template: identify the 1–2 partner sectors most relevant to your work, and name one concrete thing you learned that you didn\'t know before this session.',
+    submitLabel: 'Submit Partner Notes',
+  },
+  {
+    moduleId: 'tr-panel',
+    label: 'Translational Research Reflection',
+    component: 'Peer learning',
+    purpose: 'Captures what real-world TR experience taught you that the literature alone couldn\'t.',
+    prompt: 'Name one thing a panelist shared — about partnerships, impact, or the realities of TR — that you want to carry into your own practice. What will you do differently because of it?',
+    submitLabel: 'Submit Panel Reflection',
+  },
+  {
+    moduleId: 'breakouts',
+    label: 'Breakout Learning Summary',
+    component: 'Specialized topic',
+    purpose: 'Documents what you learned in your chosen breakout and connects it back to your own TR goals.',
+    prompt: 'Name your breakout topic. What was the most practically applicable thing you learned? How would you explain this topic to a community partner with no academic background?',
+    submitLabel: 'Submit Breakout Summary',
+  },
+  {
+    moduleId: 'keynote',
+    label: 'Evidence Use Reflection',
+    component: 'Field perspective',
+    purpose: 'Connects a national-level perspective on evidence use to your own research agenda and aspirations.',
+    prompt: 'What from Gamoran\'s keynote challenged or expanded how you think about impact? Name one implication for the kind of work you want to do.',
+    submitLabel: 'Submit Keynote Reflection',
+  },
+  {
+    moduleId: 'funding-panel',
+    label: 'Funding Opportunity Scan',
+    component: 'Funding strategy',
+    purpose: 'Begins building your awareness of the funding landscape for the kind of TR you want to do.',
+    prompt: 'Identify 1–2 funding mechanisms from the panel that feel relevant to your current or planned work. For each: what would you need to do in the next 6–12 months to be competitive?',
+    submitLabel: 'Submit Funding Scan',
+  },
+  {
+    moduleId: 'tr-workshop',
+    label: 'TR Project Next Steps',
+    component: 'Project development',
+    purpose: 'Turns workshop feedback and reflection into a clear near-term action plan for your own work.',
+    prompt: 'Name your 1–2 most concrete next steps for your translational research project. What will you do, by when, and how will you know it\'s done?',
+    submitLabel: 'Submit Project Plan',
+  },
+  {
+    moduleId: 'career',
+    label: 'TR Career Integration Plan',
+    component: 'Career strategy',
+    purpose: 'Connects translational research to the specific structures and demands of your own career path.',
+    prompt: 'Name one concrete thing you will do in the next 90 days to integrate TR more intentionally into your work. Be specific: what is it, when will you do it, and who — if anyone — will you involve?',
+    submitLabel: 'Submit Career Plan',
+  },
+  {
+    moduleId: 'closing',
+    label: 'CTRSI Synthesis & Commitment',
+    component: 'Institute synthesis',
+    purpose: 'Consolidates your two days of learning into a coherent picture of what you are leaving with and what you will do next.',
+    prompt: 'Three things: (1) The most important thing you are leaving CTRSI with. (2) One action you will take in the next 30 days. (3) One person you will stay in contact with — and how.',
+    submitLabel: 'Submit Final Synthesis',
+  },
+];
+
 const TOPICS = {
-  opening:       { color: '#2B2B2B',  lt: '#EDEDEA', label: 'Opening Evening' },
-  foundations:   { color: '#B81C2E',  lt: '#F9E8EA', label: 'Foundations of TR' },
-  relationships: { color: '#5C6B5A',  lt: '#E8EDE7', label: 'Building Relationships' },
-  methods:       { color: '#2B5E8A',  lt: '#E5EFF6', label: 'Practical Methods' },
-  planning:      { color: '#7A5230',  lt: '#F5EDE3', label: 'Project Planning' },
+  opening:       { color: '#3B1F2B',  lt: '#F0ECEe', label: 'Opening Evening' },
+  foundations:   { color: '#7A2840',  lt: '#F5ECF0', label: 'Foundations of TR' },
+  relationships: { color: '#5A7A52',  lt: '#EAF0E8', label: 'Building Relationships' },
+  methods:       { color: '#2E5A7A',  lt: '#E5EFF6', label: 'Practical Methods' },
+  planning:      { color: '#7A5A2E',  lt: '#F5EDE3', label: 'Project Planning' },
 };
 
 const MODULES = [
-  // ─── OPENING EVENING, SUNDAY JUNE 28 ───
   {
-    id: 'opening-panel',
-    day: 'Sunday, June 28',
-    dayShort: 'Sun June 28',
-    topic: 'opening',
-    title: 'Research in Community Panel',
-    time: 'Opening Evening',
-    speakers: 'Community Panelists',
-    description: 'A group of panelists share perspectives of stakeholders who use research evidence or would like to. Questions invite partnership stories from community members\' perspectives and surface the type of research evidence that speakers find useful. Insight into local processes are likely transferrable to other contexts.',
+    id: 'opening-panel', day: 'Sunday, June 28', dayShort: 'Sun June 28',
+    topic: 'opening', title: 'Research in Community Panel',
+    time: 'Opening Evening', speakers: 'Community Panelists',
+    description: 'A group of panelists share perspectives of stakeholders who use research evidence or would like to. Questions invite partnership stories from community members\' perspectives and surface the type of research evidence that speakers find useful.',
     inquiry: 'What does it look like when research actually serves communities — and when it doesn\'t?',
     goals: [
       'Build excitement for the theme of relationships in translational research',
@@ -1606,27 +1922,29 @@ const MODULES = [
       { text: 'Informal networking and discussion', time: 'Open' },
     ],
     readings: [
-      'CTRSI Program Overview and Institute Goals (distributed in advance)',
-      'Brief bios and organization summaries for panel participants',
+      { title: 'CTRSI Program Overview and Institute Goals', type: 'Document', url: '' },
+      { title: 'Panelist bios and organization summaries', type: 'Document', url: '' },
+    ],
+    resources: [
+      { title: 'Evening session slide deck', type: 'Slides', url: '' },
+      { title: 'Stakeholder mapping worksheet', type: 'Worksheet', url: '' },
+    ],
+    submitLinks: [
+      { title: 'Submit: Community Partnership Landscape', url: '' },
+      { title: 'Shared resource folder — Opening Evening', url: '' },
     ],
     reflectPrompts: [
-      'Which panelist perspective surprised you most — and why?',
-      'What kind of research evidence did panelists describe as most useful? How does that compare to what you produce?',
-      'Who would the analogous community voices be in your own context?',
+      'Which panelist perspective had the greatest impact on how you think about research-community relationships — and why?',
+      'What kind of research evidence did panelists describe as most useful? How does that compare to what you currently produce?',
+      'What did you hear tonight that you want to bring into a conversation with a community partner in the next six months?',
     ],
     after: 'Jot down 2–3 names or organizations from your own context that you\'d want in a similar panel. Bring those to Day 1.',
   },
-
-  // ─── DAY 1: MONDAY JUNE 29 ───
   {
-    id: 'welcome',
-    day: 'Monday, June 29',
-    dayShort: 'Mon June 29',
-    topic: 'foundations',
-    title: 'Welcome & Orienting Session',
-    time: '9:00–10:00 AM',
-    speakers: 'Tony, Kristen, Elizabeth',
-    description: 'An opening that frames who we are, what translational research means, and what the CTRSI is here to do. Tony provides an overview of the BCTR and defines translational research — emphasizing multiple entry points rather than strict inclusion/exclusion criteria. Elizabeth leads a connection opportunity to learn who is in the room and map shared interests and expertise.',
+    id: 'welcome', day: 'Monday, June 29', dayShort: 'Mon June 29',
+    topic: 'foundations', title: 'Welcome & Orienting Session',
+    time: '9:00–10:00 AM', speakers: 'Tony, Kristen, Elizabeth',
+    description: 'An opening that frames who we are, what translational research means, and what the CTRSI is here to do. Tony provides an overview of the BCTR and defines translational research — emphasizing multiple entry points. Elizabeth leads a connection opportunity to learn who is in the room.',
     inquiry: 'What do I mean when I say "translational research" — and how does this institute fit where I\'m headed?',
     goals: [
       'Understand the core definition and scope of translational research as used at BCTR',
@@ -1640,97 +1958,102 @@ const MODULES = [
       { text: 'Elizabeth: Connection activity — learn who is in the room and map shared interests and expertise', time: '30 min' },
     ],
     readings: [
-      'CTRSI Program Schedule and Goals (distributed in advance)',
+      { title: 'CTRSI Program Schedule and Goals', type: 'Document', url: '' },
+    ],
+    resources: [
+      { title: 'Welcome session slide deck', type: 'Slides', url: '' },
+      { title: 'Connection activity worksheet', type: 'Worksheet', url: '' },
+    ],
+    submitLinks: [
+      { title: 'Submit: TR Entry Point Self-Assessment', url: '' },
     ],
     reflectPrompts: [
-      'Before this session: Where would you say your current work sits in relation to translational research?',
-      'After the definition was presented: Did anything shift in how you think about your work\'s translational potential?',
-      'Whose expertise in the room do you want to connect with more by end of the institute?',
+      'After hearing the BCTR framing: where does your current work sit in relation to translational research — closer to the center or the edges of the definition?',
+      'What shifted (if anything) in how you think about your own work\'s translational potential?',
+      'Whose expertise in the room are you most curious to learn more about — and what specific overlap do you see with your own work?',
     ],
     after: 'No formal task — come energized for the full day ahead.',
   },
-
   {
-    id: 'pathways',
-    day: 'Monday, June 29',
-    dayShort: 'Mon June 29',
-    topic: 'foundations',
-    title: 'Pathways in Translational Research',
-    time: '10:00–11:00 AM',
-    speakers: 'Elizabeth & Kristen',
-    description: 'Translational research is most often iterative, but it helps to think about how to move from research to practice and practice to research. This session covers the Research to Practice pathway (T0–T4 model), Practice to Research (existing practice, program evaluation, theory of change), and Co-Production approaches including Research-Practice Partnerships (RPPs). Participants map where their current work fits and explore the challenges of research-informed knowledge mobilization.',
+    id: 'pathways', day: 'Monday, June 29', dayShort: 'Mon June 29',
+    topic: 'foundations', title: 'Pathways in Translational Research',
+    time: '10:00–11:00 AM', speakers: 'Elizabeth & Kristen',
+    description: 'Translational research is most often iterative, but it helps to think about how to move from research to practice and practice to research. This session covers the Research to Practice pathway (T0–T4), Practice to Research, and Co-Production approaches including RPPs.',
     inquiry: 'Where does my work currently sit in the translational continuum — and where do I want it to go?',
     goals: [
-      'Understand the T0–T4 model for moving research to practice, with emphasis on intervention design and evaluation',
+      'Understand the T0–T4 model for moving research to practice',
       'Understand the Practice to Research pathway, including program evaluation and theory of change',
       'Distinguish Research-Practice Partnerships (RPPs) from other types of community partnerships',
       'Map your own current work onto one or more of these translational models',
     ],
     activities: [
-      { text: 'Presentation: Research to Practice — T0 to T4 model with emphasis on intervention design and wide dissemination', time: '15 min' },
-      { text: 'Presentation: Practice to Research — program evaluation, theory of change, and existing practice as a starting point', time: '15 min' },
-      { text: 'Presentation: Co-Production and RPPs — what distinguishes a research-practice partnership from other collaborations', time: '10 min' },
-      { text: 'Self-mapping activity: Where does your current work fit? Do you see pathways for TR in your own scholarship?', time: '20 min' },
+      { text: 'Presentation: Research to Practice — T0 to T4 model', time: '15 min' },
+      { text: 'Presentation: Practice to Research — program evaluation and theory of change', time: '15 min' },
+      { text: 'Presentation: Co-Production and RPPs', time: '10 min' },
+      { text: 'Self-mapping activity: Where does your current work fit?', time: '20 min' },
     ],
     readings: [
-      'Knapp, et al. (2019). Placing transdisciplinarity in context: A review of approaches to connect scholars, society and action. Sustainability.',
-      'Ward, V. (2019). Why, whose, what and how? A framework for knowledge mobilisers. Evidence & Policy.',
-      'Facing the challenges of research-informed knowledge mobilization (link provided)',
+      { title: 'Knapp et al. (2019). Placing transdisciplinarity in context. Sustainability.', type: 'Article', url: '' },
+      { title: 'Ward, V. (2019). Why, whose, what and how? Evidence & Policy.', type: 'Article', url: '' },
+      { title: 'Facing the challenges of research-informed knowledge mobilization', type: 'Article', url: 'https://onlinelibrary.wiley.com/doi/abs/10.1111/padm.12365' },
+    ],
+    resources: [
+      { title: 'Pathways session slide deck', type: 'Slides', url: '' },
+      { title: 'Translational continuum self-mapping worksheet', type: 'Worksheet', url: '' },
+      { title: 'WT Grant Foundation: RPP resources', type: 'Link', url: 'https://rpp.wtgrantfoundation.org/about/' },
+    ],
+    submitLinks: [
+      { title: 'Submit: Translational Continuum Map', url: '' },
     ],
     reflectPrompts: [
-      'Which pathway — Research to Practice, Practice to Research, or Co-Production — feels most resonant with your current work?',
-      'Where do you see the most untapped translational potential in your scholarship?',
-      'What would it take to move your work one step further along the translational continuum?',
+      'Having mapped your work: which pathway feels most like where you are right now — and does that feel like a fit or a mismatch?',
+      'Where do you see the most untapped translational potential in your scholarship — and what has held you back from pursuing it?',
+      'What would it take to move your work one concrete step further along the translational continuum in the next year?',
     ],
     after: 'No formal task — bring your self-mapping insights to the partnership session.',
   },
-
   {
-    id: 'partnerships',
-    day: 'Monday, June 29',
-    dayShort: 'Mon June 29',
-    topic: 'relationships',
-    title: 'Partnerships in Translational Research',
-    time: '11:00 AM–12:00 PM',
-    speakers: 'Rotating Stations: Elected Officials, Dept. of Health, 4H/Extension, Community Orgs, Schools',
-    description: 'A station-rotation session providing participants with the basic information they need to understand the professional and institutional norms for intended partners. Five stations each host a practitioner who shares what researchers need to know about partnering with their sector. Note-taking templates are provided. Each station rotates every 20 minutes.',
+    id: 'partnerships', day: 'Monday, June 29', dayShort: 'Mon June 29',
+    topic: 'relationships', title: 'Partnerships in Translational Research',
+    time: '11:00 AM–12:00 PM', speakers: 'Rotating Stations: Elected Officials, Dept. of Health, 4H/Extension, Community Orgs, Schools',
+    description: 'A station-rotation session providing participants with the basic information they need to understand the professional and institutional norms for intended partners. Five stations each host a practitioner who shares what researchers need to know about partnering with their sector.',
     inquiry: 'What do I need to know — and how do I need to show up — to build meaningful partnerships in each sector?',
     goals: [
       'Understand the professional norms, timelines, and communication preferences of five key partner types',
       'Identify sector-specific considerations that researchers often overlook',
       'Begin identifying who the analogous partners would be in your own institutional context',
-      'Appreciate the importance of building reciprocal partnerships and ethical considerations of inclusive knowledge mobilization',
+      'Appreciate the importance of building reciprocal partnerships and ethical considerations',
     ],
     activities: [
-      { text: 'Brief framing talk: Why getting to know your audience is foundational to partnership (Elizabeth or Kristen)', time: '10 min' },
-      { text: 'Station 1: Elected officials — professional norms, timelines, and communication preferences', time: '20 min' },
-      { text: 'Station 2: Agency staff (Dept. of Health or similar) — institutional rhythms and evidence preferences', time: '20 min' },
-      { text: 'Station 3: Extension or 4H staff — community-embedded expertise and research partnership norms', time: '20 min' },
-      { text: 'Station 4: Schools or educators — academic year constraints, trust, and what useful evidence looks like', time: '20 min' },
-      { text: 'Station 5: Community nonprofits / youth-serving organizations — relational expectations and co-ownership', time: '20 min' },
+      { text: 'Brief framing talk: Why getting to know your audience is foundational to partnership', time: '10 min' },
+      { text: 'Station rotation: Elected officials, Agency staff, Extension/4H, Schools, Community nonprofits', time: '20 min each' },
       { text: 'Closing: Jot down stakeholders in your own context — revisit tomorrow', time: '5 min' },
     ],
     readings: [
-      'Inclusive knowledge mobilization: tips for finding people and expertise to meet policy evidence needs (link provided)',
-      'Evaluating partnerships for improvement and impact — WT Grant Foundation resources (link provided)',
+      { title: 'Inclusive knowledge mobilization: tips for finding people and expertise', type: 'Article', url: 'https://upen.ac.uk/resources/inclusive-practice-in-knowledge-mobilisation-finding-people-and-expertise-to-meet-policy-evidence-needs/' },
+      { title: 'Evaluating partnerships for improvement and impact — WT Grant Foundation', type: 'Resource', url: 'https://rpp.wtgrantfoundation.org/topic/evaluating-partnerships-for-improvement-and-impact/' },
+    ],
+    resources: [
+      { title: 'Partner sector note-taking template', type: 'Worksheet', url: '' },
+      { title: 'Station presenter tip sheets (distributed at session)', type: 'Handout', url: '' },
+      { title: 'Inclusive knowledge mobilization practice guide', type: 'Article', url: 'https://journals.sagepub.com/doi/10.1177/10755470251344471' },
+    ],
+    submitLinks: [
+      { title: 'Submit: Partner Sector Notes', url: '' },
+      { title: 'Shared stakeholder mapping repository', url: '' },
     ],
     reflectPrompts: [
-      'Which sector\'s norms and timelines surprised you most?',
-      'Which partner type is most relevant to your current work — and what would you need to learn before reaching out?',
-      'What does "reciprocal partnership" mean in your field? What would you offer, and what would you genuinely learn?',
+      'Which sector\'s norms or timelines surprised you most — and what does that surprise reveal about your assumptions?',
+      'Which partner type is most relevant to your current work? What would you need to do before reaching out?',
+      'What does "reciprocal partnership" mean in your field — what would you offer, and what would you genuinely need to learn?',
     ],
     after: 'Use the note-taking template to capture 2–3 actionable insights per station. Bring it to Day 2.',
   },
-
   {
-    id: 'tr-panel',
-    day: 'Monday, June 29',
-    dayShort: 'Mon June 29',
-    topic: 'relationships',
-    title: 'Translational Research Panel',
-    time: '1:00–2:30 PM',
-    speakers: 'BCTR Colleagues: Karl, Martha, Neil, Angela (TBD)',
-    description: 'BCTR colleagues share real-world examples of translational research — the benefits, the challenges, and the honest realities of community partnership. The moderator leads Q&A after brief introductions. Questions focus on how partnerships form, what makes them meaningful, how community partners influence research direction, and what sustains them long-term.',
+    id: 'tr-panel', day: 'Monday, June 29', dayShort: 'Mon June 29',
+    topic: 'relationships', title: 'Translational Research Panel',
+    time: '1:00–2:30 PM', speakers: 'BCTR Colleagues: Karl, Martha, Neil, Angela (TBD)',
+    description: 'BCTR colleagues share real-world examples of translational research — the benefits, the challenges, and the honest realities of community partnership.',
     inquiry: 'What does translational research actually look like in practice — and what should I expect?',
     goals: [
       'Hear concrete examples of translational research from BCTR colleagues across different project types',
@@ -1741,67 +2064,69 @@ const MODULES = [
     activities: [
       { text: 'Moderator introduction of panel and framing', time: '5 min' },
       { text: 'Brief project introductions from each panelist', time: '20 min' },
-      { text: 'Moderated panel Q&A: How did your partnership form? What advice do you have for those starting out?', time: '30 min' },
-      { text: 'Q&A continued: How has a community partner influenced or changed your research? How do you define impact?', time: '20 min' },
-      { text: 'Q&A continued: What advice do you have for sustaining partnerships long-term?', time: '10 min' },
+      { text: 'Moderated panel Q&A across four core questions', time: '65 min' },
       { text: 'Open audience Q&A', time: '15 min' },
     ],
     readings: [],
+    resources: [
+      { title: 'TR panel speaker bios and project summaries', type: 'Document', url: '' },
+      { title: 'Panel observation worksheet (optional)', type: 'Worksheet', url: '' },
+    ],
+    submitLinks: [
+      { title: 'Submit: Translational Research Reflection', url: '' },
+    ],
     reflectPrompts: [
-      'Which panelist\'s experience most closely mirrors the translational work you aspire to do?',
-      'What was the most honest or unexpected thing a panelist shared about the challenges of partnership?',
-      'What question do you wish the panel had been asked?',
+      'Which panelist\'s experience most closely mirrors the translational work you aspire to do — and what specifically resonated?',
+      'What was the most honest or unexpected thing shared about the challenges of partnership — and how does it change your expectations?',
+      'What is one concrete thing a panelist does in their partnerships that you want to adopt in your own work?',
     ],
     after: 'No formal task — bring your reflections to the special topics breakouts.',
   },
-
   {
-    id: 'breakouts',
-    day: 'Monday, June 29',
-    dayShort: 'Mon June 29',
-    topic: 'methods',
-    title: 'Special Topics Breakouts',
-    time: '2:45–3:45 PM',
-    speakers: 'Breakout Facilitators (TBD)',
-    description: 'Attendees choose one in-depth breakout session for focused learning on a topic of their choice. Each 45-minute interactive session introduces a specialized topic, ties it to translational research, gives participants a chance to practice or interact, and provides resources for further learning. Topics include: YPAR/Participatory Methods, Technology & TR (AI in translational work), and the CITRA Research-to-Practice Consensus Model.',
+    id: 'breakouts', day: 'Monday, June 29', dayShort: 'Mon June 29',
+    topic: 'methods', title: 'Special Topics Breakouts',
+    time: '2:45–3:45 PM', speakers: 'Breakout Facilitators (TBD)',
+    description: 'Attendees choose one in-depth breakout session for focused learning on a topic of their choice. Options: YPAR/Participatory Methods, Technology & TR, or the CITRA Research-to-Practice Consensus Model.',
     inquiry: 'Which dimension of translational research practice do I most want to develop?',
     goals: [
       'Deepen knowledge in one specialized area of translational research practice',
       'Experience interactive, practice-oriented learning on your chosen topic',
-      'Connect your chosen topic to the broader TR frameworks introduced earlier in the day',
+      'Connect your chosen topic to the broader TR frameworks from earlier in the day',
       'Leave with resources to continue learning on your topic after the institute',
     ],
     activities: [
-      { text: 'Breakout Option A: YPAR / Participatory Methods — youth participatory action research and community-led inquiry', time: '45 min' },
-      { text: 'Breakout Option B: Technology & TR — AI in translational research, data infrastructure, and digital tools for community partnership', time: '45 min' },
-      { text: 'Breakout Option C: CITRA Research-to-Practice Consensus Model — structured approach to moving research into practice settings', time: '45 min' },
+      { text: 'Breakout Option A: YPAR / Participatory Methods', time: '45 min' },
+      { text: 'Breakout Option B: Technology & TR — AI and digital tools for community research', time: '45 min' },
+      { text: 'Breakout Option C: CITRA Research-to-Practice Consensus Model', time: '45 min' },
     ],
     readings: [
-      'The RITHM Project: Promise and pitfalls of AI in community research contexts (therithmproject.org)',
-      'Breakout-specific pre-readings distributed by session leads (if provided)',
+      { title: 'The RITHM Project: Promise and pitfalls of AI in community research', type: 'Link', url: 'https://www.therithmproject.org/' },
+    ],
+    resources: [
+      { title: 'Breakout A: YPAR/Participatory Methods — slide deck & resources', type: 'Slides', url: '' },
+      { title: 'Breakout B: Technology & TR — slide deck & resources', type: 'Slides', url: '' },
+      { title: 'Breakout C: CITRA Consensus Model — slide deck & resources', type: 'Slides', url: '' },
+    ],
+    submitLinks: [
+      { title: 'Submit: Breakout Learning Summary', url: '' },
     ],
     reflectPrompts: [
-      'Which breakout did you choose — and why?',
-      'What was the most practically applicable thing you learned in your breakout?',
-      'How would you explain your breakout topic to a community partner who has no academic background?',
+      'What was the most practically applicable thing you learned in your breakout — something you could use within the next year?',
+      'How does your breakout topic connect to the partnership and pathways content from earlier in the day?',
+      'What question did your breakout leave you with that you want to explore further on your own?',
     ],
     after: 'No formal task.',
   },
-
   {
-    id: 'keynote',
-    day: 'Monday, June 29',
-    dayShort: 'Mon June 29',
-    topic: 'methods',
-    title: 'Keynote: Adam Gamoran',
-    time: '4:00–5:00 PM',
-    speakers: 'Adam Gamoran, President, William T. Grant Foundation',
-    description: 'Adam Gamoran provides leadership for the William T. Grant Foundation\'s strategic direction and shapes its agenda and tactics as President. Since arriving at the Foundation, he launched a new initiative to support research on reducing inequality in youth outcomes, and has continued the Foundation\'s ongoing work to improve the use of research evidence in policy and practice decisions that affect young people.',
+    id: 'keynote', day: 'Monday, June 29', dayShort: 'Mon June 29',
+    topic: 'methods', title: 'Keynote: Adam Gamoran',
+    time: '4:00–5:00 PM', speakers: 'Adam Gamoran, President, William T. Grant Foundation',
+    description: 'Adam Gamoran provides leadership for the William T. Grant Foundation. He has launched initiatives to support research on reducing inequality in youth outcomes and continued the Foundation\'s work to improve the use of research evidence in policy and practice decisions affecting young people.',
     inquiry: 'What does the use of research evidence in policy and practice look like at the highest levels — and what does that mean for how I do my work?',
     goals: [
       'Gain a national-level perspective on the use of research evidence in policy and practice',
-      'Understand the William T. Grant Foundation\'s strategic priorities in reducing inequality and building the field',
-      'Connect the day\'s learning to a broader landscape of TR funders and knowledge systems',
+      'Understand the WT Grant Foundation\'s strategic priorities',
+      'Connect the day\'s learning to a broader landscape of TR funders',
       'Engage directly with a leading figure in the field through Q&A',
     ],
     activities: [
@@ -1809,27 +2134,27 @@ const MODULES = [
       { text: 'Audience Q&A', time: '20 min' },
     ],
     readings: [
-      'William T. Grant Foundation: Research on Reducing Inequality (wtgrantfoundation.org)',
-      'Foundation overview and current funding priorities (distributed if provided)',
+      { title: 'William T. Grant Foundation: About the Foundation and strategic priorities', type: 'Link', url: 'https://wtgrantfoundation.org' },
+    ],
+    resources: [
+      { title: 'Keynote slide deck (if shared)', type: 'Slides', url: '' },
+      { title: 'WT Grant Foundation current funding opportunities', type: 'Link', url: 'https://wtgrantfoundation.org/grants' },
+    ],
+    submitLinks: [
+      { title: 'Submit: Evidence Use Reflection', url: '' },
     ],
     reflectPrompts: [
-      'What from the keynote challenged or expanded how you think about impact?',
-      'What does the Foundation\'s focus on "use of research evidence" mean for the kind of work you want to do?',
-      'What question would you have asked if you had one-on-one time with Gamoran?',
+      'What from the keynote challenged or shifted how you think about what "impact" means in research?',
+      'How does the Foundation\'s focus on reducing inequality in youth outcomes connect to your own research questions?',
+      'If you had 20 minutes with Gamoran one-on-one, what would you ask — and what does that question reveal about your TR journey?',
     ],
     after: 'Rest up for Day 2.',
   },
-
-  // ─── DAY 2: TUESDAY JUNE 30 ───
   {
-    id: 'funding-panel',
-    day: 'Tuesday, June 30',
-    dayShort: 'Tue June 30',
-    topic: 'planning',
-    title: 'Funding Landscape Panel',
-    time: '9:00–10:15 AM',
-    speakers: 'Tony + 3–5 Funders (TBD)',
-    description: 'Tony brings together 3–5 funders to share their experience and perspective on funding translational research. The session explores timelines, grant mechanisms that support translational work, consortium funding opportunities, and what funders look for when evaluating TR proposals. Participants come with questions and leave with a clearer picture of the funding landscape for their own work.',
+    id: 'funding-panel', day: 'Tuesday, June 30', dayShort: 'Tue June 30',
+    topic: 'planning', title: 'Funding Landscape Panel',
+    time: '9:00–10:15 AM', speakers: 'Tony + 3–5 Funders (TBD)',
+    description: 'Tony brings together 3–5 funders to share their experience and perspective on funding translational research. The session covers timelines, grant mechanisms, consortium funding, and what funders look for when evaluating TR proposals.',
     inquiry: 'What does the funding landscape for translational research look like — and where does my work fit?',
     goals: [
       'Understand the key funders and grant mechanisms that support translational research',
@@ -1839,36 +2164,39 @@ const MODULES = [
     ],
     activities: [
       { text: 'Tony introduces the panel and framing for translational research funding', time: '10 min' },
-      { text: 'Funder presentations: How does it work, what are the timelines, and what makes a strong TR proposal?', time: '45 min' },
+      { text: 'Funder presentations: How does it work, timelines, and what makes a strong TR proposal?', time: '45 min' },
       { text: 'Q&A: Consortium funding, mechanisms, and advice for early-stage TR applicants', time: '20 min' },
     ],
     readings: [
-      'WT Grant Foundation funding opportunities and review criteria (wtgrantfoundation.org)',
-      'Overview of federal mechanisms supporting translational research (distributed if provided)',
+      { title: 'WT Grant Foundation funding opportunities and review criteria', type: 'Link', url: 'https://wtgrantfoundation.org/grants' },
+    ],
+    resources: [
+      { title: 'Funding landscape overview slide deck', type: 'Slides', url: '' },
+      { title: 'Funder bios and funding program summaries', type: 'Document', url: '' },
+      { title: 'Federal mechanisms supporting translational research', type: 'Document', url: '' },
+    ],
+    submitLinks: [
+      { title: 'Submit: Funding Opportunity Scan', url: '' },
+      { title: 'Shared repository: funding opportunities and timelines', url: '' },
     ],
     reflectPrompts: [
-      'Which funding mechanism feels most accessible or relevant to where your work is right now?',
-      'What would you need to do in the next 6–12 months to make yourself competitive for a TR grant?',
-      'What did you learn about how funders evaluate TR proposals that surprised you?',
+      'Which funding mechanism feels most accessible given where your work is right now — and what makes it feel that way?',
+      'What did you learn about how funders evaluate TR proposals that will change how you write or frame your work?',
+      'What is the one thing you need to do in the next year to make yourself more competitive for a TR grant?',
     ],
-    after: 'Make a note of 1–2 funding mechanisms you want to explore further. Bring this to the afternoon\'s career session.',
+    after: 'Make a note of 1–2 funding mechanisms you want to explore further. Bring this to the career session.',
   },
-
   {
-    id: 'tr-workshop',
-    day: 'Tuesday, June 30',
-    dayShort: 'Tue June 30',
-    topic: 'planning',
-    title: 'Translational Research Workshop',
-    time: '10:15–11:00 AM',
-    speakers: 'Facilitators: Elizabeth & Kristen',
-    description: 'An opportunity for participants to receive structured feedback on a potential or in-progress translational research project. This working session is designed to help attendees think through the design, partnership strategy, and next steps for their own work — with real-time input from facilitators and peers.',
+    id: 'tr-workshop', day: 'Tuesday, June 30', dayShort: 'Tue June 30',
+    topic: 'planning', title: 'Translational Research Workshop',
+    time: '10:15–11:00 AM', speakers: 'Facilitators: Elizabeth & Kristen',
+    description: 'An opportunity for participants to receive structured feedback on a potential or in-progress translational research project. Designed to help attendees think through design, partnership strategy, and next steps for their own work.',
     inquiry: 'What feedback would most help me move my translational research project forward?',
     goals: [
       'Articulate the core design and goals of a current or planned translational research project',
       'Receive constructive feedback from facilitators and peers on project design and approach',
       'Identify specific next steps for developing or strengthening the project',
-      'Practice the kind of collegial, constructive critique that builds stronger research-practice work',
+      'Practice collegial, constructive critique that builds stronger research-practice work',
     ],
     activities: [
       { text: 'Brief project presentations from 2–3 volunteer participants (3–5 min each)', time: '15 min' },
@@ -1876,23 +2204,25 @@ const MODULES = [
       { text: 'Open conversation and additional questions from facilitators', time: '15 min' },
     ],
     readings: [],
+    resources: [
+      { title: 'TR project feedback protocol', type: 'Worksheet', url: '' },
+      { title: 'Workshop notes and shared observations', type: 'Document', url: '' },
+    ],
+    submitLinks: [
+      { title: 'Submit: TR Project Next Steps', url: '' },
+    ],
     reflectPrompts: [
-      'If you presented: What feedback was most useful — and what will you actually do differently as a result?',
-      'If you observed: What insight from someone else\'s project could apply to your own work?',
-      'What is the most important next step for your own TR project after today?',
+      'What feedback — from facilitators or peers — was most useful for your own work? What will you actually do differently?',
+      'What did someone else\'s project reveal about design choices, partnership dynamics, or framing that applies to your own work?',
+      'What is the single most important next step for your TR project — and what is the first thing you will do when you get home?',
     ],
     after: 'Note your 1–2 clearest next steps for your own project. Revisit them in a month.',
   },
-
   {
-    id: 'career',
-    day: 'Tuesday, June 30',
-    dayShort: 'Tue June 30',
-    topic: 'planning',
-    title: 'Aligning TR with Your Career',
-    time: '11:00–11:45 AM',
-    speakers: 'Panel: TTF & NTTF Faculty, Think Tank Researcher (TBD)',
-    description: 'A panel discussion on how translational research can fit into different career stages and university roles. Panelists share their experiences and advice for understanding what "impact" means in different fields, writing about TR work with promotion requirements in mind, and building partnerships while managing teaching, research, and service responsibilities.',
+    id: 'career', day: 'Tuesday, June 30', dayShort: 'Tue June 30',
+    topic: 'planning', title: 'Aligning TR with Your Career',
+    time: '11:00–11:45 AM', speakers: 'Panel: TTF & NTTF Faculty, Think Tank Researcher (TBD)',
+    description: 'A panel discussion on how translational research can fit into different career stages and university roles — covering what "impact" means in different fields, writing about TR for promotion, and building partnerships alongside other professional demands.',
     inquiry: 'How do I make translational research work within the real structures and demands of my career?',
     goals: [
       'Understand how TR fits differently across tenure-track, non-tenure-track, and non-academic career contexts',
@@ -1903,26 +2233,28 @@ const MODULES = [
     activities: [
       { text: 'Brief panelist introductions and current TR work', time: '10 min' },
       { text: 'Panel Q&A: How does TR fit with your career stage and role?', time: '15 min' },
-      { text: 'Panel Q&A: How do you write about TR for promotion? What counts as "impact" in your field?', time: '10 min' },
+      { text: 'Panel Q&A: How do you write about TR for promotion?', time: '10 min' },
       { text: 'Panel Q&A: How do you sustain partnerships alongside teaching and service?', time: '10 min' },
     ],
     readings: [],
+    resources: [
+      { title: 'Career panel slide deck', type: 'Slides', url: '' },
+      { title: 'Writing TR work for promotion — example language and framing', type: 'Document', url: '' },
+    ],
+    submitLinks: [
+      { title: 'Submit: TR Career Integration Plan', url: '' },
+    ],
     reflectPrompts: [
-      'Which panelist\'s career situation most resembles yours — and what was most applicable from their advice?',
-      'How does your institution currently define "impact"? Does TR work count — and how might you make the case that it should?',
-      'What is one concrete thing you can do in the next 90 days to integrate TR more intentionally into your work?',
+      'Which panelist\'s career situation most resembles yours — and what was the single most actionable piece of advice they offered?',
+      'How does your institution currently define "impact"? What would it take to make the case that your TR work meets that definition?',
+      'What is the one thing you are most committed to doing differently in how you integrate TR into your career after today?',
     ],
     after: 'Draft a brief personal next-step plan (even just bullet points) before you leave today.',
   },
-
   {
-    id: 'closing',
-    day: 'Tuesday, June 30',
-    dayShort: 'Tue June 30',
-    topic: 'planning',
-    title: 'Closing Session',
-    time: '11:45 AM–12:00 PM',
-    speakers: 'Tony, Kristen, Elizabeth',
+    id: 'closing', day: 'Tuesday, June 30', dayShort: 'Tue June 30',
+    topic: 'planning', title: 'Closing Session',
+    time: '11:45 AM–12:00 PM', speakers: 'Tony, Kristen, Elizabeth',
     description: 'A closing that invites collective reflection on key takeaways and identifies what supports would help participants take their next steps. What did we learn? What did we build? What comes next?',
     inquiry: 'What am I leaving with — and what will I actually do?',
     goals: [
@@ -1937,18 +2269,22 @@ const MODULES = [
       { text: 'Closing remarks and next steps from BCTR team', time: '5 min' },
     ],
     readings: [],
+    resources: [
+      { title: 'Full CTRSI resource repository', type: 'Folder', url: '' },
+      { title: 'Post-institute contact list and community space', type: 'Link', url: '' },
+    ],
+    submitLinks: [
+      { title: 'Submit: CTRSI Synthesis & Commitment', url: '' },
+      { title: 'Post-institute feedback survey', url: '' },
+    ],
     reflectPrompts: [
-      'What is the most important thing you are leaving CTRSI with?',
-      'What is one action you will take in the next 30 days — and who will you tell to hold you accountable?',
-      'Who at CTRSI do you want to stay in contact with, and how will you make that happen?',
+      'Looking across both days: what is the single most important thing you are leaving CTRSI with — a concept, a relationship, a commitment, or a question?',
+      'What is one action you will take in the next 30 days, and who will you tell so they can hold you accountable?',
+      'What kind of ongoing support would most help you move your TR work forward?',
     ],
     after: 'Send a brief email to one person you met at CTRSI within one week. Keep the connection alive.',
   },
 ];
-
-// ═══════════════════════════════════════════════════════
-// STORAGE / PROGRESS
-// ═══════════════════════════════════════════════════════
 
 const STORAGE_KEY = 'ctrsi2026Progress:v1';
 let progressData = {};
@@ -2027,6 +2363,17 @@ function routeFromHash({ behavior = 'smooth' } = {}) {
 
   document.querySelectorAll('.dashboard-panel, .session-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.module-btn, .dashboard-btn').forEach(b => b.classList.remove('active'));
+
+  if (hash === 'portfolio') {
+    document.getElementById('portfolioPanel').classList.add('active');
+    document.getElementById('portfolioNavBtn').classList.add('active');
+    activeView = 'portfolio';
+    document.getElementById('topbarSession').textContent = 'My Portfolio';
+    buildPortfolio();
+    updateProgressUI();
+    window.scrollTo({ top: 0, behavior });
+    return;
+  }
 
   if (hash === 'dashboard' || !mod) {
     document.getElementById('dashboardPanel').classList.add('active');
@@ -2235,14 +2582,75 @@ function buildModulePanels() {
       </div>
     `).join('');
 
+    // ── Readings: now objects with title/type/url
+    const typeIcons = { Article: '📄', Document: '📋', Link: '🔗', Resource: '📌', Handout: '📂' };
     const readingsHTML = mod.readings.length ? mod.readings.map((r, i) => `
       <div class="reading-item ${isComplete(mod.id, 'reading', i) ? 'done' : ''}"
            onclick="toggleReading(this)"
            data-module-id="${mod.id}" data-idx="${i}">
         <div class="reading-check">✓</div>
-        <div class="reading-text">${escapeHTML(r)}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="reading-text">${escapeHTML(r.title)}</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+            <span class="resource-chip">${escapeHTML(r.type || 'Reading')}</span>
+            ${r.url ? `<a href="${escapeHTML(r.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="font-size:11px;color:var(--red);font-weight:700;text-decoration:none;">Open →</a>` : '<span style="font-size:10px;color:var(--text-lt);">Link pending</span>'}
+          </div>
+        </div>
       </div>
     `).join('') : '<div style="color:var(--text-lt);font-size:13px;padding:8px 0;">No pre-readings assigned for this session.</div>';
+
+    // ── Additional resources (slides, worksheets, links)
+    const resourcesHTML = (mod.resources || []).length ? (mod.resources || []).map(r => `
+      <div class="resource-item">
+        <div class="resource-dot">${typeIcons[r.type] || '📎'}</div>
+        <div class="resource-info-wrap">
+          <div class="resource-title">${escapeHTML(r.title)}</div>
+          <div class="resource-meta">
+            <span class="resource-type">${escapeHTML(r.type)}</span>
+          </div>
+        </div>
+        ${r.url ? `<a class="resource-action" href="${escapeHTML(r.url)}" target="_blank" rel="noopener">Open</a>` : '<span class="resource-action pending">Pending</span>'}
+      </div>
+    `).join('') : '';
+
+    // ── Submit / repository links
+    const submitHTML = (mod.submitLinks || []).length ? `
+      <div class="resource-section" style="background:var(--gray-lt);border-color:var(--border);">
+        <div class="resource-section-header">
+          <div class="resource-section-title">Submit & Share</div>
+          <div class="resource-section-note">Portfolio contribution & shared resources</div>
+        </div>
+        ${(mod.submitLinks || []).map(s => `
+          <div class="resource-item">
+            <div class="resource-dot">↑</div>
+            <div class="resource-info-wrap">
+              <div class="resource-title">${escapeHTML(s.title)}</div>
+            </div>
+            ${s.url ? `<a class="resource-action" href="${escapeHTML(s.url)}" target="_blank" rel="noopener">Open</a>` : '<span class="resource-action pending">Pending</span>'}
+          </div>
+        `).join('')}
+      </div>
+    ` : '';
+
+    // ── Portfolio artifact for this module
+    const artifact = PORTFOLIO_ARTIFACTS.find(a => a.moduleId === mod.id);
+    const portfolioHTML = artifact ? `
+      <div class="module-portfolio-section">
+        <div class="module-portfolio-label">Your Portfolio Contribution</div>
+        <div class="module-portfolio-title">${escapeHTML(artifact.label)}</div>
+        <div class="module-portfolio-purpose">${escapeHTML(artifact.purpose)}</div>
+        <div class="artifact-meta">
+          <span class="artifact-chip">${escapeHTML(artifact.component)}</span>
+          <span class="artifact-chip">${escapeHTML(topic.label)}</span>
+        </div>
+        <div class="module-portfolio-prompt-label">Your Prompt</div>
+        <div class="module-portfolio-prompt">${escapeHTML(artifact.prompt)}</div>
+        <div class="module-portfolio-submit-row">
+          ${artifact.submitLabel ? `<a class="artifact-action pending" href="#">${escapeHTML(artifact.submitLabel)}</a>` : ''}
+          <a class="artifact-action" onclick="showPortfolio()" href="#portfolio" style="cursor:pointer;">View Full Portfolio →</a>
+        </div>
+      </div>
+    ` : '';
 
     const promptsHTML = mod.reflectPrompts.map((p, i) => `
       <div class="reflect-prompt-item">
@@ -2254,6 +2662,7 @@ function buildModulePanels() {
     const total = countModuleItems(mod);
     const done  = countModuleDone(mod);
     const pct   = total ? Math.round((done / total) * 100) : 0;
+    const hasAfterTask = mod.after && !['No formal task — come energized for the full day ahead.','No formal task — bring your self-mapping insights to the partnership session.','No formal task — bring your reflections to the special topics breakouts.','Rest up for Day 2.','No formal task.'].includes(mod.after);
 
     panel.innerHTML = `
       <div class="session-header">
@@ -2288,10 +2697,11 @@ function buildModulePanels() {
       <p class="session-description">${escapeHTML(mod.description)}</p>
 
       <div class="tabs-bar">
-        <a class="tab-btn active" data-tab="overview" href="#${mod.id}-overview" onclick="switchTab(event, this, '${mod.id}', 'overview')">Overview</a>
-        <a class="tab-btn" data-tab="goals"    href="#${mod.id}-goals"    onclick="switchTab(event, this, '${mod.id}', 'goals')">Learning Goals</a>
-        <a class="tab-btn" data-tab="readings" href="#${mod.id}-readings" onclick="switchTab(event, this, '${mod.id}', 'readings')">Readings</a>
-        <a class="tab-btn" data-tab="reflect"  href="#${mod.id}-reflect"  onclick="switchTab(event, this, '${mod.id}', 'reflect')">Reflect</a>
+        <a class="tab-btn active" data-tab="overview"   href="#${mod.id}-overview"   onclick="switchTab(event,this,'${mod.id}','overview')">Overview</a>
+        <a class="tab-btn"        data-tab="goals"      href="#${mod.id}-goals"      onclick="switchTab(event,this,'${mod.id}','goals')">Learning Goals</a>
+        <a class="tab-btn"        data-tab="resources"  href="#${mod.id}-resources"  onclick="switchTab(event,this,'${mod.id}','resources')">Readings & Resources</a>
+        <a class="tab-btn"        data-tab="reflect"    href="#${mod.id}-reflect"    onclick="switchTab(event,this,'${mod.id}','reflect')">Reflect</a>
+        <a class="tab-btn"        data-tab="portfolio"  href="#${mod.id}-portfolio"  onclick="switchTab(event,this,'${mod.id}','portfolio')">Portfolio</a>
       </div>
 
       <!-- OVERVIEW TAB -->
@@ -2308,21 +2718,38 @@ function buildModulePanels() {
       <section class="tab-pane" id="${mod.id}-goals">
         <div class="guide-cue">
           <div class="guide-kicker">Check Off as You Go</div>
-          <div class="guide-text">Click each goal to mark it complete as you engage with this session's content. These track your engagement across the module.</div>
+          <div class="guide-text">Click each goal to mark it complete as you engage with this session's content.</div>
         </div>
         <div class="goals-list">${goalsHTML}</div>
       </section>
 
-      <!-- READINGS TAB -->
-      <section class="tab-pane" id="${mod.id}-readings">
+      <!-- READINGS & RESOURCES TAB -->
+      <section class="tab-pane" id="${mod.id}-resources">
         <div class="guide-cue">
           <div class="guide-kicker">Before or During</div>
-          <div class="guide-text">Click a reading to mark it complete. Pre-session readings help you get more out of the live discussion.</div>
+          <div class="guide-text">Click a reading to mark it complete. Use the resource links to access slides, handouts, and shared materials as they become available.</div>
         </div>
-        <div class="readings-card">${readingsHTML}</div>
 
-        ${mod.after !== 'No formal task — come energized for the full day ahead.' && mod.after !== 'No formal task — bring your self-mapping insights to the partnership session.' && mod.after !== 'No formal task — bring your reflections to the special topics breakouts.' && mod.after !== 'Rest up for Day 2.' && mod.after !== 'No formal task.' ? `
-        <div class="section-hd" style="margin-top:22px;">After This Session</div>
+        ${mod.readings.length ? `
+        <div class="section-hd">Readings</div>
+        <div class="readings-card">${readingsHTML}</div>
+        ` : ''}
+
+        ${resourcesHTML ? `
+        <div class="section-hd" style="margin-top:20px;">Session Materials & Links</div>
+        <div class="resource-section">
+          <div class="resource-section-header">
+            <div class="resource-section-title">Slides, Worksheets & Resources</div>
+            <div class="resource-section-note">Added as sessions are confirmed</div>
+          </div>
+          ${resourcesHTML}
+        </div>
+        ` : ''}
+
+        ${submitHTML}
+
+        ${hasAfterTask ? `
+        <div class="section-hd" style="margin-top:${resourcesHTML || submitHTML ? '4px' : '20px'};">After This Session</div>
         <div class="phase-card">
           <div class="phase-card-header">
             <div class="phase-icon" style="background:${topic.color}22;color:${topic.color}">→</div>
@@ -2337,7 +2764,7 @@ function buildModulePanels() {
           </div>
         </div>
         ` : `
-        <div class="section-hd" style="margin-top:22px;">After This Session</div>
+        <div class="section-hd" style="margin-top:20px;">After This Session</div>
         <div class="phase-card">
           <div class="phase-card-header">
             <div class="phase-icon" style="background:${topic.color}22;color:${topic.color}">→</div>
@@ -2358,9 +2785,18 @@ function buildModulePanels() {
       <section class="tab-pane" id="${mod.id}-reflect">
         <div class="guide-cue">
           <div class="guide-kicker">After the Session</div>
-          <div class="guide-text">Use these prompts during or after the session to capture what shifted in your thinking.</div>
+          <div class="guide-text">These prompts are designed for reflection after you've experienced the session. Use them to capture what shifted, surprised, or challenged you.</div>
         </div>
         <div class="reflect-prompts">${promptsHTML}</div>
+      </section>
+
+      <!-- PORTFOLIO TAB -->
+      <section class="tab-pane" id="${mod.id}-portfolio">
+        <div class="guide-cue">
+          <div class="guide-kicker">Your Contribution</div>
+          <div class="guide-text">Each module generates one artifact that lives in your portfolio. Together they form a holistic account of your CTRSI experience — your ideas, learnings, and commitments.</div>
+        </div>
+        ${portfolioHTML}
       </section>
     `;
 
@@ -2457,6 +2893,108 @@ function showDashboard() {
   setRoute('dashboard');
 }
 
+function showPortfolio() {
+  setRoute('portfolio');
+}
+
+// ═══════════════════════════════════════════════════════
+// PORTFOLIO PANEL
+// ═══════════════════════════════════════════════════════
+
+function getArtifactStatus(artifact) {
+  const mod = MODULES.find(m => m.id === artifact.moduleId);
+  if (!mod) return { label: 'Not Started', key: 'not-started' };
+  const done = countModuleDone(mod);
+  const total = countModuleItems(mod);
+  if (done === total && total > 0) return { label: 'Complete', key: 'complete' };
+  if (done > 0) return { label: 'In Progress', key: 'in-progress' };
+  return { label: 'Not Started', key: 'not-started' };
+}
+
+function buildPortfolio() {
+  const panel = document.getElementById('portfolioPanel');
+  const complete = PORTFOLIO_ARTIFACTS.filter(a => getArtifactStatus(a).key === 'complete').length;
+  const inProg   = PORTFOLIO_ARTIFACTS.filter(a => getArtifactStatus(a).key === 'in-progress').length;
+  const total    = PORTFOLIO_ARTIFACTS.length;
+
+  const cardsHTML = PORTFOLIO_ARTIFACTS.map(artifact => {
+    const status = getArtifactStatus(artifact);
+    const mod = MODULES.find(m => m.id === artifact.moduleId);
+    const topic = mod ? TOPICS[mod.topic] : TOPICS.opening;
+    return `
+      <article class="artifact-card ${status.key === 'in-progress' ? 'active' : ''}">
+        <div class="artifact-topline">
+          <div class="artifact-module-tag">${mod ? escapeHTML(mod.dayShort) : ''}</div>
+          <span class="artifact-status artifact-${status.key}">${escapeHTML(status.label)}</span>
+        </div>
+        <div class="artifact-title">${escapeHTML(artifact.label)}</div>
+        <div class="artifact-purpose">${escapeHTML(artifact.purpose)}</div>
+        <div class="artifact-meta">
+          <span class="artifact-chip">${escapeHTML(artifact.component)}</span>
+          <span class="artifact-chip" style="background:${topic.lt};color:${topic.color}">${escapeHTML(topic.label)}</span>
+        </div>
+        <div class="artifact-actions">
+          <button class="artifact-action" onclick="setRoute('${artifact.moduleId}-portfolio')" style="background:var(--red);color:var(--white);border-color:var(--red);">View Prompt →</button>
+          <a class="artifact-action pending" href="#">${escapeHTML(artifact.submitLabel || 'Submit')}</a>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  panel.innerHTML = `
+    <div class="portfolio-hero" style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;">
+      <div>
+        <div class="portfolio-eyebrow">CTRSI 2026 · My Portfolio</div>
+        <div class="portfolio-heading">Your CTRSI Portfolio</div>
+        <div class="portfolio-intro">Each module contributes one artifact — a reflection, plan, map, or commitment — that together form a holistic account of your institute experience. Use these to revisit your thinking, share your perspective, and take your next steps.</div>
+      </div>
+      <div class="portfolio-meter-card">
+        <div class="portfolio-meter-count" id="portCount">${complete}</div>
+        <div class="portfolio-meter-label">of ${total} complete</div>
+        <div class="dashboard-track" style="background:rgba(255,255,255,0.12);">
+          <div class="dashboard-fill" id="portFill" style="width:${Math.round((complete/total)*100)}%;background:var(--gray-green);"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:16px;align-items:start;margin-top:0;">
+      <div>
+        <div class="dashboard-card" style="padding:0;overflow:hidden;">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--gray-lt);display:flex;align-items:baseline;justify-content:space-between;">
+            <div class="dashboard-card-title">All Artifacts</div>
+            <div class="dashboard-card-note">${complete} complete · ${inProg} in progress · ${total - complete - inProg} not started</div>
+          </div>
+          <div class="artifact-grid" style="padding:14px;gap:10px;">${cardsHTML}</div>
+        </div>
+      </div>
+      <div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <div class="dashboard-card-title">What Is This?</div>
+          </div>
+          <div style="font-size:13px;color:var(--text-med);line-height:1.7;">
+            Your portfolio is a living record of your CTRSI experience. Each artifact captures something specific: a position, a plan, a reflection, a commitment.<br><br>
+            Together they tell the story of where you started, what you learned, and where you're headed in translational research.<br><br>
+            Use the <strong>View Prompt</strong> button to see the writing prompt for each artifact. Submit links will be activated as sessions are confirmed.
+          </div>
+        </div>
+        <div class="dashboard-card" style="margin-top:14px;">
+          <div class="dashboard-card-header">
+            <div class="dashboard-card-title">Synthesis Questions</div>
+            <div class="dashboard-card-note">For the full arc</div>
+          </div>
+          <div style="font-size:13px;color:var(--text-med);line-height:1.65;">
+            <div style="padding:9px 0;border-bottom:1px solid var(--gray-lt);">What pattern do you see across your artifacts — what idea or commitment shows up again and again?</div>
+            <div style="padding:9px 0;border-bottom:1px solid var(--gray-lt);">Which artifact surprised you the most in what you wrote — and why?</div>
+            <div style="padding:9px 0;border-bottom:1px solid var(--gray-lt);">Which artifact represents the biggest shift from where you started?</div>
+            <div style="padding:9px 0;">If you shared this portfolio with a community partner, what would you want them to notice?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 // ═══════════════════════════════════════════════════════
 // GATE LOGIC
 // ═══════════════════════════════════════════════════════
@@ -2510,6 +3048,7 @@ loadProgress();
 buildNav();
 buildModulePanels();
 buildDashboard();
+buildPortfolio();
 
 if (!window.location.hash) {
   history.replaceState(null, '', '#dashboard');
