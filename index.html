@@ -3635,14 +3635,14 @@ async function sharePortfolio() {
     await fetch(FACILITATOR_ENDPOINT, {
       method: 'POST',
       mode: 'no-cors',   // Apps Script requires no-cors
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload),
     });
     // no-cors means we can't read the response — assume success
     btn.innerHTML = '<span class="export-btn-icon">✓</span> Shared Successfully';
     btn.style.opacity = '1';
     btn.style.background = 'var(--gray-green)';
-    status.textContent = 'Your portfolio has been sent to the BCTR team. You can share again any time to update your responses.';
+    status.textContent = 'Your portfolio was sent. You can share again any time to update your responses.';
     status.style.color = 'var(--gray-green)';
   } catch(err) {
     btn.disabled = false;
