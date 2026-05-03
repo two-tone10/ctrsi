@@ -1,0 +1,2521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTRSI 2026 · Attendee Progress Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red:        #B81C2E;
+  --red-dk:     #8C1221;
+  --red-lt:     #F9E8EA;
+  --charcoal:   #2B2B2B;
+  --charcoal-dk:#1A1A1A;
+  --gray-dark:  #444444;
+  --gray-mid:   #7A7A7A;
+  --gray-lt:    #F2F2F0;
+  --gray-bd:    #E0DFDC;
+  --gray-green: #5C6B5A;
+  --gray-green-lt: #E8EDE7;
+  --yellow:     #E8B930;
+  --yellow-lt:  #FDF6E0;
+  --white:      #FFFFFF;
+  --off-white:  #F8F7F5;
+  --text:       #1A1A1A;
+  --text-med:   #444444;
+  --text-lt:    #7A7A7A;
+  --border:     #E0DFDC;
+
+  /* topic colors */
+  --t-foundations: #B81C2E;
+  --t-foundations-lt: #F9E8EA;
+  --t-relationships: #5C6B5A;
+  --t-relationships-lt: #E8EDE7;
+  --t-methods:   #2B5E8A;
+  --t-methods-lt: #E5EFF6;
+  --t-planning:  #7A5230;
+  --t-planning-lt: #F5EDE3;
+  --t-opening:   #2B2B2B;
+  --t-opening-lt: #EDEDEA;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--off-white);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ─── SIDEBAR ─────────────────────────────────────── */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: var(--charcoal-dk);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 200;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+.sidebar-brand {
+  padding: 26px 20px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.brand-eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 7px;
+}
+
+.brand-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.35;
+}
+
+.brand-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.28);
+  margin-top: 5px;
+  letter-spacing: 0.04em;
+}
+
+.sidebar-section-label {
+  padding: 18px 20px 8px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+}
+
+.dashboard-nav { padding: 10px 10px 0; }
+
+.dashboard-btn {
+  width: 100%;
+  border: none;
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.78);
+  border-radius: 7px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: 3px;
+}
+
+.dashboard-btn:hover,
+.dashboard-btn.active { background: rgba(255,255,255,0.13); color: var(--white); }
+
+.dashboard-icon {
+  width: 9px; height: 9px;
+  border-radius: 2px;
+  background: var(--yellow);
+  flex-shrink: 0;
+}
+
+.module-nav { padding: 0 10px 4px; }
+
+.module-btn {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 7px;
+  text-align: left;
+  margin-bottom: 2px;
+  gap: 10px;
+  transition: background 0.15s;
+  position: relative;
+}
+
+.module-btn:hover { background: rgba(255,255,255,0.06); }
+.module-btn.active { background: rgba(255,255,255,0.11); }
+.module-btn.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--red);
+}
+
+.module-dot {
+  width: 9px; height: 9px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.module-btn-info { flex: 1; min-width: 0; }
+
+.module-day-tag {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.module-name {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.25;
+}
+
+.module-btn.active .module-name { color: rgba(255,255,255,0.95); font-weight: 600; }
+
+.module-time {
+  font-size: 9px;
+  color: rgba(255,255,255,0.25);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.module-progress {
+  font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.module-btn.complete .module-progress { color: var(--yellow); }
+
+.sidebar-progress {
+  margin: 16px 10px 0;
+  padding: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+}
+
+.sidebar-progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  margin-bottom: 9px;
+}
+
+.sidebar-progress-track {
+  height: 5px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.sidebar-progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--red);
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.sidebar-legend {
+  margin: 16px 10px 20px;
+  padding: 14px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.legend-title {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.legend-item:last-child { margin-bottom: 0; }
+
+.legend-swatch {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.38);
+  line-height: 1.3;
+}
+
+/* ─── DAY DIVIDERS IN SIDEBAR ─── */
+.sidebar-day-divider {
+  padding: 12px 20px 4px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  opacity: 0.7;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 6px;
+}
+
+/* ─── TOPBAR ────────────────────────────────────────── */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 240px;
+  right: 0;
+  background: var(--charcoal);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  z-index: 100;
+  padding: 0 44px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+
+.topbar-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.88);
+  letter-spacing: 0.01em;
+}
+
+.topbar-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255,255,255,0.12);
+}
+
+.topbar-session {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  font-style: italic;
+}
+
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+
+.btn-print {
+  padding: 6px 14px;
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: opacity 0.15s;
+}
+.btn-print:hover { opacity: 0.82; }
+
+.btn-outline {
+  padding: 6px 13px;
+  background: none;
+  color: rgba(255,255,255,0.55);
+  border: 1.5px solid rgba(255,255,255,0.14);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.8); }
+
+/* ─── MAIN ──────────────────────────────────────────── */
+.main {
+  margin-left: 240px;
+  padding-top: 52px;
+  flex: 1;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 44px 96px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dashboard-panel {
+  display: none;
+  padding-top: 32px;
+  animation: fadeUp 0.22s ease;
+}
+.dashboard-panel.active { display: block; }
+
+/* ─── DASHBOARD ─────────────────────────────────────── */
+.dashboard-hero {
+  background: var(--charcoal);
+  border-radius: 10px;
+  padding: 28px 30px;
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 28px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-hero::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,28,46,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.dashboard-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 8px;
+}
+
+.dashboard-title {
+  font-family: 'DM Serif Display', serif;
+  color: var(--white);
+  font-size: 30px;
+  line-height: 1.18;
+  margin-bottom: 9px;
+}
+
+.dashboard-subtitle {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.65;
+  max-width: 560px;
+}
+
+.dashboard-meter-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.dashboard-meter-count {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+  font-family: 'DM Serif Display', serif;
+}
+
+.dashboard-meter-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 12px;
+}
+
+.dashboard-track {
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dashboard-fill {
+  height: 100%;
+  width: 0;
+  background: var(--red);
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.dashboard-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+}
+
+.dashboard-card + .dashboard-card { margin-top: 16px; }
+
+.dashboard-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.dashboard-card-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-lt);
+}
+
+.dashboard-card-note {
+  font-size: 12px;
+  color: var(--text-lt);
+}
+
+.focus-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 23px;
+  color: var(--charcoal);
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.focus-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.focus-pill {
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--gray-lt);
+  color: var(--charcoal);
+}
+
+.status-pill {
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status-not-started { background: #EDEDED; color: #6C6C6C; }
+.status-in-progress { background: var(--yellow-lt); color: #8C6B10; }
+.status-complete { background: var(--charcoal); color: var(--white); }
+
+.module-status-grid {
+  display: grid;
+  gap: 0;
+}
+
+.module-status-row {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  border-bottom: 1px solid var(--gray-lt);
+  padding: 8px 0;
+}
+.module-status-row:last-child { border-bottom: none; }
+
+.module-status-name {
+  color: var(--charcoal);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.module-status-title {
+  color: var(--text-lt);
+  font-size: 11.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.module-status-meta {
+  color: var(--text-lt);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.dashboard-empty {
+  color: var(--text-lt);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.dashboard-link-button {
+  border: none;
+  background: none;
+  color: var(--red);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dashboard-action {
+  border: none;
+  border-radius: 6px;
+  padding: 9px 13px;
+  background: var(--charcoal);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dashboard-action.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--charcoal);
+}
+
+/* ─── SESSION/MODULE PANEL ───────────────────────────── */
+.session-panel {
+  display: none;
+  padding-top: 32px;
+  animation: fadeUp 0.22s ease;
+  scroll-margin-top: 72px;
+}
+.session-panel.active { display: block; }
+
+.session-header {
+  background: var(--charcoal);
+  border-radius: 10px;
+  padding: 28px 30px 24px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.session-header::after {
+  content: '';
+  position: absolute;
+  right: -20px; bottom: -20px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,185,48,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.session-eyebrow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.session-day-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+}
+
+.domain-pill {
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.session-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px;
+  color: var(--white);
+  line-height: 1.18;
+  margin-bottom: 10px;
+}
+
+.session-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.session-time-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.07);
+  padding: 4px 9px;
+  border-radius: 4px;
+}
+
+.session-speakers {
+  font-size: 12px;
+  color: rgba(255,255,255,0.38);
+  font-style: italic;
+}
+
+.session-status-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.session-status-text {
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+}
+
+.session-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.session-progress-text {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.session-progress-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.session-progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--red);
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.session-description {
+  font-size: 14px;
+  color: var(--text-med);
+  line-height: 1.72;
+  margin-bottom: 20px;
+}
+
+/* ─── NEXT ACTION ────────────────────────────────────── */
+.next-action-card {
+  background: var(--white);
+  border: 1.5px solid var(--red);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.next-action-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 5px;
+}
+
+.next-action-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--charcoal);
+  line-height: 1.5;
+}
+
+.next-action-btn {
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  padding: 9px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.next-action-btn:hover { opacity: 0.85; }
+
+/* ─── TABS ───────────────────────────────────────────── */
+.tabs-bar {
+  display: flex;
+  gap: 2px;
+  background: var(--gray-lt);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  flex: 1;
+  text-align: center;
+  padding: 9px 10px;
+  border-radius: 6px;
+  border: none;
+  background: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-lt);
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tab-btn:hover { background: rgba(255,255,255,0.7); color: var(--text-med); }
+.tab-btn.active {
+  background: var(--white);
+  color: var(--charcoal);
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ─── SECTION HEADINGS ───────────────────────────────── */
+.section-hd {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-lt);
+  margin-bottom: 12px;
+  margin-top: 24px;
+}
+.section-hd:first-child { margin-top: 0; }
+
+/* ─── GOALS / ACTIVITIES ─────────────────────────────── */
+.goals-list, .activities-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.goal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  user-select: none;
+}
+
+.goal-item:hover { border-color: #C0BFBB; }
+
+.goal-item.done {
+  background: var(--gray-green-lt);
+  border-color: #B8C9B6;
+}
+
+.goal-circle {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid #CCCBC7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: transparent;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.goal-item.done .goal-circle {
+  background: var(--gray-green);
+  border-color: var(--gray-green);
+  color: var(--white);
+}
+
+.goal-text {
+  font-size: 13.5px;
+  color: var(--text-med);
+  line-height: 1.55;
+}
+
+.goal-item.done .goal-text { color: var(--gray-green); }
+
+.activity-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.activity-text {
+  font-size: 13.5px;
+  color: var(--text-med);
+  line-height: 1.55;
+}
+
+.activity-new-badge {
+  display: inline-block;
+  background: var(--yellow-lt);
+  color: #8C6B10;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-top: 4px;
+}
+
+.activity-time {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-lt);
+  background: var(--gray-lt);
+  border-radius: 4px;
+  padding: 4px 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ─── READINGS ───────────────────────────────────────── */
+.readings-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.reading-item {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gray-lt);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.reading-item:last-child { border-bottom: none; }
+.reading-item:hover { background: var(--off-white); }
+.reading-item.done { background: var(--gray-green-lt); }
+
+.reading-check {
+  width: 22px; height: 22px;
+  border-radius: 4px;
+  border: 2px solid #CCCBC7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: transparent;
+  margin-top: 1px;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+.reading-item.done .reading-check {
+  background: var(--gray-green);
+  border-color: var(--gray-green);
+  color: var(--white);
+}
+
+.reading-text {
+  font-size: 13px;
+  color: var(--text-med);
+  line-height: 1.55;
+}
+.reading-item.done .reading-text { color: var(--gray-green); }
+
+/* ─── PHASE CARD ─────────────────────────────────────── */
+.phase-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+}
+
+.phase-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.phase-icon {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.phase-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--charcoal);
+}
+
+.phase-task-text {
+  font-size: 13.5px;
+  color: var(--text-med);
+  line-height: 1.65;
+}
+
+.task-check-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-lt);
+  font-size: 13px;
+  color: var(--text-lt);
+}
+
+.task-check-wrap input[type="checkbox"] {
+  accent-color: var(--gray-green);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* ─── REFLECT ────────────────────────────────────────── */
+.reflect-after-card {
+  background: var(--yellow-lt);
+  border: 1px solid #E8C95A;
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 22px;
+}
+
+.reflect-after-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8C6B10;
+  margin-bottom: 10px;
+}
+
+.reflect-after-text {
+  font-size: 14px;
+  color: var(--text-med);
+  line-height: 1.72;
+}
+
+.reflect-complete {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #E8C95A;
+}
+
+.reflect-prompts {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 20px;
+}
+
+.reflect-prompt-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gray-lt);
+  font-size: 13.5px;
+  color: var(--text-med);
+  line-height: 1.6;
+}
+.reflect-prompt-item:last-child { border-bottom: none; }
+
+.prompt-num {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-lt);
+  background: var(--gray-lt);
+  border-radius: 50%;
+  width: 20px; height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ─── RESOURCES ───────────────────────────────────────── */
+.resource-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
+}
+
+.resource-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.resource-section-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-lt);
+}
+
+.resource-section-note {
+  font-size: 12px;
+  color: var(--text-lt);
+  font-style: italic;
+}
+
+.resource-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gray-lt);
+}
+.resource-item:last-child { border-bottom: none; }
+
+.resource-dot {
+  width: 28px; height: 28px;
+  border-radius: 5px;
+  background: var(--gray-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.resource-info-wrap {}
+
+.resource-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--charcoal);
+  line-height: 1.4;
+}
+
+.resource-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.resource-type {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-lt);
+  background: var(--gray-lt);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.resource-audience {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-lt);
+  background: var(--gray-lt);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.resource-action {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--charcoal);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+}
+.resource-action:hover { border-color: var(--charcoal); }
+.resource-action.pending { color: var(--text-lt); cursor: default; }
+.resource-action.pending:hover { border-color: var(--border); }
+
+/* ─── INQUIRY BLOCK ──────────────────────────────────── */
+.inquiry-block {
+  background: var(--red-lt);
+  border-left: 4px solid var(--red);
+  border-radius: 0 8px 8px 0;
+  padding: 18px 22px;
+  margin-bottom: 20px;
+}
+
+.inquiry-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 8px;
+}
+
+.inquiry-question {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--charcoal);
+  line-height: 1.42;
+}
+
+/* ─── GUIDE CUE ──────────────────────────────────────── */
+.guide-cue {
+  background: var(--gray-lt);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.guide-kicker {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-lt);
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.guide-text {
+  font-size: 12.5px;
+  color: var(--text-med);
+  line-height: 1.6;
+}
+
+/* ─── PRINT ───────────────────────────────────────────── */
+@media print {
+  @page { margin: 0.75in; }
+  .sidebar, .topbar { display: none !important; }
+  .main { margin-left: 0 !important; padding-top: 0 !important; }
+  body { background: white; }
+  .dashboard-panel { display: none !important; }
+  .session-panel { display: block !important; page-break-after: always; animation: none; }
+  .tabs-bar { display: none; }
+  .tab-pane { display: block !important; }
+  .content-wrap { padding: 0; max-width: 100%; }
+}
+
+/* ─── ACCESS GATE OVERLAY ────────────────────────────── */
+#gate-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--charcoal-dk);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0;
+  transition: opacity 0.5s ease;
+}
+#gate-overlay.fade-out { opacity: 0; pointer-events: none; }
+
+.gate-brand {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.gate-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--yellow);
+  margin-bottom: 12px;
+}
+
+.gate-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  color: #fff; line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.gate-subtitle {
+  font-size: 13px; color: rgba(255,255,255,0.35);
+  letter-spacing: 0.04em;
+}
+
+.gate-divider {
+  width: 44px; height: 2px;
+  background: var(--red); opacity: 0.6;
+  margin: 22px auto;
+}
+
+.gate-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 38px 46px;
+  width: 380px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.gate-label {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 2px;
+}
+
+.gate-input {
+  width: 100%;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; color: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.gate-input:focus { border-color: var(--red); }
+.gate-input::placeholder { color: rgba(255,255,255,0.18); }
+
+.gate-input-wrap { position: relative; }
+.gate-input-wrap .gate-input { padding-right: 76px; }
+
+.gate-pass-toggle {
+  position: absolute;
+  top: 50%; right: 8px;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.65);
+  border-radius: 6px;
+  padding: 7px 9px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 700;
+  cursor: pointer;
+}
+.gate-pass-toggle:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+
+.gate-btn {
+  width: 100%;
+  background: var(--red);
+  border: none; border-radius: 8px;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: #fff; cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.2s, transform 0.1s;
+}
+.gate-btn:hover { background: var(--red-dk); }
+.gate-btn:active { transform: scale(0.98); }
+
+.gate-error {
+  font-size: 12px; color: #e07070;
+  text-align: center; min-height: 16px;
+}
+
+#gate-step-name { display: none; }
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media screen and (max-width: 900px) {
+  body { display: block; }
+  .sidebar {
+    position: static;
+    width: 100%;
+    min-width: 0;
+  }
+  .module-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px;
+  }
+  .sidebar-legend { display: none; }
+  .topbar {
+    position: sticky;
+    left: 0;
+    padding: 0 18px;
+  }
+  .topbar-session,
+  .topbar-divider { display: none; }
+  .main { margin-left: 0; padding-top: 0; }
+  .content-wrap { padding: 0 18px 72px; }
+  .dashboard-hero,
+  .dashboard-grid,
+  .next-action-card { grid-template-columns: 1fr; }
+  .dashboard-title { font-size: 26px; }
+  .session-title { font-size: 26px; }
+  .gate-card { width: min(100%, 380px); padding: 26px 22px; }
+  #gate-overlay { padding: 22px; justify-content: flex-start; overflow-y: auto; }
+  .gate-brand { margin: 40px 0 26px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     ACCESS GATE
+════════════════════════════════════════════════════ -->
+<div id="gate-overlay">
+  <div class="gate-brand">
+    <div class="gate-eyebrow">BCTR · Cornell University</div>
+    <div class="gate-title">Cornell Translational Research<br>Summer Institute 2026</div>
+    <div class="gate-subtitle">June 28–30 · Ithaca, New York</div>
+    <div class="gate-divider"></div>
+  </div>
+
+  <div id="gate-step-pass">
+    <div class="gate-card">
+      <div>
+        <div class="gate-label">Access Code</div>
+        <div class="gate-input-wrap">
+          <input id="gate-pass-input" class="gate-input" type="password"
+                 placeholder="Enter your access code"
+                 autocomplete="off"
+                 onkeydown="if(event.key==='Enter')gateCheckPass()">
+          <button class="gate-pass-toggle" type="button" onclick="togglePassVisibility()">Show</button>
+        </div>
+      </div>
+      <div id="gate-pass-error" class="gate-error"></div>
+      <button class="gate-btn" onclick="gateCheckPass()">Continue →</button>
+    </div>
+  </div>
+
+  <div id="gate-step-name">
+    <div class="gate-card">
+      <div>
+        <div class="gate-label">Your Name</div>
+        <input id="gate-name-input" class="gate-input" type="text"
+               placeholder="First and last name"
+               onkeydown="if(event.key==='Enter')gateCheckName()">
+      </div>
+      <div id="gate-name-error" class="gate-error"></div>
+      <button class="gate-btn" onclick="gateCheckName()">Enter the Institute →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-eyebrow">BCTR · Cornell University</div>
+    <div class="brand-name">Translational Research Summer Institute</div>
+    <div class="brand-sub">CTRSI 2026 · June 28–30</div>
+  </div>
+
+  <div class="dashboard-nav" style="padding-top:14px;">
+    <button class="dashboard-btn active" id="dashboardNavBtn" onclick="showDashboard()">
+      <span class="dashboard-icon"></span>
+      <span>Overview</span>
+    </button>
+  </div>
+
+  <div class="sidebar-section-label">Program Modules</div>
+  <nav class="module-nav" id="moduleNav">
+    <!-- rendered by JS -->
+  </nav>
+
+  <div class="sidebar-progress" aria-label="Institute progress">
+    <div class="sidebar-progress-label">
+      <span>Your Progress</span>
+      <span id="sidebarProgressText">0%</span>
+    </div>
+    <div class="sidebar-progress-track">
+      <div class="sidebar-progress-fill" id="sidebarProgressFill"></div>
+    </div>
+  </div>
+
+  <div class="sidebar-legend">
+    <div class="legend-title">Topic Areas</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#2B2B2B"></div><div class="legend-label">Opening Evening</div></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#B81C2E"></div><div class="legend-label">Foundations of TR</div></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#5C6B5A"></div><div class="legend-label">Building Relationships</div></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#2B5E8A"></div><div class="legend-label">Practical Methods</div></div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#7A5230"></div><div class="legend-label">Project Planning</div></div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════
+     TOPBAR
+════════════════════════════════════════════════════ -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-title">CTRSI 2026</div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-session" id="topbarSession">Select a module →</div>
+  </div>
+  <div class="topbar-actions">
+    <div id="attendee-greeting" style="font-size:12px;font-weight:500;color:rgba(255,255,255,0.4);letter-spacing:0.04em;margin-right:8px;"></div>
+    <button class="btn-outline" onclick="window.print()">⎙ Print</button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════ -->
+<main class="main">
+  <div class="content-wrap" id="contentWrap">
+    <section class="dashboard-panel active" id="dashboardPanel" aria-label="Institute overview dashboard">
+      <!-- rendered by JS -->
+    </section>
+    <div id="sessionPanels">
+      <!-- module panels rendered by JS -->
+    </div>
+  </div>
+</main>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+
+const TOPICS = {
+  opening:       { color: '#2B2B2B',  lt: '#EDEDEA', label: 'Opening Evening' },
+  foundations:   { color: '#B81C2E',  lt: '#F9E8EA', label: 'Foundations of TR' },
+  relationships: { color: '#5C6B5A',  lt: '#E8EDE7', label: 'Building Relationships' },
+  methods:       { color: '#2B5E8A',  lt: '#E5EFF6', label: 'Practical Methods' },
+  planning:      { color: '#7A5230',  lt: '#F5EDE3', label: 'Project Planning' },
+};
+
+const MODULES = [
+  // ─── OPENING EVENING, SUNDAY JUNE 28 ───
+  {
+    id: 'opening-panel',
+    day: 'Sunday, June 28',
+    dayShort: 'Sun June 28',
+    topic: 'opening',
+    title: 'Research in Community Panel',
+    time: 'Opening Evening',
+    speakers: 'Community Panelists',
+    description: 'A group of panelists share perspectives of stakeholders who use research evidence or would like to. Questions invite partnership stories from community members\' perspectives and surface the type of research evidence that speakers find useful. Insight into local processes are likely transferrable to other contexts.',
+    inquiry: 'What does it look like when research actually serves communities — and when it doesn\'t?',
+    goals: [
+      'Build excitement for the theme of relationships in translational research',
+      'Hear directly from community members about how research evidence shows up (or doesn\'t) in their work',
+      'Understand what types of evidence and partnership approaches practitioners find most useful',
+      'Begin mapping the landscape of potential community partners in your own context',
+    ],
+    activities: [
+      { text: 'Panel presentations from community stakeholders including elected officials, local organizations, health departments, and community partners', time: '40 min' },
+      { text: 'Moderated Q&A: What makes research partnerships work from a community perspective?', time: '20 min' },
+      { text: 'Informal networking and discussion', time: 'Open' },
+    ],
+    readings: [
+      'CTRSI Program Overview and Institute Goals (distributed in advance)',
+      'Brief bios and organization summaries for panel participants',
+    ],
+    reflectPrompts: [
+      'Which panelist perspective surprised you most — and why?',
+      'What kind of research evidence did panelists describe as most useful? How does that compare to what you produce?',
+      'Who would the analogous community voices be in your own context?',
+    ],
+    after: 'Jot down 2–3 names or organizations from your own context that you\'d want in a similar panel. Bring those to Day 1.',
+  },
+
+  // ─── DAY 1: MONDAY JUNE 29 ───
+  {
+    id: 'welcome',
+    day: 'Monday, June 29',
+    dayShort: 'Mon June 29',
+    topic: 'foundations',
+    title: 'Welcome & Orienting Session',
+    time: '9:00–10:00 AM',
+    speakers: 'Tony, Kristen, Elizabeth',
+    description: 'An opening that frames who we are, what translational research means, and what the CTRSI is here to do. Tony provides an overview of the BCTR and defines translational research — emphasizing multiple entry points rather than strict inclusion/exclusion criteria. Elizabeth leads a connection opportunity to learn who is in the room and map shared interests and expertise.',
+    inquiry: 'What do I mean when I say "translational research" — and how does this institute fit where I\'m headed?',
+    goals: [
+      'Understand the core definition and scope of translational research as used at BCTR',
+      'Recognize that TR has multiple valid entry points — your work likely already connects',
+      'Learn who is in the room: the expertise and interests that your fellow attendees bring',
+      'Understand the arc and goals of the full CTRSI program',
+    ],
+    activities: [
+      { text: 'Kristen introduces the CTRSI team and passes to Tony', time: '5 min' },
+      { text: 'Tony: Welcome, BCTR overview, and defining translational research with emphasis on multiple entry points', time: '25 min' },
+      { text: 'Elizabeth: Connection activity — learn who is in the room and map shared interests and expertise', time: '30 min' },
+    ],
+    readings: [
+      'CTRSI Program Schedule and Goals (distributed in advance)',
+    ],
+    reflectPrompts: [
+      'Before this session: Where would you say your current work sits in relation to translational research?',
+      'After the definition was presented: Did anything shift in how you think about your work\'s translational potential?',
+      'Whose expertise in the room do you want to connect with more by end of the institute?',
+    ],
+    after: 'No formal task — come energized for the full day ahead.',
+  },
+
+  {
+    id: 'pathways',
+    day: 'Monday, June 29',
+    dayShort: 'Mon June 29',
+    topic: 'foundations',
+    title: 'Pathways in Translational Research',
+    time: '10:00–11:00 AM',
+    speakers: 'Elizabeth & Kristen',
+    description: 'Translational research is most often iterative, but it helps to think about how to move from research to practice and practice to research. This session covers the Research to Practice pathway (T0–T4 model), Practice to Research (existing practice, program evaluation, theory of change), and Co-Production approaches including Research-Practice Partnerships (RPPs). Participants map where their current work fits and explore the challenges of research-informed knowledge mobilization.',
+    inquiry: 'Where does my work currently sit in the translational continuum — and where do I want it to go?',
+    goals: [
+      'Understand the T0–T4 model for moving research to practice, with emphasis on intervention design and evaluation',
+      'Understand the Practice to Research pathway, including program evaluation and theory of change',
+      'Distinguish Research-Practice Partnerships (RPPs) from other types of community partnerships',
+      'Map your own current work onto one or more of these translational models',
+    ],
+    activities: [
+      { text: 'Presentation: Research to Practice — T0 to T4 model with emphasis on intervention design and wide dissemination', time: '15 min' },
+      { text: 'Presentation: Practice to Research — program evaluation, theory of change, and existing practice as a starting point', time: '15 min' },
+      { text: 'Presentation: Co-Production and RPPs — what distinguishes a research-practice partnership from other collaborations', time: '10 min' },
+      { text: 'Self-mapping activity: Where does your current work fit? Do you see pathways for TR in your own scholarship?', time: '20 min' },
+    ],
+    readings: [
+      'Knapp, et al. (2019). Placing transdisciplinarity in context: A review of approaches to connect scholars, society and action. Sustainability.',
+      'Ward, V. (2019). Why, whose, what and how? A framework for knowledge mobilisers. Evidence & Policy.',
+      'Facing the challenges of research-informed knowledge mobilization (link provided)',
+    ],
+    reflectPrompts: [
+      'Which pathway — Research to Practice, Practice to Research, or Co-Production — feels most resonant with your current work?',
+      'Where do you see the most untapped translational potential in your scholarship?',
+      'What would it take to move your work one step further along the translational continuum?',
+    ],
+    after: 'No formal task — bring your self-mapping insights to the partnership session.',
+  },
+
+  {
+    id: 'partnerships',
+    day: 'Monday, June 29',
+    dayShort: 'Mon June 29',
+    topic: 'relationships',
+    title: 'Partnerships in Translational Research',
+    time: '11:00 AM–12:00 PM',
+    speakers: 'Rotating Stations: Elected Officials, Dept. of Health, 4H/Extension, Community Orgs, Schools',
+    description: 'A station-rotation session providing participants with the basic information they need to understand the professional and institutional norms for intended partners. Five stations each host a practitioner who shares what researchers need to know about partnering with their sector. Note-taking templates are provided. Each station rotates every 20 minutes.',
+    inquiry: 'What do I need to know — and how do I need to show up — to build meaningful partnerships in each sector?',
+    goals: [
+      'Understand the professional norms, timelines, and communication preferences of five key partner types',
+      'Identify sector-specific considerations that researchers often overlook',
+      'Begin identifying who the analogous partners would be in your own institutional context',
+      'Appreciate the importance of building reciprocal partnerships and ethical considerations of inclusive knowledge mobilization',
+    ],
+    activities: [
+      { text: 'Brief framing talk: Why getting to know your audience is foundational to partnership (Elizabeth or Kristen)', time: '10 min' },
+      { text: 'Station 1: Elected officials — professional norms, timelines, and communication preferences', time: '20 min' },
+      { text: 'Station 2: Agency staff (Dept. of Health or similar) — institutional rhythms and evidence preferences', time: '20 min' },
+      { text: 'Station 3: Extension or 4H staff — community-embedded expertise and research partnership norms', time: '20 min' },
+      { text: 'Station 4: Schools or educators — academic year constraints, trust, and what useful evidence looks like', time: '20 min' },
+      { text: 'Station 5: Community nonprofits / youth-serving organizations — relational expectations and co-ownership', time: '20 min' },
+      { text: 'Closing: Jot down stakeholders in your own context — revisit tomorrow', time: '5 min' },
+    ],
+    readings: [
+      'Inclusive knowledge mobilization: tips for finding people and expertise to meet policy evidence needs (link provided)',
+      'Evaluating partnerships for improvement and impact — WT Grant Foundation resources (link provided)',
+    ],
+    reflectPrompts: [
+      'Which sector\'s norms and timelines surprised you most?',
+      'Which partner type is most relevant to your current work — and what would you need to learn before reaching out?',
+      'What does "reciprocal partnership" mean in your field? What would you offer, and what would you genuinely learn?',
+    ],
+    after: 'Use the note-taking template to capture 2–3 actionable insights per station. Bring it to Day 2.',
+  },
+
+  {
+    id: 'tr-panel',
+    day: 'Monday, June 29',
+    dayShort: 'Mon June 29',
+    topic: 'relationships',
+    title: 'Translational Research Panel',
+    time: '1:00–2:30 PM',
+    speakers: 'BCTR Colleagues: Karl, Martha, Neil, Angela (TBD)',
+    description: 'BCTR colleagues share real-world examples of translational research — the benefits, the challenges, and the honest realities of community partnership. The moderator leads Q&A after brief introductions. Questions focus on how partnerships form, what makes them meaningful, how community partners influence research direction, and what sustains them long-term.',
+    inquiry: 'What does translational research actually look like in practice — and what should I expect?',
+    goals: [
+      'Hear concrete examples of translational research from BCTR colleagues across different project types',
+      'Understand how research-community partnerships form and what sustains them over time',
+      'Learn how community partners have changed the course of researchers\' work',
+      'Develop a realistic picture of the benefits and challenges of translational work',
+    ],
+    activities: [
+      { text: 'Moderator introduction of panel and framing', time: '5 min' },
+      { text: 'Brief project introductions from each panelist', time: '20 min' },
+      { text: 'Moderated panel Q&A: How did your partnership form? What advice do you have for those starting out?', time: '30 min' },
+      { text: 'Q&A continued: How has a community partner influenced or changed your research? How do you define impact?', time: '20 min' },
+      { text: 'Q&A continued: What advice do you have for sustaining partnerships long-term?', time: '10 min' },
+      { text: 'Open audience Q&A', time: '15 min' },
+    ],
+    readings: [],
+    reflectPrompts: [
+      'Which panelist\'s experience most closely mirrors the translational work you aspire to do?',
+      'What was the most honest or unexpected thing a panelist shared about the challenges of partnership?',
+      'What question do you wish the panel had been asked?',
+    ],
+    after: 'No formal task — bring your reflections to the special topics breakouts.',
+  },
+
+  {
+    id: 'breakouts',
+    day: 'Monday, June 29',
+    dayShort: 'Mon June 29',
+    topic: 'methods',
+    title: 'Special Topics Breakouts',
+    time: '2:45–3:45 PM',
+    speakers: 'Breakout Facilitators (TBD)',
+    description: 'Attendees choose one in-depth breakout session for focused learning on a topic of their choice. Each 45-minute interactive session introduces a specialized topic, ties it to translational research, gives participants a chance to practice or interact, and provides resources for further learning. Topics include: YPAR/Participatory Methods, Technology & TR (AI in translational work), and the CITRA Research-to-Practice Consensus Model.',
+    inquiry: 'Which dimension of translational research practice do I most want to develop?',
+    goals: [
+      'Deepen knowledge in one specialized area of translational research practice',
+      'Experience interactive, practice-oriented learning on your chosen topic',
+      'Connect your chosen topic to the broader TR frameworks introduced earlier in the day',
+      'Leave with resources to continue learning on your topic after the institute',
+    ],
+    activities: [
+      { text: 'Breakout Option A: YPAR / Participatory Methods — youth participatory action research and community-led inquiry', time: '45 min' },
+      { text: 'Breakout Option B: Technology & TR — AI in translational research, data infrastructure, and digital tools for community partnership', time: '45 min' },
+      { text: 'Breakout Option C: CITRA Research-to-Practice Consensus Model — structured approach to moving research into practice settings', time: '45 min' },
+    ],
+    readings: [
+      'The RITHM Project: Promise and pitfalls of AI in community research contexts (therithmproject.org)',
+      'Breakout-specific pre-readings distributed by session leads (if provided)',
+    ],
+    reflectPrompts: [
+      'Which breakout did you choose — and why?',
+      'What was the most practically applicable thing you learned in your breakout?',
+      'How would you explain your breakout topic to a community partner who has no academic background?',
+    ],
+    after: 'No formal task.',
+  },
+
+  {
+    id: 'keynote',
+    day: 'Monday, June 29',
+    dayShort: 'Mon June 29',
+    topic: 'methods',
+    title: 'Keynote: Adam Gamoran',
+    time: '4:00–5:00 PM',
+    speakers: 'Adam Gamoran, President, William T. Grant Foundation',
+    description: 'Adam Gamoran provides leadership for the William T. Grant Foundation\'s strategic direction and shapes its agenda and tactics as President. Since arriving at the Foundation, he launched a new initiative to support research on reducing inequality in youth outcomes, and has continued the Foundation\'s ongoing work to improve the use of research evidence in policy and practice decisions that affect young people.',
+    inquiry: 'What does the use of research evidence in policy and practice look like at the highest levels — and what does that mean for how I do my work?',
+    goals: [
+      'Gain a national-level perspective on the use of research evidence in policy and practice',
+      'Understand the William T. Grant Foundation\'s strategic priorities in reducing inequality and building the field',
+      'Connect the day\'s learning to a broader landscape of TR funders and knowledge systems',
+      'Engage directly with a leading figure in the field through Q&A',
+    ],
+    activities: [
+      { text: 'Keynote address by Adam Gamoran', time: '40 min' },
+      { text: 'Audience Q&A', time: '20 min' },
+    ],
+    readings: [
+      'William T. Grant Foundation: Research on Reducing Inequality (wtgrantfoundation.org)',
+      'Foundation overview and current funding priorities (distributed if provided)',
+    ],
+    reflectPrompts: [
+      'What from the keynote challenged or expanded how you think about impact?',
+      'What does the Foundation\'s focus on "use of research evidence" mean for the kind of work you want to do?',
+      'What question would you have asked if you had one-on-one time with Gamoran?',
+    ],
+    after: 'Rest up for Day 2.',
+  },
+
+  // ─── DAY 2: TUESDAY JUNE 30 ───
+  {
+    id: 'funding-panel',
+    day: 'Tuesday, June 30',
+    dayShort: 'Tue June 30',
+    topic: 'planning',
+    title: 'Funding Landscape Panel',
+    time: '9:00–10:15 AM',
+    speakers: 'Tony + 3–5 Funders (TBD)',
+    description: 'Tony brings together 3–5 funders to share their experience and perspective on funding translational research. The session explores timelines, grant mechanisms that support translational work, consortium funding opportunities, and what funders look for when evaluating TR proposals. Participants come with questions and leave with a clearer picture of the funding landscape for their own work.',
+    inquiry: 'What does the funding landscape for translational research look like — and where does my work fit?',
+    goals: [
+      'Understand the key funders and grant mechanisms that support translational research',
+      'Learn how funders think about TR initiatives and consortium funding',
+      'Understand the timelines and processes involved in major TR funding opportunities',
+      'Identify funding mechanisms that may be relevant to your own work',
+    ],
+    activities: [
+      { text: 'Tony introduces the panel and framing for translational research funding', time: '10 min' },
+      { text: 'Funder presentations: How does it work, what are the timelines, and what makes a strong TR proposal?', time: '45 min' },
+      { text: 'Q&A: Consortium funding, mechanisms, and advice for early-stage TR applicants', time: '20 min' },
+    ],
+    readings: [
+      'WT Grant Foundation funding opportunities and review criteria (wtgrantfoundation.org)',
+      'Overview of federal mechanisms supporting translational research (distributed if provided)',
+    ],
+    reflectPrompts: [
+      'Which funding mechanism feels most accessible or relevant to where your work is right now?',
+      'What would you need to do in the next 6–12 months to make yourself competitive for a TR grant?',
+      'What did you learn about how funders evaluate TR proposals that surprised you?',
+    ],
+    after: 'Make a note of 1–2 funding mechanisms you want to explore further. Bring this to the afternoon\'s career session.',
+  },
+
+  {
+    id: 'tr-workshop',
+    day: 'Tuesday, June 30',
+    dayShort: 'Tue June 30',
+    topic: 'planning',
+    title: 'Translational Research Workshop',
+    time: '10:15–11:00 AM',
+    speakers: 'Facilitators: Elizabeth & Kristen',
+    description: 'An opportunity for participants to receive structured feedback on a potential or in-progress translational research project. This working session is designed to help attendees think through the design, partnership strategy, and next steps for their own work — with real-time input from facilitators and peers.',
+    inquiry: 'What feedback would most help me move my translational research project forward?',
+    goals: [
+      'Articulate the core design and goals of a current or planned translational research project',
+      'Receive constructive feedback from facilitators and peers on project design and approach',
+      'Identify specific next steps for developing or strengthening the project',
+      'Practice the kind of collegial, constructive critique that builds stronger research-practice work',
+    ],
+    activities: [
+      { text: 'Brief project presentations from 2–3 volunteer participants (3–5 min each)', time: '15 min' },
+      { text: 'Structured group feedback using a shared protocol', time: '25 min' },
+      { text: 'Open conversation and additional questions from facilitators', time: '15 min' },
+    ],
+    readings: [],
+    reflectPrompts: [
+      'If you presented: What feedback was most useful — and what will you actually do differently as a result?',
+      'If you observed: What insight from someone else\'s project could apply to your own work?',
+      'What is the most important next step for your own TR project after today?',
+    ],
+    after: 'Note your 1–2 clearest next steps for your own project. Revisit them in a month.',
+  },
+
+  {
+    id: 'career',
+    day: 'Tuesday, June 30',
+    dayShort: 'Tue June 30',
+    topic: 'planning',
+    title: 'Aligning TR with Your Career',
+    time: '11:00–11:45 AM',
+    speakers: 'Panel: TTF & NTTF Faculty, Think Tank Researcher (TBD)',
+    description: 'A panel discussion on how translational research can fit into different career stages and university roles. Panelists share their experiences and advice for understanding what "impact" means in different fields, writing about TR work with promotion requirements in mind, and building partnerships while managing teaching, research, and service responsibilities.',
+    inquiry: 'How do I make translational research work within the real structures and demands of my career?',
+    goals: [
+      'Understand how TR fits differently across tenure-track, non-tenure-track, and non-academic career contexts',
+      'Learn how to write about TR work in ways that speak to promotion and tenure criteria',
+      'Develop strategies for building and maintaining partnerships alongside other professional responsibilities',
+      'Gain a realistic picture of what TR looks like at different career stages',
+    ],
+    activities: [
+      { text: 'Brief panelist introductions and current TR work', time: '10 min' },
+      { text: 'Panel Q&A: How does TR fit with your career stage and role?', time: '15 min' },
+      { text: 'Panel Q&A: How do you write about TR for promotion? What counts as "impact" in your field?', time: '10 min' },
+      { text: 'Panel Q&A: How do you sustain partnerships alongside teaching and service?', time: '10 min' },
+    ],
+    readings: [],
+    reflectPrompts: [
+      'Which panelist\'s career situation most resembles yours — and what was most applicable from their advice?',
+      'How does your institution currently define "impact"? Does TR work count — and how might you make the case that it should?',
+      'What is one concrete thing you can do in the next 90 days to integrate TR more intentionally into your work?',
+    ],
+    after: 'Draft a brief personal next-step plan (even just bullet points) before you leave today.',
+  },
+
+  {
+    id: 'closing',
+    day: 'Tuesday, June 30',
+    dayShort: 'Tue June 30',
+    topic: 'planning',
+    title: 'Closing Session',
+    time: '11:45 AM–12:00 PM',
+    speakers: 'Tony, Kristen, Elizabeth',
+    description: 'A closing that invites collective reflection on key takeaways and identifies what supports would help participants take their next steps. What did we learn? What did we build? What comes next?',
+    inquiry: 'What am I leaving with — and what will I actually do?',
+    goals: [
+      'Synthesize key takeaways from the full two days of CTRSI programming',
+      'Name what supports would be most helpful for your next steps in translational research',
+      'Leave with a clear sense of 1–2 concrete actions you will take in the next 30 days',
+      'Connect with other attendees whose work overlaps with yours before departing',
+    ],
+    activities: [
+      { text: 'Group reflection: What are our key takeaways from the two days?', time: '10 min' },
+      { text: 'Discussion: What supports would help participants take their next steps?', time: '5 min' },
+      { text: 'Closing remarks and next steps from BCTR team', time: '5 min' },
+    ],
+    readings: [],
+    reflectPrompts: [
+      'What is the most important thing you are leaving CTRSI with?',
+      'What is one action you will take in the next 30 days — and who will you tell to hold you accountable?',
+      'Who at CTRSI do you want to stay in contact with, and how will you make that happen?',
+    ],
+    after: 'Send a brief email to one person you met at CTRSI within one week. Keep the connection alive.',
+  },
+];
+
+// ═══════════════════════════════════════════════════════
+// STORAGE / PROGRESS
+// ═══════════════════════════════════════════════════════
+
+const STORAGE_KEY = 'ctrsi2026Progress:v1';
+let progressData = {};
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    progressData = raw ? JSON.parse(raw) : {};
+  } catch(e) { progressData = {}; }
+}
+
+function saveProgress() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData)); } catch(e) {}
+}
+
+function getModuleProgress(moduleId) {
+  return progressData[moduleId] || {};
+}
+
+function isComplete(moduleId, type, index) {
+  const p = getModuleProgress(moduleId);
+  return !!(p[`${type}_${index}`]);
+}
+
+function setComplete(moduleId, type, index, value) {
+  if (!progressData[moduleId]) progressData[moduleId] = {};
+  progressData[moduleId][`${type}_${index}`] = value ? 1 : 0;
+  saveProgress();
+}
+
+function countModuleItems(mod) {
+  const goals = mod.goals.length;
+  const readings = mod.readings.length;
+  const afterTask = 1;
+  return goals + readings + afterTask;
+}
+
+function countModuleDone(mod) {
+  let done = 0;
+  mod.goals.forEach((_, i) => { if (isComplete(mod.id, 'goal', i)) done++; });
+  mod.readings.forEach((_, i) => { if (isComplete(mod.id, 'reading', i)) done++; });
+  if (isComplete(mod.id, 'after', 0)) done++;
+  return done;
+}
+
+function overallProgress() {
+  let total = 0, done = 0;
+  MODULES.forEach(m => {
+    total += countModuleItems(m);
+    done  += countModuleDone(m);
+  });
+  return { total, done, pct: total ? Math.round((done / total) * 100) : 0 };
+}
+
+// ═══════════════════════════════════════════════════════
+// ROUTING
+// ═══════════════════════════════════════════════════════
+
+let activeView = 'dashboard';
+let activeModuleId = null;
+let activeTab = 'overview';
+
+function setRoute(hash) {
+  history.pushState(null, '', `#${hash}`);
+  routeFromHash({ behavior: 'smooth' });
+}
+
+function routeFromHash({ behavior = 'smooth' } = {}) {
+  const hash = window.location.hash.replace('#', '') || 'dashboard';
+
+  // Parse tab
+  const parts = hash.split('-');
+  const mod = MODULES.find(m => m.id === hash || hash.startsWith(m.id + '-'));
+  const tabMatch = mod ? hash.replace(mod.id + '-', '') : null;
+  const tab = (mod && tabMatch && tabMatch !== mod.id) ? tabMatch : 'overview';
+
+  document.querySelectorAll('.dashboard-panel, .session-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.module-btn, .dashboard-btn').forEach(b => b.classList.remove('active'));
+
+  if (hash === 'dashboard' || !mod) {
+    document.getElementById('dashboardPanel').classList.add('active');
+    document.getElementById('dashboardNavBtn').classList.add('active');
+    activeView = 'dashboard';
+    document.getElementById('topbarSession').textContent = 'Overview';
+  } else {
+    const panel = document.getElementById(`panel-${mod.id}`);
+    if (panel) {
+      panel.classList.add('active');
+      activeModuleId = mod.id;
+      activeView = 'module';
+      document.getElementById('topbarSession').textContent = mod.title;
+
+      // Switch tab
+      panel.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tab);
+      });
+      panel.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.toggle('active', pane.id === `${mod.id}-${tab}`);
+      });
+
+      // Sidebar active
+      const btn = document.getElementById(`modBtn-${mod.id}`);
+      if (btn) btn.classList.add('active');
+    }
+  }
+
+  updateProgressUI();
+  window.scrollTo({ top: 0, behavior });
+}
+
+// ═══════════════════════════════════════════════════════
+// NAVIGATION BUILDER
+// ═══════════════════════════════════════════════════════
+
+function buildNav() {
+  const nav = document.getElementById('moduleNav');
+  nav.innerHTML = '';
+  let currentDay = null;
+
+  MODULES.forEach(mod => {
+    const topic = TOPICS[mod.topic];
+
+    if (mod.day !== currentDay) {
+      currentDay = mod.day;
+      const div = document.createElement('div');
+      div.className = 'sidebar-day-divider';
+      div.textContent = mod.dayShort;
+      nav.appendChild(div);
+    }
+
+    const total = countModuleItems(mod);
+    const done  = countModuleDone(mod);
+
+    const btn = document.createElement('button');
+    btn.className = 'module-btn';
+    btn.id = `modBtn-${mod.id}`;
+    btn.type = 'button';
+    btn.onclick = () => setRoute(mod.id);
+
+    btn.innerHTML = `
+      <div class="module-dot" style="background:${topic.color}"></div>
+      <div class="module-btn-info">
+        <div class="module-name">${escapeHTML(mod.title)}</div>
+        <div class="module-time">${escapeHTML(mod.time)}</div>
+      </div>
+      <div class="module-progress" id="navProg-${mod.id}">${done > 0 ? `${done}/${total}` : ''}</div>
+    `;
+    nav.appendChild(btn);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════════
+
+function buildDashboard() {
+  const panel = document.getElementById('dashboardPanel');
+  const { done, total, pct } = overallProgress();
+
+  // Group modules by day
+  const byDay = {};
+  MODULES.forEach(m => {
+    if (!byDay[m.day]) byDay[m.day] = [];
+    byDay[m.day].push(m);
+  });
+
+  const scheduleRows = MODULES.map(m => {
+    const topic = TOPICS[m.topic];
+    const mDone = countModuleDone(m);
+    const mTotal = countModuleItems(m);
+    return `
+      <div class="module-status-row">
+        <div>
+          <div class="module-status-name" style="font-size:11px">${escapeHTML(m.time)}</div>
+          <div class="module-status-meta">${escapeHTML(m.dayShort)}</div>
+        </div>
+        <button class="dashboard-link-button module-status-title" onclick="setRoute('${m.id}')">${escapeHTML(m.title)}</button>
+        <div>
+          <span class="status-pill ${mDone === mTotal && mTotal > 0 ? 'status-complete' : mDone > 0 ? 'status-in-progress' : 'status-not-started'}"
+            id="dashStatus-${m.id}">
+            ${mDone === mTotal && mTotal > 0 ? '✓ Done' : mDone > 0 ? `${mDone}/${mTotal}` : '—'}
+          </span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  panel.innerHTML = `
+    <div class="dashboard-hero">
+      <div>
+        <div class="dashboard-eyebrow">BCTR · Cornell University · June 2026</div>
+        <div class="dashboard-title">Cornell Translational Research<br>Summer Institute</div>
+        <div class="dashboard-subtitle">Track your progress through the institute modules — engage with learning goals, readings, and reflection prompts as you move through the program.</div>
+      </div>
+      <div class="dashboard-meter-card">
+        <div class="dashboard-meter-count" id="dashDoneCount">${done}</div>
+        <div class="dashboard-meter-label">of ${total} items complete</div>
+        <div class="dashboard-track">
+          <div class="dashboard-fill" id="dashFill" style="width:${pct}%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <div class="dashboard-card-title">Program Schedule</div>
+            <div class="dashboard-card-note">June 28–30 · 3 days</div>
+          </div>
+          <div class="module-status-grid">${scheduleRows}</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <div class="dashboard-card-title">About CTRSI</div>
+          </div>
+          <div class="dashboard-subtitle" style="color:var(--text-med); font-size:13px; line-height:1.65;">
+            The Cornell Translational Research Summer Institute brings together early career and newly curious senior scholars to explore how research moves into practice — and how practice shapes research.<br><br>
+            <strong>Theme:</strong> Relationships in Translational Research<br>
+            <strong>Audience:</strong> Early career and senior scholars new to TR<br>
+            <strong>Location:</strong> Ithaca, New York
+          </div>
+          <div class="dashboard-actions" style="margin-top:18px;">
+            <button class="dashboard-action" onclick="setRoute('opening-panel')">Start: Opening Evening →</button>
+          </div>
+        </div>
+
+        <div class="dashboard-card" style="margin-top:16px;">
+          <div class="dashboard-card-header">
+            <div class="dashboard-card-title">Topic Areas</div>
+          </div>
+          ${Object.entries(TOPICS).map(([key, t]) => `
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--gray-lt);">
+              <div style="width:10px;height:10px;border-radius:2px;background:${t.color};flex-shrink:0;"></div>
+              <div style="font-size:12.5px;color:var(--text-med);">${t.label}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════
+// MODULE PANELS
+// ═══════════════════════════════════════════════════════
+
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function buildModulePanels() {
+  const wrap = document.getElementById('sessionPanels');
+  wrap.innerHTML = '';
+
+  MODULES.forEach(mod => {
+    const topic = TOPICS[mod.topic];
+    const panel = document.createElement('div');
+    panel.className = 'session-panel';
+    panel.id = `panel-${mod.id}`;
+
+    const goalsHTML = mod.goals.map((g, i) => `
+      <div class="goal-item ${isComplete(mod.id, 'goal', i) ? 'done' : ''}"
+           onclick="toggleGoal(this)"
+           data-module-id="${mod.id}" data-idx="${i}">
+        <div class="goal-circle">✓</div>
+        <div class="goal-text">${escapeHTML(g)}</div>
+      </div>
+    `).join('');
+
+    const activitiesHTML = mod.activities.map(a => `
+      <div class="activity-card">
+        <div>
+          <div class="activity-text">${escapeHTML(a.text)}</div>
+          ${a.isNew ? '<span class="activity-new-badge">New</span>' : ''}
+        </div>
+        <div class="activity-time">${escapeHTML(a.time)}</div>
+      </div>
+    `).join('');
+
+    const readingsHTML = mod.readings.length ? mod.readings.map((r, i) => `
+      <div class="reading-item ${isComplete(mod.id, 'reading', i) ? 'done' : ''}"
+           onclick="toggleReading(this)"
+           data-module-id="${mod.id}" data-idx="${i}">
+        <div class="reading-check">✓</div>
+        <div class="reading-text">${escapeHTML(r)}</div>
+      </div>
+    `).join('') : '<div style="color:var(--text-lt);font-size:13px;padding:8px 0;">No pre-readings assigned for this session.</div>';
+
+    const promptsHTML = mod.reflectPrompts.map((p, i) => `
+      <div class="reflect-prompt-item">
+        <div class="prompt-num">${i+1}</div>
+        <div>${escapeHTML(p)}</div>
+      </div>
+    `).join('');
+
+    const total = countModuleItems(mod);
+    const done  = countModuleDone(mod);
+    const pct   = total ? Math.round((done / total) * 100) : 0;
+
+    panel.innerHTML = `
+      <div class="session-header">
+        <div class="session-eyebrow">
+          <span class="session-day-label">${escapeHTML(mod.day)}</span>
+          <span class="domain-pill" style="background:${topic.color}">${escapeHTML(topic.label)}</span>
+        </div>
+        <h1 class="session-title">${escapeHTML(mod.title)}</h1>
+        <div class="session-meta-row">
+          <span class="session-time-badge">${escapeHTML(mod.time)}</span>
+          <span class="session-speakers">${escapeHTML(mod.speakers)}</span>
+        </div>
+        <div class="session-status-line">
+          <span class="session-status-pill status-pill ${done === 0 ? 'status-not-started' : done === total ? 'status-complete' : 'status-in-progress'}"
+            id="statusPill-${mod.id}">
+            ${done === 0 ? 'Not Started' : done === total ? 'Complete' : 'In Progress'}
+          </span>
+        </div>
+        <div class="session-progress-row">
+          <div class="session-progress-text" id="progText-${mod.id}">${done} of ${total} complete</div>
+          <div class="session-progress-track">
+            <div class="session-progress-fill" id="progFill-${mod.id}" style="width:${pct}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="inquiry-block">
+        <div class="inquiry-label">Guiding Question</div>
+        <div class="inquiry-question">${escapeHTML(mod.inquiry)}</div>
+      </div>
+
+      <p class="session-description">${escapeHTML(mod.description)}</p>
+
+      <div class="tabs-bar">
+        <a class="tab-btn active" data-tab="overview" href="#${mod.id}-overview" onclick="switchTab(event, this, '${mod.id}', 'overview')">Overview</a>
+        <a class="tab-btn" data-tab="goals"    href="#${mod.id}-goals"    onclick="switchTab(event, this, '${mod.id}', 'goals')">Learning Goals</a>
+        <a class="tab-btn" data-tab="readings" href="#${mod.id}-readings" onclick="switchTab(event, this, '${mod.id}', 'readings')">Readings</a>
+        <a class="tab-btn" data-tab="reflect"  href="#${mod.id}-reflect"  onclick="switchTab(event, this, '${mod.id}', 'reflect')">Reflect</a>
+      </div>
+
+      <!-- OVERVIEW TAB -->
+      <section class="tab-pane active" id="${mod.id}-overview">
+        <div class="guide-cue">
+          <div class="guide-kicker">This Module</div>
+          <div class="guide-text">Review the agenda, activities, and speakers for this session. Track your learning goals and readings in the other tabs.</div>
+        </div>
+        <div class="section-hd">Agenda & Activities</div>
+        <div class="activities-list">${activitiesHTML}</div>
+      </section>
+
+      <!-- GOALS TAB -->
+      <section class="tab-pane" id="${mod.id}-goals">
+        <div class="guide-cue">
+          <div class="guide-kicker">Check Off as You Go</div>
+          <div class="guide-text">Click each goal to mark it complete as you engage with this session's content. These track your engagement across the module.</div>
+        </div>
+        <div class="goals-list">${goalsHTML}</div>
+      </section>
+
+      <!-- READINGS TAB -->
+      <section class="tab-pane" id="${mod.id}-readings">
+        <div class="guide-cue">
+          <div class="guide-kicker">Before or During</div>
+          <div class="guide-text">Click a reading to mark it complete. Pre-session readings help you get more out of the live discussion.</div>
+        </div>
+        <div class="readings-card">${readingsHTML}</div>
+
+        ${mod.after !== 'No formal task — come energized for the full day ahead.' && mod.after !== 'No formal task — bring your self-mapping insights to the partnership session.' && mod.after !== 'No formal task — bring your reflections to the special topics breakouts.' && mod.after !== 'Rest up for Day 2.' && mod.after !== 'No formal task.' ? `
+        <div class="section-hd" style="margin-top:22px;">After This Session</div>
+        <div class="phase-card">
+          <div class="phase-card-header">
+            <div class="phase-icon" style="background:${topic.color}22;color:${topic.color}">→</div>
+            <div class="phase-card-title">Take-Away Task</div>
+          </div>
+          <div class="phase-task-text">${escapeHTML(mod.after)}</div>
+          <div class="task-check-wrap">
+            <input type="checkbox" id="check-after-${mod.id}"
+              ${isComplete(mod.id, 'after', 0) ? 'checked' : ''}
+              onchange="toggleAfter(this, '${mod.id}')">
+            <label for="check-after-${mod.id}">Mark complete when done</label>
+          </div>
+        </div>
+        ` : `
+        <div class="section-hd" style="margin-top:22px;">After This Session</div>
+        <div class="phase-card">
+          <div class="phase-card-header">
+            <div class="phase-icon" style="background:${topic.color}22;color:${topic.color}">→</div>
+            <div class="phase-card-title">Take-Away Task</div>
+          </div>
+          <div class="phase-task-text">${escapeHTML(mod.after)}</div>
+          <div class="task-check-wrap">
+            <input type="checkbox" id="check-after-${mod.id}"
+              ${isComplete(mod.id, 'after', 0) ? 'checked' : ''}
+              onchange="toggleAfter(this, '${mod.id}')">
+            <label for="check-after-${mod.id}">Mark complete</label>
+          </div>
+        </div>
+        `}
+      </section>
+
+      <!-- REFLECT TAB -->
+      <section class="tab-pane" id="${mod.id}-reflect">
+        <div class="guide-cue">
+          <div class="guide-kicker">After the Session</div>
+          <div class="guide-text">Use these prompts during or after the session to capture what shifted in your thinking.</div>
+        </div>
+        <div class="reflect-prompts">${promptsHTML}</div>
+      </section>
+    `;
+
+    wrap.appendChild(panel);
+  });
+}
+
+function switchTab(event, btn, moduleId, tab) {
+  event.preventDefault();
+  const panel = document.getElementById(`panel-${moduleId}`);
+  panel.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  panel.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const pane = document.getElementById(`${moduleId}-${tab}`);
+  if (pane) pane.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════
+// TOGGLE HANDLERS
+// ═══════════════════════════════════════════════════════
+
+function toggleGoal(el) {
+  const moduleId = el.dataset.moduleId;
+  const idx = Number(el.dataset.idx);
+  const next = !isComplete(moduleId, 'goal', idx);
+  setComplete(moduleId, 'goal', idx, next);
+  el.classList.toggle('done', next);
+  updateProgressUI();
+}
+
+function toggleReading(el) {
+  const moduleId = el.dataset.moduleId;
+  const idx = Number(el.dataset.idx);
+  const next = !isComplete(moduleId, 'reading', idx);
+  setComplete(moduleId, 'reading', idx, next);
+  el.classList.toggle('done', next);
+  updateProgressUI();
+}
+
+function toggleAfter(checkbox, moduleId) {
+  setComplete(moduleId, 'after', 0, checkbox.checked);
+  updateProgressUI();
+}
+
+// ═══════════════════════════════════════════════════════
+// PROGRESS UI UPDATE
+// ═══════════════════════════════════════════════════════
+
+function updateProgressUI() {
+  const { done, total, pct } = overallProgress();
+
+  const fillEl = document.getElementById('sidebarProgressFill');
+  const textEl = document.getElementById('sidebarProgressText');
+  if (fillEl) fillEl.style.width = pct + '%';
+  if (textEl) textEl.textContent = pct + '%';
+
+  const dashFill = document.getElementById('dashFill');
+  const dashCount = document.getElementById('dashDoneCount');
+  if (dashFill) dashFill.style.width = pct + '%';
+  if (dashCount) dashCount.textContent = done;
+
+  MODULES.forEach(mod => {
+    const mDone  = countModuleDone(mod);
+    const mTotal = countModuleItems(mod);
+    const mPct   = mTotal ? Math.round((mDone / mTotal) * 100) : 0;
+
+    const navProg = document.getElementById(`navProg-${mod.id}`);
+    if (navProg) navProg.textContent = mDone > 0 ? `${mDone}/${mTotal}` : '';
+
+    const btn = document.getElementById(`modBtn-${mod.id}`);
+    if (btn) btn.classList.toggle('complete', mDone === mTotal && mTotal > 0);
+
+    const progFill = document.getElementById(`progFill-${mod.id}`);
+    if (progFill) progFill.style.width = mPct + '%';
+
+    const progText = document.getElementById(`progText-${mod.id}`);
+    if (progText) progText.textContent = `${mDone} of ${mTotal} complete`;
+
+    const pill = document.getElementById(`statusPill-${mod.id}`);
+    if (pill) {
+      pill.className = 'session-status-pill status-pill ' + (mDone === 0 ? 'status-not-started' : mDone === mTotal ? 'status-complete' : 'status-in-progress');
+      pill.textContent = mDone === 0 ? 'Not Started' : mDone === mTotal ? 'Complete' : 'In Progress';
+    }
+
+    const dashStatus = document.getElementById(`dashStatus-${mod.id}`);
+    if (dashStatus) {
+      dashStatus.className = 'status-pill ' + (mDone === 0 ? 'status-not-started' : mDone === mTotal ? 'status-complete' : 'status-in-progress');
+      dashStatus.textContent = mDone === mTotal && mTotal > 0 ? '✓ Done' : mDone > 0 ? `${mDone}/${mTotal}` : '—';
+    }
+  });
+}
+
+function showDashboard() {
+  setRoute('dashboard');
+}
+
+// ═══════════════════════════════════════════════════════
+// GATE LOGIC
+// ═══════════════════════════════════════════════════════
+
+const PASSCODE = 'ctrsi_2026';
+let attendeeName = '';
+
+function togglePassVisibility() {
+  const input = document.getElementById('gate-pass-input');
+  const toggle = document.querySelector('.gate-pass-toggle');
+  const showing = input.type === 'text';
+  input.type = showing ? 'password' : 'text';
+  if (toggle) toggle.textContent = showing ? 'Show' : 'Hide';
+  input.focus();
+}
+
+function gateCheckPass() {
+  const val = document.getElementById('gate-pass-input').value.trim();
+  if (val === PASSCODE) {
+    document.getElementById('gate-step-pass').style.display = 'none';
+    document.getElementById('gate-step-name').style.display = 'block';
+    setTimeout(() => document.getElementById('gate-name-input').focus(), 50);
+  } else {
+    document.getElementById('gate-pass-error').textContent = 'Incorrect access code. Please try again.';
+    document.getElementById('gate-pass-input').value = '';
+  }
+}
+
+function gateCheckName() {
+  const val = document.getElementById('gate-name-input').value.trim();
+  if (val.length < 2) {
+    document.getElementById('gate-name-error').textContent = 'Please enter your full name.';
+    return;
+  }
+  attendeeName = val;
+  const greeting = document.getElementById('attendee-greeting');
+  if (greeting) greeting.textContent = 'Welcome, ' + attendeeName.split(' ')[0];
+  const overlay = document.getElementById('gate-overlay');
+  overlay.classList.add('fade-out');
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    routeFromHash({ behavior: 'auto' });
+  }, 500);
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+
+loadProgress();
+buildNav();
+buildModulePanels();
+buildDashboard();
+
+if (!window.location.hash) {
+  history.replaceState(null, '', '#dashboard');
+}
+window.addEventListener('hashchange', () => routeFromHash({ behavior: 'smooth' }));
+routeFromHash({ behavior: 'auto' });
+</script>
+</body>
+</html>
