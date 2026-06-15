@@ -1837,26 +1837,15 @@ body {
 
 /* ─── RESPONSIVE ─────────────────────────────────────── */
 @media screen and (max-width: 900px) {
-  body { display: block; }
-  .sidebar {
-    position: static;
-    width: 100%;
-    min-width: 0;
-  }
-  .module-nav {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2px;
-  }
   .sidebar-legend { display: none; }
   .topbar {
     position: sticky;
-    left: 0;
+    left: 0 !important;
     padding: 0 18px;
   }
   .topbar-session,
   .topbar-divider { display: none; }
-  .main { margin-left: 0; padding-top: 0; }
+  .main { margin-left: 0 !important; padding-top: 0; }
   .content-wrap { padding: 0 18px 72px; }
   .dashboard-hero,
   .dashboard-grid,
@@ -1875,9 +1864,217 @@ body {
   .gate-brand { margin: 40px 0 26px; }
 }
 
+/* ─── COLLAPSIBLE MOBILE SIDEBAR ──────────────────────── */
+.topbar-hamburger {
+  display: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--charcoal);
+  border-radius: 6px;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+.topbar-hamburger:hover { background: var(--gray-lt); }
+.hamburger-icon { display: flex; flex-direction: column; gap: 5px; width: 20px; }
+.hamburger-icon span {
+  display: block; height: 2px;
+  background: var(--charcoal); border-radius: 2px;
+  transition: transform 0.22s, opacity 0.22s;
+}
+.sidebar-open .hamburger-icon span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.sidebar-open .hamburger-icon span:nth-child(2) { opacity: 0; }
+.sidebar-open .hamburger-icon span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.sidebar-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(43,21,32,0.45);
+  z-index: 150;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+}
+
+@media screen and (max-width: 900px) {
+  .topbar-hamburger { display: flex; align-items: center; }
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important; left: 0 !important; bottom: 0 !important;
+    width: 280px !important; min-width: 0 !important;
+    transform: translateX(-100%);
+    transition: transform 0.26s cubic-bezier(.4,0,.2,1);
+    z-index: 200;
+  }
+  .sidebar-open .sidebar { transform: translateX(0); }
+  .sidebar-open .sidebar-backdrop { display: block; }
+}
+
+/* ─── SKIP-TO-CONTENT (accessibility) ─────────────────── */
+.skip-link {
+  position: fixed; top: -100%; left: 12px; z-index: 10000;
+  padding: 8px 18px;
+  background: var(--charcoal); color: var(--white);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px; font-weight: 700;
+  border-radius: 0 0 8px 8px; text-decoration: none;
+  transition: top 0.15s;
+}
+.skip-link:focus { top: 0; outline: 2px solid var(--yellow); outline-offset: 0; }
+
+/* ─── FOCUS STYLES (accessibility) ────────────────────── */
+:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
+
+/* ─── PREV / NEXT MODULE NAV ───────────────────────────── */
+.module-nav-footer {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 12px;
+  margin-top: 40px; padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.module-nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 16px;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px; font-weight: 600;
+  color: var(--text-med); cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+  max-width: 44%;
+}
+.module-nav-btn:hover { border-color: var(--charcoal); background: var(--gray-lt); }
+.module-nav-btn.next-btn { flex-direction: row-reverse; text-align: right; }
+.module-nav-label {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-lt); display: block; margin-bottom: 1px;
+}
+.module-nav-title {
+  font-size: 12px; font-weight: 600;
+  color: var(--charcoal);
+  white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 160px;
+}
+.module-nav-arrow { font-size: 16px; color: var(--text-lt); flex-shrink: 0; }
+
+/* ─── QUICK NOTES ──────────────────────────────────────── */
+.quick-notes-wrap {
+  margin-top: 26px; padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+.quick-notes-label {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-lt); margin-bottom: 5px;
+}
+.quick-notes-hint {
+  font-size: 12px; color: var(--text-lt);
+  line-height: 1.5; margin-bottom: 8px;
+}
+.quick-notes-textarea {
+  width: 100%; min-height: 88px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 12px 14px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13.5px; line-height: 1.65;
+  color: var(--text); background: var(--off-white);
+  resize: none; overflow: hidden; outline: none;
+  transition: border-color 0.18s, background 0.18s;
+}
+.quick-notes-textarea:focus { border-color: var(--gray-mid); background: var(--white); }
+.quick-notes-textarea::placeholder { color: #C0B4A8; font-style: italic; }
+.quick-notes-footer {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-top: 5px;
+}
+.quick-notes-wordcount { font-size: 10px; color: var(--text-lt); }
+.quick-notes-save {
+  font-size: 10px; color: transparent;
+  transition: color 0.3s; text-align: right;
+}
+.quick-notes-save.saving { color: var(--yellow); }
+.quick-notes-save.saved  { color: var(--gray-green); }
+
+/* ─── CONTINUE CARD (dashboard) ─────────────────────────── */
+.continue-banner {
+  background: var(--white);
+  border: 1.5px solid var(--yellow);
+  border-radius: 10px;
+  padding: 14px 20px;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: 100%;
+  text-align: left;
+  font-family: 'Source Sans 3', sans-serif;
+}
+.continue-banner:hover { background: var(--yellow-lt); }
+.continue-banner-text { flex: 1; min-width: 0; }
+.continue-banner-label {
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--yellow); display: block; margin-bottom: 2px;
+}
+.continue-banner-title {
+  font-size: 14px; font-weight: 600; color: var(--charcoal);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.continue-banner-arrow { font-size: 20px; color: var(--yellow); flex-shrink: 0; }
+
+/* ─── RESET LINK ───────────────────────────────────────── */
+.sidebar-reset-link {
+  display: block; margin: 8px 10px 18px;
+  padding: 6px 12px;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  background: none; border: none;
+  cursor: pointer; text-align: left;
+  font-family: 'Source Sans 3', sans-serif;
+  border-radius: 5px;
+  transition: color 0.15s;
+}
+.sidebar-reset-link:hover { color: rgba(255,255,255,0.45); }
+
+/* ─── DESKTOP READABILITY (≥901px) ──────────────────── */
+/* Phone sizes are fine as-is; bump reading content ~1.5–2px on laptop/desktop */
+@media screen and (min-width: 901px) {
+  .session-description      { font-size: 15.5px; line-height: 1.75; }
+  .goal-text                { font-size: 15px; }
+  .activity-text            { font-size: 15px; }
+  .reading-text             { font-size: 14.5px; }
+  .guide-text               { font-size: 14px; }
+  .reflect-after-text       { font-size: 15.5px; }
+  .reflect-prompt-item      { font-size: 15px; }
+  .resource-title           { font-size: 14px; }
+  .phase-task-text          { font-size: 15px; }
+  .next-action-text         { font-size: 15px; }
+  .module-portfolio-purpose { font-size: 15px; }
+  .module-portfolio-prompt  { font-size: 15px; }
+  .portfolio-full-purpose   { font-size: 14px; }
+  .portfolio-full-prompt    { font-size: 15px; }
+  .portfolio-textarea       { font-size: 15px; line-height: 1.75; }
+  .quick-notes-textarea     { font-size: 15px; line-height: 1.7; }
+  .dashboard-subtitle       { font-size: 15px; line-height: 1.7; }
+  .dashboard-welcome        { font-size: 14.5px; }
+  .module-status-title      { font-size: 13px; }
+  .module-nav-title         { font-size: 13px; }
+  .tab-btn                  { font-size: 13px; }
+  .module-name              { font-size: 12.5px; }
+  .inquiry-question         { font-size: 19px; }
+  .focus-title              { font-size: 24px; }
+  .portfolio-full-card .artifact-title { font-size: 18px; }
+}
+
 </style>
 </head>
 <body>
+
+<a class="skip-link" href="#contentWrap">Skip to content</a>
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()" aria-hidden="true"></div>
 
 <!-- ═══════════════════════════════════════════════════
      ACCESS GATE
@@ -1972,6 +2169,8 @@ body {
     <div class="legend-item"><div class="legend-swatch" style="background:#2B5E8A"></div><div class="legend-label">Practical Methods</div></div>
     <div class="legend-item"><div class="legend-swatch" style="background:#7A5230"></div><div class="legend-label">Project Planning</div></div>
   </div>
+
+  <button class="sidebar-reset-link" onclick="resetProgress()" aria-label="Reset all progress data">Reset progress</button>
 </aside>
 
 <!-- ═══════════════════════════════════════════════════
@@ -1979,6 +2178,11 @@ body {
 ════════════════════════════════════════════════════ -->
 <header class="topbar">
   <div class="topbar-left">
+    <button class="topbar-hamburger" onclick="toggleSidebar()" aria-label="Toggle navigation" aria-expanded="false" id="hamburgerBtn">
+      <div class="hamburger-icon" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+    </button>
     <div class="topbar-title">CTRSI 2026</div>
     <div class="topbar-divider"></div>
     <div class="topbar-session" id="topbarSession">Select a module →</div>
@@ -2500,8 +2704,10 @@ const MODULES = [
   },
 ];
 
-const STORAGE_KEY = 'ctrsi2026Progress:v1';
+const STORAGE_KEY      = 'ctrsi2026Progress:v1';
 const ATTENDEE_NAME_KEY = 'ctrsi2026AttendeeName:v1';
+const NOTES_PREFIX     = 'ctrsi2026:notes:';
+const LAST_MODULE_KEY  = 'ctrsi2026:lastModule';
 let progressData = {};
 
 function loadProgress() {
@@ -2540,6 +2746,78 @@ function updateAttendeeGreeting() {
     const first = attendeeFirstName();
     greeting.textContent = first ? 'Welcome, ' + first : '';
   }
+}
+
+// ── Notes storage ────────────────────────────────────
+function getNotes(moduleId) {
+  try { return localStorage.getItem(NOTES_PREFIX + moduleId) || ''; } catch(e) { return ''; }
+}
+function setNotes(moduleId, text) {
+  try { localStorage.setItem(NOTES_PREFIX + moduleId, text); } catch(e) {}
+}
+
+// ── Last visited module ──────────────────────────────
+function getLastModule() {
+  try { return localStorage.getItem(LAST_MODULE_KEY) || ''; } catch(e) { return ''; }
+}
+function setLastModule(moduleId) {
+  try { localStorage.setItem(LAST_MODULE_KEY, moduleId); } catch(e) {}
+}
+
+// ── Notes textarea handler ───────────────────────────
+const _noteTimers = {};
+function handleNotesInput(textarea, moduleId) {
+  const words = textarea.value.trim() ? textarea.value.trim().split(/\s+/).length : 0;
+  const wc = document.getElementById(`notes-wc-${moduleId}`);
+  if (wc) wc.textContent = words > 0 ? words + ' word' + (words === 1 ? '' : 's') : '';
+  const si = document.getElementById(`notes-save-${moduleId}`);
+  if (si) { si.textContent = 'saving…'; si.className = 'quick-notes-save saving'; }
+  clearTimeout(_noteTimers[moduleId]);
+  _noteTimers[moduleId] = setTimeout(() => {
+    setNotes(moduleId, textarea.value);
+    if (si) { si.textContent = 'saved'; si.className = 'quick-notes-save saved'; }
+  }, 700);
+  autoResize(textarea);
+}
+
+// ── Auto-resize textareas ────────────────────────────
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.max(88, el.scrollHeight) + 'px';
+}
+function initAutoResize() {
+  document.querySelectorAll('.portfolio-textarea, .quick-notes-textarea').forEach(ta => {
+    ta.addEventListener('input', () => autoResize(ta));
+    autoResize(ta);
+    // Populate word count for notes that already have text
+    if (ta.classList.contains('quick-notes-textarea') && ta.value.trim()) {
+      const moduleId = ta.id.replace('notes-', '');
+      const words = ta.value.trim().split(/\s+/).length;
+      const wc = document.getElementById(`notes-wc-${moduleId}`);
+      if (wc) wc.textContent = words + ' word' + (words === 1 ? '' : 's');
+    }
+  });
+}
+
+// ── Mobile sidebar ───────────────────────────────────
+function toggleSidebar() {
+  const open = document.body.classList.toggle('sidebar-open');
+  const btn = document.getElementById('hamburgerBtn');
+  if (btn) btn.setAttribute('aria-expanded', String(open));
+}
+function closeSidebar() {
+  document.body.classList.remove('sidebar-open');
+  const btn = document.getElementById('hamburgerBtn');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+// ── Reset progress ───────────────────────────────────
+function resetProgress() {
+  if (!confirm('Reset all progress?\n\nThis clears all goals, readings, notes, and portfolio entries. This cannot be undone.')) return;
+  Object.keys(localStorage)
+    .filter(k => k.startsWith('ctrsi2026'))
+    .forEach(k => localStorage.removeItem(k));
+  location.reload();
 }
 
 function getModuleProgress(moduleId) {
@@ -2613,7 +2891,9 @@ function routeFromHash({ behavior = 'smooth' } = {}) {
     document.getElementById('topbarSession').textContent = 'My Portfolio';
     buildPortfolio();
     updateProgressUI();
+    closeSidebar();
     window.scrollTo({ top: 0, behavior });
+    initAutoResize();
     return;
   }
 
@@ -2628,6 +2908,7 @@ function routeFromHash({ behavior = 'smooth' } = {}) {
       panel.classList.add('active');
       activeModuleId = mod.id;
       activeView = 'module';
+      setLastModule(mod.id);
       document.getElementById('topbarSession').textContent = mod.title;
 
       // Switch tab
@@ -2645,6 +2926,7 @@ function routeFromHash({ behavior = 'smooth' } = {}) {
   }
 
   updateProgressUI();
+  closeSidebar();
   window.scrollTo({ top: 0, behavior });
 }
 
@@ -2701,6 +2983,18 @@ function buildDashboard() {
     <div class="dashboard-welcome">Welcome back, <strong>${escapeHTML(firstName)}</strong>. Your CTRSI workspace is ready.</div>
   ` : '';
 
+  const lastModId = getLastModule();
+  const lastMod   = lastModId ? MODULES.find(m => m.id === lastModId) : null;
+  const continueBanner = lastMod ? `
+    <button class="continue-banner" onclick="setRoute('${lastMod.id}')" aria-label="Continue: ${escapeHTML(lastMod.title)}">
+      <div class="continue-banner-text">
+        <span class="continue-banner-label">Continue where you left off</span>
+        <span class="continue-banner-title">${escapeHTML(lastMod.title)}</span>
+      </div>
+      <span class="continue-banner-arrow">→</span>
+    </button>
+  ` : '';
+
   // Group modules by day
   const byDay = {};
   MODULES.forEach(m => {
@@ -2730,6 +3024,7 @@ function buildDashboard() {
   }).join('');
 
   panel.innerHTML = `
+    ${continueBanner}
     <div class="dashboard-hero">
       <div>
         <div class="dashboard-eyebrow">BCTR · Cornell University · June 2026</div>
@@ -2906,7 +3201,11 @@ function buildModulePanels() {
     const total = countModuleItems(mod);
     const done  = countModuleDone(mod);
     const pct   = total ? Math.round((done / total) * 100) : 0;
-    const hasAfterTask = mod.after && !['No formal task — come energized for the full day ahead.','No formal task — bring your self-mapping insights to the partnership session.','No formal task — bring your reflections to the special topics breakouts.','Rest up for Day 2.','No formal task.'].includes(mod.after);
+    const hasAfterTask = !!mod.after && !mod.after.startsWith('No formal task') && mod.after !== 'Rest up for Day 2.';
+    const savedNotes = getNotes(mod.id);
+    const modIdx = MODULES.indexOf(mod);
+    const prevMod = MODULES[modIdx - 1] || null;
+    const nextMod = MODULES[modIdx + 1] || null;
 
     panel.innerHTML = `
       <div class="session-header">
@@ -2952,10 +3251,25 @@ function buildModulePanels() {
       <section class="tab-pane active" id="${mod.id}-overview">
         <div class="guide-cue">
           <div class="guide-kicker">This Module</div>
-          <div class="guide-text">Review the agenda, activities, and speakers for this session. Track your learning goals and readings in the other tabs.</div>
+          <div class="guide-text">Review the agenda and activities for this session. Use the tabs above to track goals, readings, and your portfolio contribution.</div>
         </div>
         <div class="section-hd">Agenda & Activities</div>
         <div class="activities-list">${activitiesHTML}</div>
+
+        <div class="quick-notes-wrap">
+          <div class="quick-notes-label">Session Notes</div>
+          <div class="quick-notes-hint">Scratch space — jot anything down. Just for you, never sent anywhere.</div>
+          <textarea
+            class="quick-notes-textarea"
+            id="notes-${mod.id}"
+            placeholder="Type here during or after the session…"
+            oninput="handleNotesInput(this, '${mod.id}')"
+          >${escapeHTML(savedNotes)}</textarea>
+          <div class="quick-notes-footer">
+            <div class="quick-notes-wordcount" id="notes-wc-${mod.id}"></div>
+            <div class="quick-notes-save" id="notes-save-${mod.id}"></div>
+          </div>
+        </div>
       </section>
 
       <!-- GOALS TAB -->
@@ -3040,6 +3354,28 @@ function buildModulePanels() {
         </div>
         ${portfolioHTML}
       </section>
+
+      <!-- MODULE NAV FOOTER -->
+      <nav class="module-nav-footer" aria-label="Module navigation">
+        ${prevMod ? `
+          <button class="module-nav-btn" onclick="setRoute('${prevMod.id}')" aria-label="Previous: ${escapeHTML(prevMod.title)}">
+            <span class="module-nav-arrow">←</span>
+            <div>
+              <span class="module-nav-label">Previous</span>
+              <span class="module-nav-title">${escapeHTML(prevMod.title)}</span>
+            </div>
+          </button>
+        ` : '<div></div>'}
+        ${nextMod ? `
+          <button class="module-nav-btn next-btn" onclick="setRoute('${nextMod.id}')" aria-label="Next: ${escapeHTML(nextMod.title)}">
+            <div>
+              <span class="module-nav-label">Next</span>
+              <span class="module-nav-title">${escapeHTML(nextMod.title)}</span>
+            </div>
+            <span class="module-nav-arrow">→</span>
+          </button>
+        ` : '<div></div>'}
+      </nav>
     `;
 
     wrap.appendChild(panel);
@@ -3829,7 +4165,8 @@ function buildPortfolio() {
 // GATE LOGIC
 // ═══════════════════════════════════════════════════════
 
-const PASSCODE = 'ctrsi_2026';
+// SHA-256 of 'ctrsi2026' (normalized: lowercase, strip spaces/_/-)
+const PASSCODE_HASH = '385e8b9054891cfdc1fea5dfaf114e607396fa20739dd09bb5ae7c8017def55b';
 let attendeeName = '';
 
 function togglePassVisibility() {
@@ -3848,22 +4185,22 @@ function togglePassVisibility() {
   input.focus();
 }
 
-function gateCheckPass() {
+async function gateCheckPass() {
   const val = document.getElementById('gate-pass-input').value.trim();
   const normalized = val.toLowerCase().replace(/[\s_-]+/g, '');
-  const expected = PASSCODE.toLowerCase().replace(/[\s_-]+/g, '');
-  if (normalized === expected) {
+  const enc = new TextEncoder();
+  const buf = await crypto.subtle.digest('SHA-256', enc.encode(normalized));
+  const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  if (hex === PASSCODE_HASH) {
     document.getElementById('gate-step-pass').style.display = 'none';
     document.getElementById('gate-step-name').style.display = 'block';
     const nameInput = document.getElementById('gate-name-input');
     if (nameInput && attendeeName && !nameInput.value.trim()) nameInput.value = attendeeName;
-    setTimeout(() => {
-      const input = document.getElementById('gate-name-input');
-      if (input) input.focus();
-    }, 50);
+    setTimeout(() => { const inp = document.getElementById('gate-name-input'); if (inp) inp.focus(); }, 50);
   } else {
     document.getElementById('gate-pass-error').textContent = 'Incorrect access code. Please try again.';
     document.getElementById('gate-pass-input').value = '';
+    document.getElementById('gate-pass-input').focus();
   }
 }
 
@@ -3881,6 +4218,7 @@ function gateCheckName() {
   setTimeout(() => {
     overlay.style.display = 'none';
     routeFromHash({ behavior: 'auto' });
+    initAutoResize();
   }, 500);
 }
 
@@ -3895,11 +4233,20 @@ buildModulePanels();
 buildDashboard();
 buildPortfolio();
 
+// Auto-skip gate for returning users who already entered their name
+if (attendeeName) {
+  const overlay = document.getElementById('gate-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
 if (!window.location.hash) {
   history.replaceState(null, '', '#dashboard');
 }
 window.addEventListener('hashchange', () => routeFromHash({ behavior: 'smooth' }));
 routeFromHash({ behavior: 'auto' });
+
+// Init auto-resize for any textareas already in the DOM
+initAutoResize();
 </script>
 </body>
 </html>
