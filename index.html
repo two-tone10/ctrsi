@@ -372,7 +372,7 @@ body {
 }
 
 .content-wrap {
-  max-width: 960px;
+  max-width: 1160px;
   margin: 0 auto;
   padding: 0 44px 96px;
 }
@@ -2041,6 +2041,14 @@ body {
 
 /* ─── DESKTOP READABILITY (≥901px) ──────────────────── */
 @media screen and (min-width: 901px) {
+  /* Wider content area — tighter side padding so max-width converts to card width */
+  .content-wrap { padding-left: 32px; padding-right: 32px; }
+  /* Un-cap the subtitle/intro text so it fills the wider cards */
+  .dashboard-subtitle { max-width: none; }
+  .portfolio-intro    { max-width: none; }
+  .dashboard-hero     { padding: 32px 36px; }
+  .session-header     { padding: 32px 36px 28px; }
+
   /* Primary reading content */
   .session-description      { font-size: 17px; line-height: 1.78; }
   .goal-text                { font-size: 16px; line-height: 1.65; }
