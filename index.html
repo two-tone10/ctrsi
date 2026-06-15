@@ -53,8 +53,8 @@ body {
 
 /* ─── SIDEBAR ─────────────────────────────────────── */
 .sidebar {
-  width: 240px;
-  min-width: 240px;
+  width: 280px;
+  min-width: 280px;
   background: linear-gradient(180deg, #3B1F2B 0%, #2A1520 100%);
   display: flex;
   flex-direction: column;
@@ -298,7 +298,7 @@ body {
 .topbar {
   position: fixed;
   top: 0;
-  left: 240px;
+  left: 280px;
   right: 0;
   background: #FAF8F4;
   border-bottom: 1px solid #E8E2D8;
@@ -365,7 +365,7 @@ body {
 
 /* ─── MAIN ──────────────────────────────────────────── */
 .main {
-  margin-left: 240px;
+  margin-left: 280px;
   padding-top: 52px;
   flex: 1;
   min-height: 100vh;
@@ -2040,33 +2040,42 @@ body {
 .sidebar-reset-link:hover { color: rgba(255,255,255,0.45); }
 
 /* ─── DESKTOP READABILITY (≥901px) ──────────────────── */
-/* Phone sizes are fine as-is; bump reading content ~1.5–2px on laptop/desktop */
 @media screen and (min-width: 901px) {
-  .session-description      { font-size: 15.5px; line-height: 1.75; }
-  .goal-text                { font-size: 15px; }
-  .activity-text            { font-size: 15px; }
-  .reading-text             { font-size: 14.5px; }
-  .guide-text               { font-size: 14px; }
-  .reflect-after-text       { font-size: 15.5px; }
-  .reflect-prompt-item      { font-size: 15px; }
-  .resource-title           { font-size: 14px; }
-  .phase-task-text          { font-size: 15px; }
-  .next-action-text         { font-size: 15px; }
-  .module-portfolio-purpose { font-size: 15px; }
-  .module-portfolio-prompt  { font-size: 15px; }
-  .portfolio-full-purpose   { font-size: 14px; }
-  .portfolio-full-prompt    { font-size: 15px; }
-  .portfolio-textarea       { font-size: 15px; line-height: 1.75; }
-  .quick-notes-textarea     { font-size: 15px; line-height: 1.7; }
-  .dashboard-subtitle       { font-size: 15px; line-height: 1.7; }
-  .dashboard-welcome        { font-size: 14.5px; }
-  .module-status-title      { font-size: 13px; }
-  .module-nav-title         { font-size: 13px; }
-  .tab-btn                  { font-size: 13px; }
-  .module-name              { font-size: 12.5px; }
-  .inquiry-question         { font-size: 19px; }
-  .focus-title              { font-size: 24px; }
-  .portfolio-full-card .artifact-title { font-size: 18px; }
+  /* Primary reading content */
+  .session-description      { font-size: 17px; line-height: 1.78; }
+  .goal-text                { font-size: 16px; line-height: 1.65; }
+  .activity-text            { font-size: 16px; line-height: 1.65; }
+  .reading-text             { font-size: 15.5px; }
+  .guide-text               { font-size: 14.5px; line-height: 1.65; }
+  .reflect-after-text       { font-size: 16.5px; line-height: 1.75; }
+  .reflect-prompt-item      { font-size: 16px; line-height: 1.65; }
+  .resource-title           { font-size: 15px; }
+  .phase-task-text          { font-size: 16px; line-height: 1.68; }
+  .next-action-text         { font-size: 16px; }
+  /* Portfolio & notes */
+  .module-portfolio-purpose { font-size: 15.5px; line-height: 1.7; }
+  .module-portfolio-prompt  { font-size: 15.5px; line-height: 1.7; }
+  .portfolio-full-purpose   { font-size: 15px; line-height: 1.7; }
+  .portfolio-full-prompt    { font-size: 15.5px; line-height: 1.7; }
+  .portfolio-textarea       { font-size: 16px; line-height: 1.78; }
+  .quick-notes-textarea     { font-size: 16px; line-height: 1.72; }
+  /* Dashboard */
+  .dashboard-subtitle       { font-size: 15.5px; line-height: 1.72; }
+  .dashboard-welcome        { font-size: 15px; }
+  .module-status-title      { font-size: 14px; }
+  .module-status-name       { font-size: 13px !important; }
+  /* Nav & UI chrome */
+  .tab-btn                  { font-size: 14px; }
+  .module-name              { font-size: 13px; }
+  .module-time              { font-size: 10.5px; }
+  .module-nav-title         { font-size: 13.5px; }
+  .section-hd               { font-size: 11.5px; }
+  /* Headings */
+  .inquiry-question         { font-size: 21px; }
+  .focus-title              { font-size: 25px; }
+  .module-portfolio-title   { font-size: 22px; }
+  .portfolio-full-card .artifact-title { font-size: 19px; }
+  /* Resource chips / badges — leave small */
 }
 
 </style>
