@@ -2521,6 +2521,34 @@ body {
 }
 .lib-card-delete:hover { color: #B85050; border-color: #E5C0C0; }
 
+.lib-filter-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+
+.lib-filter-tab {
+  border: 1.5px solid var(--border);
+  background: none;
+  color: var(--text-med);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.lib-filter-tab:hover { border-color: var(--charcoal); color: var(--charcoal); }
+.lib-filter-tab.active { border-color: var(--red); background: var(--red-lt); color: var(--red-dk); }
+
+.lib-card-type {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--gray-lt);
+  color: var(--text-med);
+}
+
 /* ─── GATE AUTH STEP ──────────────────────────────────── */
 #gate-step-auth { display: none; }
 
@@ -5156,6 +5184,7 @@ async function deleteDiscMsg(id) {
 let _libResources  = [];
 let _libSelFile    = null;
 let _libSearchTmr  = null;
+let _libFilter     = 'all';
 
 function buildLibrary() {
   const panel = document.getElementById('libraryPanel');
@@ -5252,11 +5281,17 @@ function buildLibrary() {
         </div>
       </div>
 
+      <div class="lib-filter-tabs">
+        <button class="lib-filter-tab active" data-filter="all"  onclick="filterLib('all')">All</button>
+        <button class="lib-filter-tab" data-filter="file" onclick="filterLib('file')">📄 Files</button>
+        <button class="lib-filter-tab" data-filter="link" onclick="filterLib('link')">🔗 Links &amp; Videos</button>
+      </div>
       <div id="lib-list"><div class="disc-status">Loading resources…</div></div>
     </div>
   `;
 
-  loadResources('').then(r => renderLibResources(r));
+  _libFilter = 'all';
+  loadResources('').then(() => _libRender());
 }
 
 async function loadResources(search) {
@@ -5283,9 +5318,11 @@ function renderLibResources(resources) {
     const topic = mod ? TOPICS[mod.topic] : null;
     const date  = new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     const isOwn = r.user_id === getUserId();
-    const icon  = r.type === 'file' ? '📄' : '🔗';
+    const icon      = _libGetIcon(r);
+    const typeLabel = _libGetTypeLabel(r);
     const sizeLabel = r.file_size ? _libFmtSize(r.file_size) : '';
 
+    const typeChip   = '<span class="lib-card-type">' + typeLabel + '</span>';
     const moduleChip = mod && topic
       ? '<span class="lib-card-module" style="background:' + topic.lt + ';color:' + topic.color + '">' + escapeHTML(mod.title) + '</span>'
       : '';
@@ -5305,7 +5342,7 @@ function renderLibResources(resources) {
       +   '<div class="lib-card-title">' + escapeHTML(r.title) + '</div>'
       +   (r.description ? '<div class="lib-card-desc">' + escapeHTML(r.description) + '</div>' : '')
       +   '<div class="lib-card-meta">'
-      +     '<span class="lib-card-author">' + escapeHTML(r.user_name) + '</span>'
+      +     typeChip
       +     '<span class="lib-card-date">' + date + '</span>'
       +     moduleChip + sizeChip
       +   '</div>'
@@ -5322,11 +5359,66 @@ function _libFmtSize(bytes) {
   return (bytes / 1048576).toFixed(1) + ' MB';
 }
 
+function _libGetIcon(r) {
+  if (r.type === 'link') {
+    const u = (r.url || '').toLowerCase();
+    if (u.includes('youtube.com') || u.includes('youtu.be') || u.includes('vimeo.com')) return '▶️';
+    if (u.includes('github.com')) return '🐙';
+    if (u.includes('docs.google.com') || u.includes('drive.google.com')) return '📁';
+    if (u.includes('pubmed') || u.includes('ncbi.nlm') || u.includes('doi.org')) return '🔬';
+    if (u.includes('twitter.com') || u.includes('x.com')) return '🐦';
+    return '🔗';
+  }
+  const n = (r.file_name || '').toLowerCase();
+  if (n.endsWith('.pdf')) return '📑';
+  if (/\.(ppt|pptx|key)$/.test(n)) return '📊';
+  if (/\.(doc|docx)$/.test(n)) return '📝';
+  if (/\.(xls|xlsx|csv)$/.test(n)) return '📈';
+  if (/\.(png|jpg|jpeg|gif|webp|svg)$/.test(n)) return '🖼️';
+  if (/\.(mp4|mov|avi|mkv)$/.test(n)) return '🎬';
+  return '📄';
+}
+
+function _libGetTypeLabel(r) {
+  if (r.type === 'link') {
+    const u = (r.url || '').toLowerCase();
+    if (u.includes('youtube.com') || u.includes('youtu.be') || u.includes('vimeo.com')) return 'Video';
+    if (u.includes('github.com')) return 'GitHub';
+    if (u.includes('pubmed') || u.includes('ncbi.nlm')) return 'PubMed';
+    if (u.includes('doi.org')) return 'Paper';
+    if (u.includes('docs.google.com')) return 'Google Doc';
+    return 'Link';
+  }
+  const n = (r.file_name || '').toLowerCase();
+  if (n.endsWith('.pdf')) return 'PDF';
+  if (/\.(ppt|pptx|key)$/.test(n)) return 'Slides';
+  if (/\.(doc|docx)$/.test(n)) return 'Document';
+  if (/\.(xls|xlsx|csv)$/.test(n)) return 'Spreadsheet';
+  if (/\.(png|jpg|jpeg|gif|webp)$/.test(n)) return 'Image';
+  if (/\.(mp4|mov)$/.test(n)) return 'Video';
+  return 'File';
+}
+
+function _libRender() {
+  const filtered = _libFilter === 'all'
+    ? _libResources
+    : _libResources.filter(r => r.type === _libFilter);
+  renderLibResources(filtered);
+}
+
+function filterLib(type) {
+  _libFilter = type;
+  document.querySelectorAll('.lib-filter-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.filter === type);
+  });
+  _libRender();
+}
+
 function debounceLibSearch(value) {
   clearTimeout(_libSearchTmr);
   _libSearchTmr = setTimeout(async () => {
-    const resources = await loadResources(value || '');
-    renderLibResources(resources);
+    await loadResources(value || '');
+    _libRender();
   }, 350);
 }
 
@@ -5381,7 +5473,7 @@ async function submitLibLink() {
   document.getElementById('lib-link-module').value = '';
   hideLibAddForm();
 
-  loadResources('').then(r => renderLibResources(r));
+  loadResources('').then(() => _libRender());
 }
 
 function handleLibDrop(event) {
@@ -5405,7 +5497,7 @@ function setLibFile(file) {
   document.getElementById('lib-file-name-display').textContent = file.name + ' (' + _libFmtSize(file.size) + ')';
   document.getElementById('lib-drop-zone').style.display = 'none';
   const titleEl = document.getElementById('lib-file-title');
-  if (titleEl && !titleEl.value.trim()) {
+  if (titleEl) {
     titleEl.value = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
   }
 }
@@ -5462,7 +5554,7 @@ async function submitLibFile() {
   document.getElementById('lib-file-module').value = '';
   hideLibAddForm();
 
-  loadResources('').then(r => renderLibResources(r));
+  loadResources('').then(() => _libRender());
 }
 
 async function deleteLibResource(id) {
@@ -5479,7 +5571,7 @@ async function deleteLibResource(id) {
   await _sb.from('resources').delete().eq('id', id).eq('user_id', getUserId());
 
   const search = document.getElementById('lib-search-input')?.value || '';
-  loadResources(search).then(r => renderLibResources(r));
+  loadResources(search).then(() => _libRender());
 }
 </script>
 </body>
