@@ -2229,6 +2229,70 @@ body {
 .disc-vote-btn.voted { color: var(--red); border-color: #EDD0D8; background: var(--red-lt); }
 .disc-vote-btn:disabled { opacity: 0.5; cursor: default; }
 
+.disc-msg-controls { display: flex; gap: 4px; margin-left: auto; align-items: center; }
+
+.disc-ctrl-btn {
+  background: none;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-lt);
+  cursor: pointer;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'Source Sans 3', sans-serif;
+  letter-spacing: 0.02em;
+  transition: color 0.12s, background 0.12s;
+}
+.disc-ctrl-btn:hover { color: var(--charcoal); background: var(--gray-lt); }
+.disc-ctrl-del:hover { color: #B85050; background: #F9ECEC; }
+
+.disc-edit-input {
+  width: 100%;
+  border: 1.5px solid var(--yellow);
+  border-radius: 6px;
+  padding: 6px 9px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13.5px;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  resize: none;
+  min-height: 60px;
+  box-sizing: border-box;
+}
+
+.disc-edit-actions { display: flex; gap: 8px; margin-top: 6px; }
+
+.disc-edit-save {
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 13px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.disc-edit-save:hover:not(:disabled) { background: var(--red-dk); }
+.disc-edit-save:disabled { opacity: 0.6; cursor: default; }
+
+.disc-edit-cancel {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 5px 13px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-med);
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.disc-edit-cancel:hover { border-color: var(--charcoal); }
+
 /* ─── RESOURCE LIBRARY ─────────────────────────────────── */
 .lib-toolbar {
   display: flex;
@@ -4914,16 +4978,23 @@ function _discMsgHTML(m) {
   const voteInner = voteCount > 0
     ? '▲ <span class="disc-vote-count">' + voteCount + '</span>'
     : '▲';
-  return '<div class="disc-msg' + (isOwn ? ' disc-msg-own' : '') + '">'
+  const controls = isOwn
+    ? '<div class="disc-msg-controls">'
+    +   '<button class="disc-ctrl-btn" onclick="editDiscMsg(\'' + m.id + '\')">Edit</button>'
+    +   '<button class="disc-ctrl-btn disc-ctrl-del" onclick="deleteDiscMsg(\'' + m.id + '\')">Delete</button>'
+    + '</div>'
+    : '';
+  return '<div class="disc-msg' + (isOwn ? ' disc-msg-own' : '') + '" id="disc-msg-' + m.id + '">'
     + '<div class="disc-msg-header">'
     +   '<span class="disc-msg-name">' + escapeHTML(m.user_name) + '</span>'
     +   '<span class="disc-msg-time">' + time + '</span>'
     + '</div>'
-    + '<div class="disc-msg-body">' + escapeHTML(m.body) + '</div>'
+    + '<div class="disc-msg-body" id="disc-body-' + m.id + '">' + escapeHTML(m.body) + '</div>'
     + '<div class="disc-msg-footer">'
     +   '<button class="disc-vote-btn' + (hasVoted ? ' voted' : '') + '" id="vote-btn-' + m.id + '" onclick="toggleVote(\'' + m.id + '\')">'
     +     voteInner
     +   '</button>'
+    +   controls
     + '</div>'
     + '</div>';
 }
@@ -5023,6 +5094,60 @@ async function toggleVote(messageId) {
     }
   }
   btn.disabled = false;
+}
+
+function editDiscMsg(id) {
+  const bodyEl = document.getElementById('disc-body-' + id);
+  if (!bodyEl || bodyEl.dataset.editing) return;
+  const orig = bodyEl.textContent.trim();
+  bodyEl.dataset.orig    = orig;
+  bodyEl.dataset.editing = '1';
+  bodyEl.innerHTML =
+    '<textarea class="disc-edit-input" id="disc-edit-ta-' + id + '">' + escapeHTML(orig) + '</textarea>'
+    + '<div class="disc-edit-actions">'
+    +   '<button class="disc-edit-save" onclick="saveDiscMsg(\'' + id + '\')">Save</button>'
+    +   '<button class="disc-edit-cancel" onclick="cancelDiscEdit(\'' + id + '\')">Cancel</button>'
+    + '</div>';
+  const ta = document.getElementById('disc-edit-ta-' + id);
+  if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+}
+
+function cancelDiscEdit(id) {
+  const bodyEl = document.getElementById('disc-body-' + id);
+  if (!bodyEl) return;
+  const orig = bodyEl.dataset.orig || '';
+  delete bodyEl.dataset.editing;
+  delete bodyEl.dataset.orig;
+  bodyEl.innerHTML = escapeHTML(orig);
+}
+
+async function saveDiscMsg(id) {
+  const bodyEl = document.getElementById('disc-body-' + id);
+  const ta     = document.getElementById('disc-edit-ta-' + id);
+  if (!bodyEl || !ta) return;
+  const newText = ta.value.trim();
+  if (!newText) return;
+  const saveBtn = bodyEl.querySelector('.disc-edit-save');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving…'; }
+  const { error } = await _sb.from('messages').update({ body: newText })
+    .eq('id', id).eq('user_id', getUserId());
+  if (error) {
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save'; }
+    alert('Could not save — please try again.');
+    return;
+  }
+  delete bodyEl.dataset.editing;
+  delete bodyEl.dataset.orig;
+  bodyEl.innerHTML = escapeHTML(newText);
+}
+
+async function deleteDiscMsg(id) {
+  if (!confirm('Delete this message?')) return;
+  const { error } = await _sb.from('messages').delete()
+    .eq('id', id).eq('user_id', getUserId());
+  if (error) { alert('Could not delete — please try again.'); return; }
+  const msgEl = document.getElementById('disc-msg-' + id);
+  if (msgEl) msgEl.remove();
 }
 
 // ═══════════════════════════════════════════════════════
