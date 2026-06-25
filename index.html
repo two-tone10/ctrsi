@@ -2210,6 +2210,253 @@ body {
 .disc-post-btn:hover:not(:disabled) { background: var(--red-dk); }
 .disc-post-btn:disabled { opacity: 0.5; cursor: default; }
 
+.disc-msg-footer { display: flex; margin-top: 5px; }
+
+.disc-vote-btn {
+  border: 1px solid transparent;
+  background: none;
+  color: var(--text-lt);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: 'Source Sans 3', sans-serif;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  line-height: 1.4;
+}
+.disc-vote-btn:hover:not(:disabled) { background: var(--gray-lt); color: var(--charcoal); border-color: var(--border); }
+.disc-vote-btn.voted { color: var(--red); border-color: #EDD0D8; background: var(--red-lt); }
+.disc-vote-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* ─── RESOURCE LIBRARY ─────────────────────────────────── */
+.lib-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.lib-search {
+  flex: 1;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.18s;
+}
+.lib-search:focus { border-color: var(--yellow); }
+
+.lib-add-btn {
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.lib-add-btn:hover { background: var(--red-dk); }
+
+.lib-add-form {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+}
+
+.lib-add-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.lib-type-toggle { display: flex; gap: 8px; }
+
+.lib-type-btn {
+  border: 1.5px solid var(--border);
+  background: none;
+  color: var(--text-med);
+  border-radius: 7px;
+  padding: 7px 14px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.lib-type-btn.active { border-color: var(--red); background: var(--red-lt); color: var(--red-dk); }
+
+.lib-add-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--text-lt);
+  cursor: pointer;
+  padding: 2px 8px;
+  line-height: 1;
+}
+
+.lib-field { margin-bottom: 12px; }
+
+.lib-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-lt);
+  margin-bottom: 5px;
+}
+
+.lib-optional { font-weight: 400; text-transform: none; letter-spacing: 0; }
+
+.lib-input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13.5px;
+  color: var(--text);
+  background: var(--off-white);
+  outline: none;
+  transition: border-color 0.18s;
+}
+.lib-input:focus { border-color: var(--yellow); background: var(--white); }
+.lib-textarea { resize: vertical; min-height: 64px; }
+.lib-select { cursor: pointer; }
+
+.lib-drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 32px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  margin-bottom: 14px;
+  background: var(--off-white);
+}
+.lib-drop-zone.dragging,
+.lib-drop-zone:hover { border-color: var(--yellow); background: var(--yellow-lt); }
+.lib-drop-icon { font-size: 28px; margin-bottom: 8px; }
+.lib-drop-text { font-size: 14px; color: var(--text-med); margin-bottom: 4px; }
+.lib-drop-hint { font-size: 12px; color: var(--text-lt); }
+
+.lib-file-selected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--gray-lt);
+  border-radius: 7px;
+  font-size: 13px;
+  color: var(--text-med);
+  margin-bottom: 14px;
+}
+
+.lib-form-error { color: #B85050; font-size: 12px; min-height: 16px; margin-bottom: 8px; }
+
+.lib-submit-btn {
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 10px 22px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 4px;
+}
+.lib-submit-btn:hover:not(:disabled) { background: var(--red-dk); }
+.lib-submit-btn:disabled { opacity: 0.6; cursor: default; }
+
+.lib-card {
+  display: grid;
+  grid-template-columns: 42px minmax(0,1fr) auto;
+  gap: 14px;
+  align-items: start;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  transition: border-color 0.15s;
+}
+.lib-card:hover { border-color: #C0BFBB; }
+
+.lib-card-icon {
+  width: 42px; height: 42px;
+  background: var(--gray-lt);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.lib-card-title { font-size: 14px; font-weight: 600; color: var(--charcoal); line-height: 1.35; margin-bottom: 4px; }
+.lib-card-desc  { font-size: 13px; color: var(--text-med); line-height: 1.55; margin-bottom: 6px; }
+
+.lib-card-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.lib-card-author { font-size: 11px; font-weight: 700; color: var(--charcoal); }
+.lib-card-date   { font-size: 11px; color: var(--text-lt); }
+.lib-card-module {
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 999px;
+}
+.lib-card-size {
+  font-size: 10px; color: var(--text-lt);
+  background: var(--gray-lt); padding: 2px 6px; border-radius: 4px;
+}
+
+.lib-card-actions { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+
+.lib-card-action {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--charcoal);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px; font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  display: inline-block;
+  text-align: center;
+  transition: border-color 0.15s;
+  cursor: pointer;
+}
+.lib-card-action:hover { border-color: var(--charcoal); }
+
+.lib-card-delete {
+  border: 1px solid transparent;
+  background: none;
+  color: var(--text-lt);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px; font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px; border-radius: 5px;
+  text-align: center;
+  transition: color 0.15s, border-color 0.15s;
+}
+.lib-card-delete:hover { color: #B85050; border-color: #E5C0C0; }
+
 /* ─── GATE AUTH STEP ──────────────────────────────────── */
 #gate-step-auth { display: none; }
 
@@ -2382,6 +2629,10 @@ body {
       <span class="dashboard-icon" style="background:var(--gray-green)"></span>
       <span>My Portfolio</span>
     </button>
+    <button class="dashboard-btn" id="libraryNavBtn" onclick="showLibrary()">
+      <span class="dashboard-icon" style="background:var(--yellow)"></span>
+      <span>Resource Library</span>
+    </button>
   </div>
 
   <div class="sidebar-section-label">Program Modules</div>
@@ -2441,6 +2692,9 @@ body {
       <!-- rendered by JS -->
     </section>
     <section class="dashboard-panel" id="portfolioPanel" aria-label="My portfolio">
+      <!-- rendered by JS -->
+    </section>
+    <section class="dashboard-panel" id="libraryPanel" aria-label="Resource library">
       <!-- rendered by JS -->
     </section>
     <div id="sessionPanels">
@@ -3120,6 +3374,18 @@ function routeFromHash({ behavior = 'smooth' } = {}) {
     return;
   }
 
+  if (hash === 'library') {
+    document.getElementById('libraryPanel').classList.add('active');
+    document.getElementById('libraryNavBtn').classList.add('active');
+    activeView = 'library';
+    document.getElementById('topbarSession').textContent = 'Resource Library';
+    buildLibrary();
+    updateProgressUI();
+    closeSidebar();
+    window.scrollTo({ top: 0, behavior });
+    return;
+  }
+
   if (hash === 'dashboard' || !mod) {
     document.getElementById('dashboardPanel').classList.add('active');
     document.getElementById('dashboardNavBtn').classList.add('active');
@@ -3724,6 +3990,10 @@ function showDashboard() {
 
 function showPortfolio() {
   setRoute('portfolio');
+}
+
+function showLibrary() {
+  setRoute('library');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -4608,7 +4878,7 @@ async function loadDiscussion(moduleId) {
 
   const { data, error } = await _sb
     .from('messages')
-    .select('id, created_at, user_name, user_id, body')
+    .select('id, created_at, user_name, user_id, body, message_votes(user_id)')
     .eq('module_id', moduleId)
     .order('created_at', { ascending: true })
     .limit(300);
@@ -4633,17 +4903,28 @@ function _discRenderAll(moduleId, messages) {
 }
 
 function _discMsgHTML(m) {
-  const isOwn = m.user_id === getUserId();
-  const dt    = new Date(m.created_at);
-  const time  = dt.toLocaleString('en-US', {
+  const isOwn    = m.user_id === getUserId();
+  const votes    = m.message_votes || [];
+  const voteCount = votes.length;
+  const hasVoted  = votes.some(v => v.user_id === getUserId());
+  const dt   = new Date(m.created_at);
+  const time = dt.toLocaleString('en-US', {
     month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true,
   });
+  const voteInner = voteCount > 0
+    ? '▲ <span class="disc-vote-count">' + voteCount + '</span>'
+    : '▲';
   return '<div class="disc-msg' + (isOwn ? ' disc-msg-own' : '') + '">'
     + '<div class="disc-msg-header">'
     +   '<span class="disc-msg-name">' + escapeHTML(m.user_name) + '</span>'
     +   '<span class="disc-msg-time">' + time + '</span>'
     + '</div>'
     + '<div class="disc-msg-body">' + escapeHTML(m.body) + '</div>'
+    + '<div class="disc-msg-footer">'
+    +   '<button class="disc-vote-btn' + (hasVoted ? ' voted' : '') + '" id="vote-btn-' + m.id + '" onclick="toggleVote(\'' + m.id + '\')">'
+    +     voteInner
+    +   '</button>'
+    + '</div>'
     + '</div>';
 }
 
@@ -4710,6 +4991,370 @@ if (_sb) {
       _onSession(session);
     }
   });
+}
+
+// ═══════════════════════════════════════════════════════
+// UPVOTES
+
+async function toggleVote(messageId) {
+  if (!_sb || !_authUser) return;
+  const btn = document.getElementById('vote-btn-' + messageId);
+  if (!btn || btn.disabled) return;
+  btn.disabled = true;
+
+  const hasVoted  = btn.classList.contains('voted');
+  const countEl   = btn.querySelector('.disc-vote-count');
+  const count     = countEl ? (parseInt(countEl.textContent) || 0) : 0;
+  const userId    = getUserId();
+
+  if (hasVoted) {
+    const { error } = await _sb.from('message_votes').delete()
+      .eq('message_id', messageId).eq('user_id', userId);
+    if (!error) {
+      btn.classList.remove('voted');
+      const n = Math.max(0, count - 1);
+      btn.innerHTML = n > 0 ? '▲ <span class="disc-vote-count">' + n + '</span>' : '▲';
+    }
+  } else {
+    const { error } = await _sb.from('message_votes').insert({ message_id: messageId, user_id: userId });
+    if (!error) {
+      btn.classList.add('voted');
+      btn.innerHTML = '▲ <span class="disc-vote-count">' + (count + 1) + '</span>';
+    }
+  }
+  btn.disabled = false;
+}
+
+// ═══════════════════════════════════════════════════════
+// RESOURCE LIBRARY
+
+let _libResources  = [];
+let _libSelFile    = null;
+let _libSearchTmr  = null;
+
+function buildLibrary() {
+  const panel = document.getElementById('libraryPanel');
+  if (!panel) return;
+
+  const modOpts = MODULES.map(m =>
+    '<option value="' + escapeHTML(m.id) + '">' + escapeHTML(m.title) + '</option>'
+  ).join('');
+
+  panel.innerHTML = `
+    <div style="padding-top:32px;">
+      <div class="session-header" style="margin-bottom:22px;">
+        <div class="session-eyebrow">
+          <span class="session-day-label">CTRSI 2026</span>
+        </div>
+        <h1 class="session-title">Resource Library</h1>
+        <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.65;margin-top:8px;max-width:560px;">
+          Share articles, slides, links, and files with your fellow attendees. Everything here is visible and downloadable by the whole group.
+        </p>
+      </div>
+
+      <div class="lib-toolbar">
+        <input class="lib-search" id="lib-search-input" type="search" placeholder="Search resources…"
+               oninput="debounceLibSearch(this.value)">
+        <button class="lib-add-btn" onclick="showLibAddForm()">+ Add Resource</button>
+      </div>
+
+      <div id="lib-add-form" class="lib-add-form" style="display:none;">
+        <div class="lib-add-header">
+          <div class="lib-type-toggle">
+            <button class="lib-type-btn active" id="lib-type-link" onclick="setLibType('link')">🔗 Share a Link</button>
+            <button class="lib-type-btn" id="lib-type-file" onclick="setLibType('file')">📄 Upload a File</button>
+          </div>
+          <button class="lib-add-close" onclick="hideLibAddForm()">✕</button>
+        </div>
+
+        <div id="lib-link-form">
+          <div class="lib-field">
+            <label class="lib-label">URL</label>
+            <input id="lib-url" class="lib-input" type="url" placeholder="https://…">
+          </div>
+          <div class="lib-field">
+            <label class="lib-label">Title</label>
+            <input id="lib-link-title" class="lib-input" type="text" placeholder="Give it a clear, descriptive title">
+          </div>
+          <div class="lib-field">
+            <label class="lib-label">Description <span class="lib-optional">optional</span></label>
+            <textarea id="lib-link-desc" class="lib-input lib-textarea" placeholder="What is this and why is it useful?"></textarea>
+          </div>
+          <div class="lib-field">
+            <label class="lib-label">Related Module <span class="lib-optional">optional</span></label>
+            <select id="lib-link-module" class="lib-input lib-select">
+              <option value="">— Not module-specific</option>
+              ${modOpts}
+            </select>
+          </div>
+          <div id="lib-link-error" class="lib-form-error"></div>
+          <button class="lib-submit-btn" onclick="submitLibLink()">Add Link</button>
+        </div>
+
+        <div id="lib-file-form" style="display:none;">
+          <div class="lib-drop-zone" id="lib-drop-zone"
+               ondragover="event.preventDefault();this.classList.add('dragging')"
+               ondragleave="this.classList.remove('dragging')"
+               ondrop="handleLibDrop(event)"
+               onclick="document.getElementById('lib-file-input').click()">
+            <div class="lib-drop-icon">📂</div>
+            <div class="lib-drop-text">Drag a file here, or click to browse</div>
+            <div class="lib-drop-hint">PDF, slides, images, documents — max 20 MB</div>
+            <input id="lib-file-input" type="file" style="display:none;"
+                   onchange="handleLibFileSelect(this.files[0])">
+          </div>
+          <div id="lib-file-selected" style="display:none;" class="lib-file-selected">
+            <span id="lib-file-name-display" style="flex:1;"></span>
+            <button onclick="clearLibFile()" style="background:none;border:none;cursor:pointer;color:var(--text-lt);font-size:14px;padding:2px 6px;line-height:1;">✕</button>
+          </div>
+          <div class="lib-field">
+            <label class="lib-label">Title</label>
+            <input id="lib-file-title" class="lib-input" type="text" placeholder="Give it a clear, descriptive title">
+          </div>
+          <div class="lib-field">
+            <label class="lib-label">Description <span class="lib-optional">optional</span></label>
+            <textarea id="lib-file-desc" class="lib-input lib-textarea" placeholder="What is this and why is it useful?"></textarea>
+          </div>
+          <div class="lib-field">
+            <label class="lib-label">Related Module <span class="lib-optional">optional</span></label>
+            <select id="lib-file-module" class="lib-input lib-select">
+              <option value="">— Not module-specific</option>
+              ${modOpts}
+            </select>
+          </div>
+          <div id="lib-file-error" class="lib-form-error"></div>
+          <button class="lib-submit-btn" id="lib-upload-btn" onclick="submitLibFile()">Upload File</button>
+        </div>
+      </div>
+
+      <div id="lib-list"><div class="disc-status">Loading resources…</div></div>
+    </div>
+  `;
+
+  loadResources('').then(r => renderLibResources(r));
+}
+
+async function loadResources(search) {
+  if (!_sb) return [];
+  let q = _sb.from('resources').select('*').order('created_at', { ascending: false }).limit(200);
+  if (search && search.trim()) {
+    q = q.or('title.ilike.%' + search.trim() + '%,description.ilike.%' + search.trim() + '%');
+  }
+  const { data, error } = await q;
+  if (error) { console.error('resources load error:', error); return []; }
+  _libResources = data || [];
+  return _libResources;
+}
+
+function renderLibResources(resources) {
+  const listEl = document.getElementById('lib-list');
+  if (!listEl) return;
+  if (!resources || !resources.length) {
+    listEl.innerHTML = '<div class="disc-status">No resources yet — share something with the group!</div>';
+    return;
+  }
+  listEl.innerHTML = resources.map(r => {
+    const mod   = r.module_id ? MODULES.find(m => m.id === r.module_id) : null;
+    const topic = mod ? TOPICS[mod.topic] : null;
+    const date  = new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const isOwn = r.user_id === getUserId();
+    const icon  = r.type === 'file' ? '📄' : '🔗';
+    const sizeLabel = r.file_size ? _libFmtSize(r.file_size) : '';
+
+    const moduleChip = mod && topic
+      ? '<span class="lib-card-module" style="background:' + topic.lt + ';color:' + topic.color + '">' + escapeHTML(mod.title) + '</span>'
+      : '';
+    const sizeChip = sizeLabel
+      ? '<span class="lib-card-size">' + sizeLabel + '</span>'
+      : '';
+    const openBtn = r.url
+      ? '<a class="lib-card-action" href="' + escapeHTML(r.url) + '" target="_blank" rel="noopener">' + (r.type === 'file' ? 'Download' : 'Open →') + '</a>'
+      : '';
+    const delBtn = isOwn
+      ? '<button class="lib-card-delete" onclick="deleteLibResource(\'' + r.id + '\')">Delete</button>'
+      : '';
+
+    return '<div class="lib-card">'
+      + '<div class="lib-card-icon">' + icon + '</div>'
+      + '<div class="lib-card-body">'
+      +   '<div class="lib-card-title">' + escapeHTML(r.title) + '</div>'
+      +   (r.description ? '<div class="lib-card-desc">' + escapeHTML(r.description) + '</div>' : '')
+      +   '<div class="lib-card-meta">'
+      +     '<span class="lib-card-author">' + escapeHTML(r.user_name) + '</span>'
+      +     '<span class="lib-card-date">' + date + '</span>'
+      +     moduleChip + sizeChip
+      +   '</div>'
+      + '</div>'
+      + '<div class="lib-card-actions">' + openBtn + delBtn + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function _libFmtSize(bytes) {
+  if (!bytes) return '';
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return Math.round(bytes / 1024) + ' KB';
+  return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+function debounceLibSearch(value) {
+  clearTimeout(_libSearchTmr);
+  _libSearchTmr = setTimeout(async () => {
+    const resources = await loadResources(value || '');
+    renderLibResources(resources);
+  }, 350);
+}
+
+function showLibAddForm() {
+  const f = document.getElementById('lib-add-form');
+  if (!f) return;
+  f.style.display = 'block';
+  setLibType('link');
+  f.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function hideLibAddForm() {
+  const f = document.getElementById('lib-add-form');
+  if (f) f.style.display = 'none';
+}
+
+function setLibType(type) {
+  const isFile = type === 'file';
+  document.getElementById('lib-type-link').classList.toggle('active', !isFile);
+  document.getElementById('lib-type-file').classList.toggle('active', isFile);
+  document.getElementById('lib-link-form').style.display = isFile ? 'none' : 'block';
+  document.getElementById('lib-file-form').style.display = isFile ? 'block' : 'none';
+}
+
+async function submitLibLink() {
+  const url   = (document.getElementById('lib-url')?.value || '').trim();
+  const title = (document.getElementById('lib-link-title')?.value || '').trim();
+  const desc  = (document.getElementById('lib-link-desc')?.value || '').trim();
+  const modId = document.getElementById('lib-link-module')?.value || null;
+  const errEl = document.getElementById('lib-link-error');
+
+  if (!url)   { errEl.textContent = 'Please enter a URL.'; return; }
+  if (!title) { errEl.textContent = 'Please enter a title.'; return; }
+  errEl.textContent = '';
+
+  const btn = document.querySelector('#lib-link-form .lib-submit-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Adding…'; }
+
+  const { error } = await _sb.from('resources').insert({
+    user_name: attendeeName, user_id: getUserId(),
+    type: 'link', title, description: desc || null,
+    url, module_id: modId || null,
+  });
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Add Link'; }
+
+  if (error) { errEl.textContent = 'Could not add resource. Please try again.'; return; }
+
+  document.getElementById('lib-url').value = '';
+  document.getElementById('lib-link-title').value = '';
+  document.getElementById('lib-link-desc').value = '';
+  document.getElementById('lib-link-module').value = '';
+  hideLibAddForm();
+
+  loadResources('').then(r => renderLibResources(r));
+}
+
+function handleLibDrop(event) {
+  event.preventDefault();
+  event.currentTarget.classList.remove('dragging');
+  const file = event.dataTransfer.files[0];
+  if (file) setLibFile(file);
+}
+
+function handleLibFileSelect(file) {
+  if (file) setLibFile(file);
+}
+
+function setLibFile(file) {
+  if (file.size > 20 * 1024 * 1024) {
+    alert('That file is over 20 MB. Please upload a smaller file, or share a link instead.');
+    return;
+  }
+  _libSelFile = file;
+  document.getElementById('lib-file-selected').style.display = 'flex';
+  document.getElementById('lib-file-name-display').textContent = file.name + ' (' + _libFmtSize(file.size) + ')';
+  document.getElementById('lib-drop-zone').style.display = 'none';
+  const titleEl = document.getElementById('lib-file-title');
+  if (titleEl && !titleEl.value.trim()) {
+    titleEl.value = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+  }
+}
+
+function clearLibFile() {
+  _libSelFile = null;
+  document.getElementById('lib-file-selected').style.display = 'none';
+  document.getElementById('lib-drop-zone').style.display = 'block';
+  const inp = document.getElementById('lib-file-input');
+  if (inp) inp.value = '';
+}
+
+async function submitLibFile() {
+  const errEl = document.getElementById('lib-file-error');
+  if (!_libSelFile) { errEl.textContent = 'Please select a file first.'; return; }
+
+  const title = (document.getElementById('lib-file-title')?.value || '').trim();
+  const desc  = (document.getElementById('lib-file-desc')?.value || '').trim();
+  const modId = document.getElementById('lib-file-module')?.value || null;
+
+  if (!title) { errEl.textContent = 'Please enter a title.'; return; }
+  errEl.textContent = '';
+
+  const btn = document.getElementById('lib-upload-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Uploading…'; }
+
+  const filePath = getUserId() + '/' + Date.now() + '-' + _libSelFile.name;
+
+  const { error: upErr } = await _sb.storage
+    .from('resources')
+    .upload(filePath, _libSelFile, { cacheControl: '3600', upsert: false });
+
+  if (upErr) {
+    errEl.textContent = 'Upload failed: ' + upErr.message;
+    if (btn) { btn.disabled = false; btn.textContent = 'Upload File'; }
+    return;
+  }
+
+  const { data: { publicUrl } } = _sb.storage.from('resources').getPublicUrl(filePath);
+
+  const { error: dbErr } = await _sb.from('resources').insert({
+    user_name: attendeeName, user_id: getUserId(),
+    type: 'file', title, description: desc || null,
+    url: publicUrl, file_name: _libSelFile.name,
+    file_size: _libSelFile.size, module_id: modId || null,
+  });
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Upload File'; }
+
+  if (dbErr) { errEl.textContent = 'File uploaded but failed to save record. Try again.'; return; }
+
+  clearLibFile();
+  document.getElementById('lib-file-desc').value = '';
+  document.getElementById('lib-file-module').value = '';
+  hideLibAddForm();
+
+  loadResources('').then(r => renderLibResources(r));
+}
+
+async function deleteLibResource(id) {
+  if (!confirm('Remove this resource from the library?')) return;
+
+  const resource = _libResources.find(r => r.id === id);
+
+  if (resource && resource.type === 'file' && resource.url) {
+    const base = SUPABASE_URL + '/storage/v1/object/public/resources/';
+    const path = resource.url.replace(base, '');
+    if (path) await _sb.storage.from('resources').remove([path]);
+  }
+
+  await _sb.from('resources').delete().eq('id', id).eq('user_id', getUserId());
+
+  const search = document.getElementById('lib-search-input')?.value || '';
+  loadResources(search).then(r => renderLibResources(r));
 }
 </script>
 </body>
