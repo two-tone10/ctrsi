@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CTRSI 2026 · Attendee Progress Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
   /* ── Warm Academic palette ── */
@@ -2086,6 +2087,203 @@ body {
   /* Resource chips / badges — leave small */
 }
 
+/* ─── DISCUSSION BOARD ─────────────────────────────────── */
+.disc-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.disc-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.disc-list::-webkit-scrollbar { width: 4px; }
+.disc-list::-webkit-scrollbar-thumb { background: var(--gray-bd); border-radius: 999px; }
+
+.disc-status {
+  color: var(--text-lt);
+  font-size: 13px;
+  text-align: center;
+  padding: 28px 0;
+  font-style: italic;
+}
+
+.disc-error-msg { color: #B85050; font-style: normal; }
+
+.disc-msg {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 11px;
+  background: var(--gray-lt);
+  border-radius: 8px;
+  max-width: 84%;
+  align-self: flex-start;
+}
+
+.disc-msg-own {
+  background: var(--red-lt);
+  border: 1px solid #EDD0D8;
+  align-self: flex-end;
+}
+
+.disc-msg-header { display: flex; align-items: baseline; gap: 7px; }
+
+.disc-msg-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--charcoal);
+}
+
+.disc-msg-own .disc-msg-name { color: var(--red-dk); }
+
+.disc-msg-time {
+  font-size: 10px;
+  color: var(--text-lt);
+}
+
+.disc-msg-body {
+  font-size: 13.5px;
+  color: var(--text-med);
+  line-height: 1.58;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.disc-composer {
+  border-top: 1px solid var(--border);
+  padding: 10px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  background: var(--off-white);
+  flex-shrink: 0;
+}
+
+.disc-input {
+  flex: 1;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--white);
+  resize: none;
+  height: 38px;
+  max-height: 110px;
+  overflow-y: auto;
+  outline: none;
+  transition: border-color 0.18s;
+}
+
+.disc-input:focus { border-color: var(--yellow); }
+.disc-input::placeholder { color: #C0B4A8; font-style: italic; }
+
+.disc-post-btn {
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  border-radius: 7px;
+  padding: 9px 16px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+  height: 38px;
+}
+
+.disc-post-btn:hover:not(:disabled) { background: var(--red-dk); }
+.disc-post-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* ─── GATE AUTH STEP ──────────────────────────────────── */
+#gate-step-auth { display: none; }
+
+.gate-mode-toggle {
+  display: flex;
+  background: rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.gate-mode-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: none;
+  color: rgba(255,255,255,0.4);
+  transition: background 0.15s, color 0.15s;
+  letter-spacing: 0.04em;
+}
+.gate-mode-btn.active { background: rgba(255,255,255,0.13); color: white; }
+
+.gate-or-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.22);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.gate-or-divider::before,
+.gate-or-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
+
+.gate-google-btn {
+  width: 100%;
+  background: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: opacity 0.15s;
+}
+.gate-google-btn:hover { opacity: 0.88; }
+
+/* ─── TOPBAR SIGN-OUT ─────────────────────────────────── */
+.btn-signout {
+  padding: 5px 10px;
+  background: none;
+  color: rgba(90,74,58,0.55);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: color 0.15s, border-color 0.15s;
+}
+.btn-signout:hover { color: var(--red); border-color: var(--border); }
+
 </style>
 </head>
 <body>
@@ -2127,16 +2325,39 @@ body {
     </div>
   </div>
 
-  <div id="gate-step-name">
-    <div class="gate-card">
-      <div>
-        <div class="gate-label">Your Name</div>
-        <input id="gate-name-input" class="gate-input" type="text"
-               placeholder="First and last name"
-               onkeydown="if(event.key==='Enter')gateCheckName()">
+  <div id="gate-step-auth">
+    <div class="gate-card" style="gap:12px;">
+      <div class="gate-mode-toggle">
+        <button class="gate-mode-btn active" id="gate-mode-signin" onclick="setGateMode('signin')">Sign In</button>
+        <button class="gate-mode-btn" id="gate-mode-signup" onclick="setGateMode('signup')">Create Account</button>
       </div>
-      <div id="gate-name-error" class="gate-error"></div>
-      <button class="gate-btn" onclick="gateCheckName()">Enter the Institute →</button>
+      <div id="gate-auth-name-wrap" style="display:none;">
+        <div class="gate-label">Your Name</div>
+        <input id="gate-auth-name" class="gate-input" type="text" placeholder="First and last name"
+               onkeydown="if(event.key==='Enter')gateSubmitAuth()">
+      </div>
+      <div>
+        <div class="gate-label">Email</div>
+        <input id="gate-auth-email" class="gate-input" type="email" placeholder="you@email.com"
+               onkeydown="if(event.key==='Enter')gateSubmitAuth()" autocomplete="email">
+      </div>
+      <div>
+        <div class="gate-label">Password</div>
+        <input id="gate-auth-password" class="gate-input" type="password" placeholder="Your password (min. 6 characters)"
+               onkeydown="if(event.key==='Enter')gateSubmitAuth()" autocomplete="current-password">
+      </div>
+      <div id="gate-auth-error" class="gate-error"></div>
+      <button class="gate-btn" id="gate-auth-btn" onclick="gateSubmitAuth()">Sign In →</button>
+      <div class="gate-or-divider">or</div>
+      <button class="gate-google-btn" onclick="gateGoogleAuth()">
+        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        Continue with Google
+      </button>
     </div>
   </div>
 </div>
@@ -2205,7 +2426,8 @@ body {
     <div class="topbar-session" id="topbarSession">Select a module →</div>
   </div>
   <div class="topbar-actions">
-    <div id="attendee-greeting" style="font-size:12px;font-weight:500;color:#8A7A6A;letter-spacing:0.04em;margin-right:8px;"></div>
+    <div id="attendee-greeting" style="font-size:12px;font-weight:500;color:#8A7A6A;letter-spacing:0.04em;margin-right:4px;"></div>
+    <button class="btn-signout" onclick="signOut()">Sign out</button>
     <button class="btn-outline" onclick="window.print()">⎙ Print</button>
   </div>
 </header>
@@ -3246,6 +3468,7 @@ function buildModulePanels() {
         <a class="tab-btn"        data-tab="resources"  href="#${mod.id}-resources"  onclick="switchTab(event,this,'${mod.id}','resources')">Readings & Resources</a>
         <a class="tab-btn"        data-tab="reflect"    href="#${mod.id}-reflect"    onclick="switchTab(event,this,'${mod.id}','reflect')">Reflect</a>
         <a class="tab-btn"        data-tab="portfolio"  href="#${mod.id}-portfolio"  onclick="switchTab(event,this,'${mod.id}','portfolio')">Portfolio</a>
+        <a class="tab-btn"        data-tab="discussion" href="#${mod.id}-discussion" onclick="switchTab(event,this,'${mod.id}','discussion')">Discussion</a>
       </div>
 
       <!-- OVERVIEW TAB -->
@@ -3356,6 +3579,29 @@ function buildModulePanels() {
         ${portfolioHTML}
       </section>
 
+      <!-- DISCUSSION TAB -->
+      <section class="tab-pane" id="${mod.id}-discussion">
+        <div class="guide-cue">
+          <div class="guide-kicker">Discussion</div>
+          <div class="guide-text">Share reactions, questions, and insights from this session. Posts are visible to all attendees and persist after the event ends.</div>
+        </div>
+        <div class="disc-wrap">
+          <div class="disc-list" id="disc-list-${mod.id}">
+            <div class="disc-status">Loading discussion…</div>
+          </div>
+          <div class="disc-composer">
+            <textarea
+              class="disc-input"
+              id="disc-input-${mod.id}"
+              placeholder="Share a thought, question, or reaction… (Enter to post, Shift+Enter for new line)"
+              oninput="this.style.height='38px';this.style.height=Math.min(110,this.scrollHeight)+'px'"
+              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();postDiscussionMessage('${mod.id}')}"
+            ></textarea>
+            <button class="disc-post-btn" id="disc-post-btn-${mod.id}" onclick="postDiscussionMessage('${mod.id}')">Post</button>
+          </div>
+        </div>
+      </section>
+
       <!-- MODULE NAV FOOTER -->
       <nav class="module-nav-footer" aria-label="Module navigation">
         ${prevMod ? `
@@ -3391,6 +3637,10 @@ function switchTab(event, btn, moduleId, tab) {
   btn.classList.add('active');
   const pane = document.getElementById(`${moduleId}-${tab}`);
   if (pane) pane.classList.add('active');
+  if (tab === 'discussion') {
+    loadDiscussion(moduleId);
+    subscribeToDiscussion(moduleId);
+  }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -4194,10 +4444,9 @@ async function gateCheckPass() {
   const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
   if (hex === PASSCODE_HASH) {
     document.getElementById('gate-step-pass').style.display = 'none';
-    document.getElementById('gate-step-name').style.display = 'block';
-    const nameInput = document.getElementById('gate-name-input');
-    if (nameInput && attendeeName && !nameInput.value.trim()) nameInput.value = attendeeName;
-    setTimeout(() => { const inp = document.getElementById('gate-name-input'); if (inp) inp.focus(); }, 50);
+    document.getElementById('gate-step-auth').style.display = 'block';
+    setGateMode('signin');
+    setTimeout(() => { const inp = document.getElementById('gate-auth-email'); if (inp) inp.focus(); }, 50);
   } else {
     document.getElementById('gate-pass-error').textContent = 'Incorrect access code. Please try again.';
     document.getElementById('gate-pass-input').value = '';
@@ -4205,22 +4454,77 @@ async function gateCheckPass() {
   }
 }
 
-function gateCheckName() {
-  const val = document.getElementById('gate-name-input').value.trim();
-  if (val.length < 2) {
-    document.getElementById('gate-name-error').textContent = 'Please enter your full name.';
-    return;
+function setGateMode(mode) {
+  const isSignup = mode === 'signup';
+  document.getElementById('gate-mode-signin').classList.toggle('active', !isSignup);
+  document.getElementById('gate-mode-signup').classList.toggle('active', isSignup);
+  const nameWrap = document.getElementById('gate-auth-name-wrap');
+  if (nameWrap) nameWrap.style.display = isSignup ? 'block' : 'none';
+  const btn = document.getElementById('gate-auth-btn');
+  if (btn) btn.textContent = isSignup ? 'Create Account →' : 'Sign In →';
+  const errEl = document.getElementById('gate-auth-error');
+  if (errEl) errEl.textContent = '';
+}
+
+async function gateSubmitAuth() {
+  const email    = (document.getElementById('gate-auth-email')?.value || '').trim();
+  const password = document.getElementById('gate-auth-password')?.value || '';
+  const errEl    = document.getElementById('gate-auth-error');
+  const btn      = document.getElementById('gate-auth-btn');
+  const isSignup = document.getElementById('gate-mode-signup').classList.contains('active');
+
+  if (!email || !password) { if (errEl) errEl.textContent = 'Please enter your email and password.'; return; }
+  if (password.length < 6) { if (errEl) errEl.textContent = 'Password must be at least 6 characters.'; return; }
+  if (btn) { btn.disabled = true; btn.textContent = '…'; }
+  if (errEl) errEl.textContent = '';
+
+  if (isSignup) {
+    const name = (document.getElementById('gate-auth-name')?.value || '').trim();
+    if (name.length < 2) {
+      if (errEl) errEl.textContent = 'Please enter your full name.';
+      if (btn) { btn.disabled = false; btn.textContent = 'Create Account →'; }
+      return;
+    }
+    const { error } = await _sb.auth.signUp({
+      email, password, options: { data: { display_name: name } },
+    });
+    if (error) {
+      if (errEl) errEl.textContent = error.message;
+      if (btn) { btn.disabled = false; btn.textContent = 'Create Account →'; }
+    }
+  } else {
+    const { error } = await _sb.auth.signInWithPassword({ email, password });
+    if (error) {
+      if (errEl) errEl.textContent = 'Incorrect email or password. Try again or create an account.';
+      if (btn) { btn.disabled = false; btn.textContent = 'Sign In →'; }
+    }
   }
-  saveAttendeeName(val);
-  buildDashboard();
-  buildPortfolio();
+}
+
+async function gateGoogleAuth() {
+  if (!_sb) return;
+  await _sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.href.split('#')[0] },
+  });
+}
+
+async function signOut() {
+  if (!_sb) return;
+  await _sb.auth.signOut();
+  _authUser = null;
+  attendeeName = '';
+  try { localStorage.removeItem(ATTENDEE_NAME_KEY); } catch(e) {}
+  const greeting = document.getElementById('attendee-greeting');
+  if (greeting) greeting.textContent = '';
   const overlay = document.getElementById('gate-overlay');
-  overlay.classList.add('fade-out');
-  setTimeout(() => {
-    overlay.style.display = 'none';
-    routeFromHash({ behavior: 'auto' });
-    initAutoResize();
-  }, 500);
+  overlay.style.display = 'flex';
+  overlay.style.opacity = '1';
+  overlay.classList.remove('fade-out');
+  document.getElementById('gate-step-pass').style.display = 'block';
+  document.getElementById('gate-step-auth').style.display = 'none';
+  document.getElementById('gate-pass-input').value = '';
+  document.getElementById('gate-pass-error').textContent = '';
 }
 
 // ═══════════════════════════════════════════════════════
@@ -4234,12 +4538,6 @@ buildModulePanels();
 buildDashboard();
 buildPortfolio();
 
-// Auto-skip gate for returning users who already entered their name
-if (attendeeName) {
-  const overlay = document.getElementById('gate-overlay');
-  if (overlay) overlay.style.display = 'none';
-}
-
 if (!window.location.hash) {
   history.replaceState(null, '', '#dashboard');
 }
@@ -4248,6 +4546,171 @@ routeFromHash({ behavior: 'auto' });
 
 // Init auto-resize for any textareas already in the DOM
 initAutoResize();
+
+// ═══════════════════════════════════════════════════════
+// SUPABASE / DISCUSSION
+// ═══════════════════════════════════════════════════════
+
+const SUPABASE_URL      = 'https://kyygejymexfxwmovmrjz.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5eWdlanltZXhmeHdtb3Ztcmp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MjkxMTIsImV4cCI6MjA5MzUwNTExMn0.2ZI3Qf4-MZn06Pp-4VhFphRDTj5TO5HJujfLtA2Gxjg';
+const USER_ID_KEY       = 'ctrsi2026:userId';
+
+const _sb = (typeof supabase !== 'undefined')
+  ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
+let _discSub      = null;
+let _discModuleId = null;
+let _authUser     = null;
+
+function getUserId() {
+  if (_authUser) return _authUser.id;
+  try {
+    let id = localStorage.getItem(USER_ID_KEY);
+    if (!id) { id = crypto.randomUUID(); localStorage.setItem(USER_ID_KEY, id); }
+    return id;
+  } catch(e) { return 'anon-' + Math.random().toString(36).slice(2); }
+}
+
+function _getDisplayName(user) {
+  return user.user_metadata?.display_name
+      || user.user_metadata?.full_name
+      || user.user_metadata?.name
+      || (user.email ? user.email.split('@')[0] : 'Attendee');
+}
+
+function _onSession(session) {
+  _authUser = session.user;
+  saveAttendeeName(_getDisplayName(session.user));
+  buildDashboard();
+  buildPortfolio();
+  const overlay = document.getElementById('gate-overlay');
+  if (overlay) {
+    overlay.classList.add('fade-out');
+    setTimeout(() => { overlay.style.display = 'none'; }, 400);
+  }
+  routeFromHash({ behavior: 'auto' });
+  initAutoResize();
+}
+
+function _discListEl(moduleId) {
+  return document.getElementById('disc-list-' + moduleId);
+}
+
+function _discSetStatus(moduleId, text, isError) {
+  const el = _discListEl(moduleId);
+  if (el) el.innerHTML = '<div class="disc-status' + (isError ? ' disc-error-msg' : '') + '">' + escapeHTML(text) + '</div>';
+}
+
+async function loadDiscussion(moduleId) {
+  if (!_sb) { _discSetStatus(moduleId, 'Discussion unavailable — Supabase not loaded.', true); return; }
+  _discSetStatus(moduleId, 'Loading discussion…');
+
+  const { data, error } = await _sb
+    .from('messages')
+    .select('id, created_at, user_name, user_id, body')
+    .eq('module_id', moduleId)
+    .order('created_at', { ascending: true })
+    .limit(300);
+
+  if (error) {
+    _discSetStatus(moduleId, 'Could not load discussion. Please refresh to try again.', true);
+    return;
+  }
+
+  _discRenderAll(moduleId, data || []);
+}
+
+function _discRenderAll(moduleId, messages) {
+  const el = _discListEl(moduleId);
+  if (!el) return;
+  if (!messages.length) {
+    el.innerHTML = '<div class="disc-status">No posts yet — be the first to share a thought.</div>';
+    return;
+  }
+  el.innerHTML = messages.map(_discMsgHTML).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+function _discMsgHTML(m) {
+  const isOwn = m.user_id === getUserId();
+  const dt    = new Date(m.created_at);
+  const time  = dt.toLocaleString('en-US', {
+    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true,
+  });
+  return '<div class="disc-msg' + (isOwn ? ' disc-msg-own' : '') + '">'
+    + '<div class="disc-msg-header">'
+    +   '<span class="disc-msg-name">' + escapeHTML(m.user_name) + '</span>'
+    +   '<span class="disc-msg-time">' + time + '</span>'
+    + '</div>'
+    + '<div class="disc-msg-body">' + escapeHTML(m.body) + '</div>'
+    + '</div>';
+}
+
+function subscribeToDiscussion(moduleId) {
+  if (!_sb) return;
+  if (_discSub) { _sb.removeChannel(_discSub); _discSub = null; }
+  _discModuleId = moduleId;
+
+  _discSub = _sb
+    .channel('disc-' + moduleId + '-' + Date.now())
+    .on('postgres_changes', {
+      event: 'INSERT', schema: 'public', table: 'messages',
+      filter: 'module_id=eq.' + moduleId,
+    }, payload => {
+      const el = _discListEl(moduleId);
+      if (!el) return;
+      const statusEl = el.querySelector('.disc-status');
+      if (statusEl) statusEl.remove();
+      el.insertAdjacentHTML('beforeend', _discMsgHTML(payload.new));
+      el.scrollTop = el.scrollHeight;
+    })
+    .subscribe();
+}
+
+async function postDiscussionMessage(moduleId) {
+  if (!_sb) return;
+  if (!attendeeName) { alert('Please enter your name to post.'); return; }
+
+  const input = document.getElementById('disc-input-' + moduleId);
+  const btn   = document.getElementById('disc-post-btn-' + moduleId);
+  if (!input) return;
+
+  const body = input.value.trim();
+  if (!body) return;
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Posting…'; }
+
+  const { error } = await _sb.from('messages').insert({
+    user_name: attendeeName,
+    user_id:   getUserId(),
+    body,
+    module_id: moduleId,
+  });
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Post'; }
+
+  if (error) {
+    alert('Could not post. Please try again.');
+    return;
+  }
+
+  input.value = '';
+  input.style.height = '38px';
+}
+
+// Check for existing session on load (handles returning users + Google OAuth redirect)
+if (_sb) {
+  _sb.auth.getSession().then(({ data: { session } }) => {
+    if (session) _onSession(session);
+  });
+
+  _sb.auth.onAuthStateChange((event, session) => {
+    if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
+      _onSession(session);
+    }
+  });
+}
 </script>
 </body>
 </html>
